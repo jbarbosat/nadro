@@ -1,0 +1,287 @@
+library(shiny)
+library(ggplot2)
+##################################################################################################  
+#Leemos los datos
+s<-as.data.frame(read.csv("base_simulada.csv",sep=','),header=TRUE,
+                           colClasses=c("character","character","character","character","character",
+                                        "double","double","double","double","double","double"))
+
+
+shinyServer(function(input, output, clientData, session) {
+  
+  observe({
+    
+  
+  ##################################################################################################  
+  #Leemos e interpretamos las variables que nos van a servir para filtrar 
+  #Como ahorita estamos trabajando con una base simulada, hay cosas comentadas. 
+  #Ya que estemos en la base verdera, habrá que tener catálogos de las cosas.
+  #Uno pone en las opciones "Abarrotes" pero en la base
+  #aparece como "A", así que es necesario.
+  #--------------------------------------------------------------------------------------------------  
+  #Sectores. #Si eligieron uno, suistituiremos el nombre x la letra q aparece en la base. Cat_GpoClientes.xls
+  #Además, el sector determina las opciones que aparecen en cliente.
+  
+  Sector<-sprintf(reactive({input$isector})())
+  #   if (Sector!="Todo"){
+  #     cat_sectores<-read.csv("cat_sectores.csv") #columnas = idsector y sector
+  #     Sector<-cat_sectores[grep(Sector,cat_sectores[,2]),1]
+  #   }
+  
+  if(Sector=="Todos")
+    tablaClientes<-as.character(s$cliente)
+  else
+    tablaClientes<-as.character(s$cliente[s$sector==Sector])
+  
+  clientesValidos<-unique(tablaClientes)
+  #default<-sprintf(reactive({input$cliente})())
+  updateSelectInput(session, inputId="cliente", 
+                    choices = c("Todos",clientesValidos),
+                    selected="Todos")
+  
+  #--------------------------------------------------------------------------------------------------  
+  #Cliente. #Si eligieron uno, sustituimos el nombre x el número de id q aparece en la base. Cat_Cadena.xls
+  Cliente<-sprintf(reactive({input$cliente})())
+  #   if (Cliente!="Todo"){
+  #     clientes<-cbind(c("4002713","4000008","4000105","4000010","4000003"),
+  #                     c("CONTROLADORA DE FARMACIAS S.A.P.I.","NUEVA WAL MART DE MEXICO S DE RL DE","KLYN'S FARMACIAS SA DE CV",
+  #                       "SUPERMERCADOS INTNALES H.E.B. SA DE","TIENDAS SORIANA SA DE CV"))
+  #     
+  #     cliente<-clientes[grep(Cliente,clientes[,2]),1]
+  #   }
+  #--------------------------------------------------------------------------------------------------  
+  #Material. #Si eligieron uno, sustituimos el nombre x el número de id q aparece en la base. Cat_Materiales.xls
+  Material<-sprintf(reactive({input$material})())
+  #   if (Material!="Todo"){
+  #     cat_materiales<-read.csv("cat_materiales.csv") #columnas = idmaterial y material
+  #     Material<-cat_materiales[grep(Material,cat_materiales[,2]),1]
+  #   }
+  
+  ##################################################################################################
+  #Datos
+  #Vamos filtrando los datos, según las opciones de los filtros
+  
+  datos1<-reactive({s})
+  
+  datos2<-datos1
+  if(Sector!="Todos"){
+    datos2<-reactive({datos1()[datos1()$sector==Sector,]})
+  }
+  datos3<-datos2
+  if(Cliente!="Todos"){
+    datos3<-reactive({datos2()[datos2()$cliente==Cliente,]})
+  }
+  datos<-datos3
+  if(Material!="Todos"){
+    datos<-reactive({datos3()[datos3()$producto==Material,]})
+  }
+  
+  #--------------------------------------------------------------------------------------------------  
+  #Datos 2
+  #Vamos a crear de una vez una tabla con agregados y con cosas en el tiempo para de ahí sacar las columnas y plottear felizmente
+  
+  meses<-substr(datos()$dia,4,5)
+  anios<-substr(datos()$dia,7,10)
+  dias<-datos()$dia2
+  #Por meses
+  pre.agg1<-aggregate(datos()[,c(6:11)],list(FactorA=meses,FactorB=anios),sum)
+  agg1<-cbind(pre.agg1[,c(1:2)],round(pre.agg1[,c(3:8)]/1000000,2))
+  #Por días
+  agg2<-aggregate(datos()[,c(6:11)],list(FactorA=anios,FactorB=substr(datos()$dia,1,5)),sum)
+  #agg3<-aggregate(datos()[,c(6:11)],list(FactorA=anios,FactorB=datos()$dia),sum)
+  ##################################################################################################  
+  #Graficas y Outputs
+  #ventas
+  
+  output$VentasAggrTabla<-renderTable({ 
+    v.columna<-5 #de agg1
+    v.pre.tabla1 <- reshape(agg1[,c(1,2,v.columna)], idvar = "FactorB", timevar = "FactorA", direction = "wide")
+    v.indices<-order(names(v.pre.tabla1))
+    v.tabla<-v.pre.tabla1[,v.indices]
+    #tabla<-cbind(pre.tabla2[,1],round(pre.tabla2[,2:13]/1000000,2))
+    names(v.tabla)<-c("Year","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic")
+    row.names(v.tabla)<-NULL
+    print(v.tabla,justify="center")
+  })
+  
+  output$VentasTPlot<-renderPlot({ 
+    vt.columna<-5 #de agg2
+    vt.pre.tabla1 <- reshape(agg2[,c(1,2,vt.columna)], idvar = "FactorB", timevar = "FactorA", direction = "wide")
+    vt.pre.tabla2<-vt.pre.tabla1[order(substr(vt.pre.tabla1[,1],4,5)),]
+    vt.indices<-order(names(vt.pre.tabla2))
+    vt.tabla<-vt.pre.tabla2[,vt.indices]
+    #tabla<-cbind(Fecha=pre.tabla3[,1],pre.tabla3[,2:4]/1000000)
+    
+#     plot(vt.tabla[,2],xlab="Tiempo", #ylim=c(min(na.exclude(tabla)),max(na.exclude(tabla))),
+#          ylab="Precios", type="l",xaxt="n",tck = 1)
+#     mtext(text=paste(c("2011","2012","2013")), side=3, 
+#         at=c(100,180,260),
+#         col=c("black","red","blue"),cex=1.5)
+#     axis(side=1,at=seq(1,366,by=10),labels=(vt.tabla$FactorB[seq(1,366,by=10)]),cex.axis=0.8, las=2)
+#     lines(vt.tabla[,3],col="red")
+#     lines(vt.tabla[,4],col="blue")
+#     
+    
+    fecha<-rep(vt.tabla[1:300,1],3)
+    anio<-rep(c("2011","2012","2013"),each=length(fecha)/3)
+    valor<-c(vt.tabla[1:300,2],vt.tabla[1:300,3],vt.tabla[1:300,4])
+    
+    #valor2<-runif(3*length(fecha))
+    #valor2[seq(5,90,by=5)]<-"NA"
+    prueba<-as.data.frame(cbind(fecha,anio,valor))
+    #id = seq_along(anio)
+    plot(ggplot(prueba, aes(x=as.numeric(rep(1:300,3)), y=as.vector(valor),group=anio,colour=anio))+geom_line())
+         #+scale_y_continuous(breaks = as.character(round(seq(as.double(min(as.vector(prueba$valor),na.rm=TRUE)), as.double(max(as.vector(prueba$valor),na.rm=TRUE)), length.out=10),1))))
+
+                               #c("1288995.0", "1336383.0", "1383771.0", "1431160.0", "1478548.0", "1525936.0", "1573324.0", "1620713.0", "1668101.0", "1715489.0")))
+    #qplot(rep(1:30,3), as.vector(valor2), data=prueba, group=anio, geom="line")
+    
+     
+  })
+  
+  output$Prueba1 <- renderPrint({
+    print(reactive({input$cliente})())
+  })
+  
+  ##################################################################################################  
+  #Graficas y Outputs
+  #Costos
+  
+  c.columna<-c(7,8)
+  c.pre.tabla2 <- reshape(agg1[,c(1,2,c.columna)], idvar = "FactorA", timevar = "FactorB", direction = "wide")
+  c.pre.tabla3<-(t(c.pre.tabla2))
+  c.indices<-as.numeric(c.pre.tabla2[,1])
+  c.tabla<-c.pre.tabla3[-1,c.indices]
+  c.Year<-row.names(c.tabla)
+  c.tabla<-(cbind(c.Year,c.tabla))
+  dimnames(c.tabla)[[2]]<-c("Year","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic")
+  #tabla$Mes<-c("Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic")
+  #dimnames(c.tabla)[[1]]<-NULL
+  
+  output$CostosAggrTabla<-renderTable({ 
+    print(c.tabla[,-1],justify="center")
+  })
+  
+  output$CostosHPlot<-renderPlot({ 
+    costos<-rowSums(matrix(as.numeric(as.matrix(c.tabla[,-1])),nrow=6,ncol=12),na.rm=TRUE)
+    variables<-as.data.frame(matrix(unlist(strsplit(as.character(c.tabla[,1]),".",fixed=TRUE)),nrow=6,ncol=2,byrow=TRUE))
+    c.tabla.hist<-as.data.frame(cbind(variables,as.numeric(costos)))
+    c.tabla.hist<-(cbind(variables,costos))
+    plot(ggplot(c.tabla.hist, aes(x = V1, y=costos)) + geom_bar(position="dodge",stat="identity",width=.5)  + facet_wrap( ~V2) + xlab("")+ ylab("Costos"))
+  })
+  
+  
+  ct.columna<-c(7,8) #de agg2
+  ct.pre.tabla1 <- reshape(agg2[,c(1,2,ct.columna)], idvar = "FactorB", timevar = "FactorA", direction = "wide")
+  ct.pre.tabla2<-ct.pre.tabla1[order(substr(ct.pre.tabla1[,1],4,5)),]
+  ct.indices<-order(names(ct.pre.tabla2))
+  ct.tabla<-ct.pre.tabla2[,ct.indices]
+  #tabla<-cbind(Fecha=pre.tabla3[,1],pre.tabla3[,2:4]/1000000)
+  
+  output$Costos1TPlot<-renderPlot({ 
+    plot(ct.tabla[,2],xlab="Tiempo", ylim=c(min(ct.tabla[,c(2:4)],na.rm=TRUE),max(ct.tabla[,c(2:4)],na.rm=TRUE)),
+         ylab="VPR1", type="l",xaxt="n",main="VPR1",tck = 1)
+    mtext(text=paste(c("2011","2012","2013")), side=3, 
+          at=c(100,180,260),
+          col=c("black","red","blue"),cex=1.5)
+    axis(side=1,at=seq(1,366,by=10),labels=(ct.tabla$FactorB[seq(1,366,by=10)]),cex.axis=0.8, las=2)
+    lines(ct.tabla[,3],col="red")
+    lines(ct.tabla[,4],col="blue")
+  })
+  
+  output$Costos2TPlot<-renderPlot({ 
+    plot(ct.tabla[,5],xlab="Tiempo", ylim=c(min(ct.tabla[,c(5:7)],na.rm=TRUE),max(ct.tabla[,c(5:7)],na.rm=TRUE)),
+         ylab="VPR2", type="l",xaxt="n",main="VPR2",tck = 1)
+    mtext(text=paste(c("2011","2012","2013")), side=3, 
+          at=c(100,180,260),
+          col=c("black","red","blue"),cex=1.5)
+    axis(side=1,at=seq(1,366,by=10),labels=(ct.tabla$FactorB[seq(1,366,by=10)]),cex.axis=0.8, las=2)
+    lines(ct.tabla[,6],col="red")
+    lines(ct.tabla[,7],col="blue")
+  })
+  
+  #VPR1 y 2 para 2013
+  output$CostosTPlot<-renderPlot({ 
+    plot(ct.tabla[,7],xlab="Tiempo", ylim=c(min(ct.tabla[,c(4,7)],na.rm=TRUE),max(ct.tabla[,c(4,7)],na.rm=TRUE)),
+         ylab="Costos", type="l",xaxt="n",tck = 1)
+    mtext(text=paste(c("VPR1 2013","VPR2 2013")), side=3, 
+          at=c(140,220),
+          col=c("black","red"),cex=1.5)
+    axis(side=1,at=seq(1,366,by=10),labels=(ct.tabla$FactorB[seq(1,366,by=10)]),cex.axis=0.8, las=2)
+    lines(ct.tabla[,4],col="red")
+  })
+  
+  
+  output$Prueba2 <- renderPrint({
+    print(reactive({input$cliente})())
+  })
+  
+  ##################################################################################################  
+  #Graficas y Outputs
+  #Descuentos
+  #13    ZDFI -606438.55  SD Ds Financiero
+  #24    ZPG5  -97403.57  SDPromoNad Gral Fact
+  
+  output$DescAggrTabla<-renderTable({ 
+    columna<-c(3,4)
+    pre.tabla2 <- reshape(agg1[,c(1,2,columna)], idvar = "FactorA", timevar = "FactorB", direction = "wide")
+    pre.tabla3<-as.data.frame(t(pre.tabla2))
+    indices<-as.numeric(pre.tabla2[,1])
+    tabla<-pre.tabla3[-1,indices]
+    Year<-row.names(tabla)
+    tabla<-cbind(Year,tabla)
+    names(tabla)<-c("Year","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic")
+    #tabla$Mes<-c("Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic")
+    row.names(tabla)<-NULL
+    print(tabla,justify="center")
+  })
+  
+  columna0<-c(3,4) #de agg2
+  pre.tabla10 <- reshape(agg2[,c(1,2,columna0)], idvar = "FactorB", timevar = "FactorA", direction = "wide")
+  pre.tabla20<-pre.tabla10[order(substr(pre.tabla10[,1],4,5)),]
+  indices0<-order(names(pre.tabla20))
+  tabla0<-pre.tabla20[,indices0]
+  #tabla<-cbind(Fecha=pre.tabla3[,1],pre.tabla3[,2:4]/1000000)
+  
+  output$Desc1TPlot<-renderPlot({ 
+    plot(tabla0[,2],xlab="Tiempo", ylim=c(min(tabla0[,c(2:4)],na.rm=TRUE),max(tabla0[,c(2:4)],na.rm=TRUE)),
+         ylab="ZDFI", type="l",xaxt="n",main="ZDFI",tck = 1)
+    mtext(text=paste(c("2011","2012","2013")), side=3, 
+          at=c(100,180,260),
+          col=c("black","red","blue"),cex=1.5)
+    axis(side=1,at=seq(1,366,by=10),labels=(tabla0$FactorB[seq(1,366,by=10)]),cex.axis=0.8, las=2)
+    lines(tabla0[,3],col="red")
+    lines(tabla0[,4],col="blue")
+  })
+  
+  output$Desc2TPlot<-renderPlot({ 
+    plot(tabla0[,5],xlab="Tiempo", ylim=c(min(tabla0[,c(5:7)],na.rm=TRUE),max(tabla0[,c(5:7)],na.rm=TRUE)),
+         ylab="ZPG5", type="l",xaxt="n",main="ZPG5",tck = 1)
+    mtext(text=paste(c("2011","2012","2013")), side=3, 
+          at=c(100,180,260),
+          col=c("black","red","blue"),cex=1.5)
+    axis(side=1,at=seq(1,366,by=10),labels=(tabla0$FactorB[seq(1,366,by=10)]),cex.axis=0.8, las=2)
+    lines(tabla0[,6],col="red")
+    lines(tabla0[,7],col="blue")
+  })
+  
+  #ZDFI y ZPG5 para 2013
+  output$DescTPlot<-renderPlot({ 
+    plot(tabla0[,7],xlab="Tiempo", ylim=c(min(tabla0[,c(4,7)],na.rm=TRUE),max(tabla0[,c(4,7)],na.rm=TRUE)),
+         ylab="Descuentos", type="l",xaxt="n",tck = 1)
+    mtext(text=paste(c("ZDFI 2013","ZPG5 2013")), side=3, 
+          at=c(140,220),
+          col=c("black","red"),cex=1.5)
+    axis(side=1,at=seq(1,366,by=10),labels=(tabla0$FactorB[seq(1,366,by=10)]),cex.axis=0.8, las=2)
+    lines(tabla0[,4],col="red")
+  })
+  
+  
+  output$Prueba3 <- renderPrint({
+    print(reactive({input$cliente})())
+  })
+  
+  })
+    
+})
+
