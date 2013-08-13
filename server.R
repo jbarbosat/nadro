@@ -281,12 +281,13 @@ shinyServer(function(input, output, clientData, session) {
   tabla0<-pre.tabla20[,indices0]
   #tabla<-cbind(Fecha=pre.tabla3[,1],pre.tabla3[,2:4]/1000000)
   
-  
-  output$DescM1Plot<-renderPlot({ 
+
     dm1.vector<-as.double(na.omit(unlist(c(tabla0[1,-1],tabla0[3,-1],tabla0[5,-1]))))/1000
     dm1.serie<-ts(dm1.vector,frequency=12, start=c(2011,1))    
     dm1.serieHW<-HoltWinters(dm1.serie, beta=FALSE, gamma=FALSE)
     dm1.seriePred<-forecast.HoltWinters(dm1.serieHW, h=12)
+  
+  output$DescM1Plot<-renderPlot({ 
     plot.forecast(dm1.seriePred,ylab="ZDFI (Millones de pesos)",xlab="Tiempo",main="ZDFI - Datos mensuales y proyecciones",tck=1,col="red",lwd=2)
   })  
   
@@ -344,10 +345,15 @@ shinyServer(function(input, output, clientData, session) {
   #Ventas, costos
   
   output$VCPlot<-renderPlot({
-    ts.plot(vt.serie,cm2.serie,gpars=list(tck=1),col=c("red","blue"),lwd=2)
+    ts.plot(vt.serie,cm2.serie,gpars=list(tck=1),col=c("red","blue"),lwd=2,xlab="Tiempo")
     mtext(text=c("Ventas(VPRS)","Costo Cedido (VPR1)"), side=3, 
           at=c(2011.5,2012.5),
           col=c("red","blue"),cex=1.5)
+  })
+  
+  output$RentPlot<-renderPlot({
+    ts.plot(vt.serie/cm2.serie,gpars=list(tck=1),col=c("red"),lwd=2,ymin=.9,main="Ventas/Costo Cedido",ylab="Tiempo")
+    abline(h=1,lwd=2)
   })
   
   
@@ -466,6 +472,26 @@ shinyServer(function(input, output, clientData, session) {
     print(reactive({input$cliente})())
   })
   
+  ##################################################################################################  
+  #Tops
+  
+  #Top Productos
+  output$TopProducto<-renderPlot({
+    producto<-c(24,23,20, 19,18,15,10,9,8,7)
+    barplot(producto, main="Top 10 Productos", horiz=TRUE, col = c(1:10), names.arg=c("LACTACYD","VARTALON","ASPIRINA-PROTEC","CELEBREX ","DOLO-NEUROBION FORTE", "EVRA","CIALIS","ULSEN","KRYTANTEK","MICARDIS PLUS"), cex.names=0.7,las=1,xlim=c(0,25))
+  })
+  
+  #Top clientes
+  output$TopCliente<-renderPlot({
+    sucursales<-c(48,40,39,38,35,30,22,20,15,11)
+    barplot(sucursales, main="Top 10 Clientes", horiz=TRUE, col = c(1:10),names.arg=c("NUEVA WALMART","TIENDAS SORIANA","SUPER ISSSTE","TIENDAS CHEDRAHUI","PETROLEOS MEXICANO", "AXA SALUD","COSTCO","SUPERAMA","PEPSICO","SPORT CITY"), cex.names=0.7,las=1,xlim=c(0,50))
+  })  
+  
+  #Top sector
+  output$TopSector<-renderPlot({
+    sector<-c(30,40,10,45,35,30,60,20,15,60,95,70,53,68,80,78,60,20)
+    barplot(sector, main="Ventas por Sector", horiz=TRUE, col = c(1:18), names.arg=c("INDUSTRIA","COMERCIO","ABARROTES","COMERCIAL","EXCLUSIVO", "FARMARED","GOBIERNO","HOSPITAL","INSTITUCIONAL","GENERICOS INTER","MAYOR","NADROLOGISTICA","POTENCIAL","SUBROGADOS","SANATORIOS","INTERCOMPAÑIA","PROVEEDORES","OTROS"), cex.names=0.5,las=1,xlim=c(0,100))
+  })
   
   ##################################################################################################  
 
