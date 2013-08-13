@@ -1,5 +1,6 @@
 library(shiny)
 library(ggplot2)
+library(forecast)
 ##################################################################################################  
 #Leemos los datos
 s<-as.data.frame(read.csv("/Users/PandoraMac/Documents/Nadro/base_simulada2.csv",sep=','),header=TRUE,
@@ -104,10 +105,15 @@ shinyServer(function(input, output, clientData, session) {
     print(v.tabla,justify="center")
   })
   
-  output$VentasTPlot<-renderPlot({ 
+
     #vt.nombres<-paste(c("Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"),rep(c("-11","-12","-13"),each=12),sep="")
-    vt.vector<-c(v.tabla[1,-1],v.tabla[2,-1],v.tabla[3,-1])
-    vt.serie<-ts(v.tabla[,-1],frequency=12, start=c(2011,1))
+    #vt.tabla<-(v.tabla)
+    vt.vector<-na.omit(unlist(c(v.tabla[1,-1],v.tabla[2,-1],v.tabla[3,-1])))
+    vt.serie<-ts(vt.vector,frequency=12, start=c(2011,1))    
+    vt.serieHW<-HoltWinters(vt.serie, beta=FALSE, gamma=FALSE)
+    vt.seriePred<-forecast.HoltWinters(vt.serieHW, h=12)
+  output$VentasTPlot<-renderPlot({ 
+    plot.forecast(vt.seriePred,ylab="VPRS (Millones de pesos)",xlab="Tiempo",main="Datos mensuales y proyecciones",tck=1,col="red",lwd=2)
     
 #     vt.columna<-5 #de agg2
 #     vt.pre.tabla1 <- reshape(agg2[,c(1,2,vt.columna)], idvar = "FactorB", timevar = "FactorA", direction = "wide")
@@ -115,7 +121,8 @@ shinyServer(function(input, output, clientData, session) {
 #     vt.indices<-order(names(vt.pre.tabla2))
 #     vt.tabla<-vt.pre.tabla2[,vt.indices]
 #     #tabla<-cbind(Fecha=pre.tabla3[,1],pre.tabla3[,2:4]/1000000)
-#     
+#
+# #Primera gráfica fea que hice    
 # #     plot(vt.tabla[,2],xlab="Tiempo", #ylim=c(min(na.exclude(tabla)),max(na.exclude(tabla))),
 # #          ylab="Precios", type="l",xaxt="n",tck = 1)
 # #     mtext(text=paste(c("2011","2012","2013")), side=3, 
@@ -125,7 +132,8 @@ shinyServer(function(input, output, clientData, session) {
 # #     lines(vt.tabla[,3],col="red")
 # #     lines(vt.tabla[,4],col="blue")
 # #     
-#     
+# 
+# #GGplot, que no quedó muy bien
 #     fecha<-rep(vt.tabla[1:300,1],3)
 #     anio<-rep(c("2011","2012","2013"),each=length(fecha)/3)
 #     valor<-c(vt.tabla[1:300,2],vt.tabla[1:300,3],vt.tabla[1:300,4])
@@ -165,6 +173,27 @@ shinyServer(function(input, output, clientData, session) {
   output$CostosAggrTabla<-renderTable({ 
     print(c.tabla[,-1],justify="center")
   })
+  
+  output$CostosM1Plot<-renderPlot({ 
+    cm1.vector<-as.double(na.omit(unlist(c(c.tabla[1,-1],c.tabla[3,-1],c.tabla[5,-1]))))
+    cm1.serie<-ts(cm1.vector,frequency=12, start=c(2011,1))    
+    cm1.serieHW<-HoltWinters(cm1.serie, beta=FALSE, gamma=FALSE)
+    cm1.seriePred<-forecast.HoltWinters(cm1.serieHW, h=12)
+    plot.forecast(cm1.seriePred,ylab="VPR1 (Millones de pesos)",xlab="Tiempo",main="VPR1 - Datos mensuales y proyecciones",tck=1,col="red",lwd=2)
+  })  
+  
+  
+
+    cm2.vector<-as.double(na.omit(unlist(c(c.tabla[2,-1],c.tabla[4,-1],c.tabla[6,-1]))))
+    cm2.serie<-ts(cm2.vector,frequency=12, start=c(2011,1))    
+    cm2.serieHW<-HoltWinters(cm2.serie, beta=FALSE, gamma=FALSE)
+    cm2.seriePred<-forecast.HoltWinters(cm2.serieHW, h=12)
+  
+  output$CostosM2Plot<-renderPlot({ 
+    plot.forecast(cm2.seriePred,ylab="VPR2 (Millones de pesos)",xlab="Tiempo",main="VPR2 - Datos mensuales y proyecciones",tck=1,col="red",lwd=2)
+  })  
+  
+  
   
   output$CostosHPlot<-renderPlot({ 
     costos<-rowSums(matrix(as.numeric(as.matrix(c.tabla[,-1])),nrow=6,ncol=12),na.rm=TRUE)
@@ -247,6 +276,26 @@ shinyServer(function(input, output, clientData, session) {
   tabla0<-pre.tabla20[,indices0]
   #tabla<-cbind(Fecha=pre.tabla3[,1],pre.tabla3[,2:4]/1000000)
   
+  
+  output$DescM1Plot<-renderPlot({ 
+    dm1.vector<-as.double(na.omit(unlist(c(tabla0[1,-1],tabla0[3,-1],tabla0[5,-1]))))/1000
+    dm1.serie<-ts(dm1.vector,frequency=12, start=c(2011,1))    
+    dm1.serieHW<-HoltWinters(dm1.serie, beta=FALSE, gamma=FALSE)
+    dm1.seriePred<-forecast.HoltWinters(dm1.serieHW, h=12)
+    plot.forecast(dm1.seriePred,ylab="ZDFI (Millones de pesos)",xlab="Tiempo",main="ZDFI - Datos mensuales y proyecciones",tck=1,col="red",lwd=2)
+  })  
+  
+  
+  output$DescM2Plot<-renderPlot({ 
+    dm2.vector<-as.double(na.omit(unlist(c(tabla0[2,-1],tabla0[4,-1],tabla0[6,-1]))))/1000
+    dm2.serie<-ts(dm2.vector,frequency=12, start=c(2011,1))    
+    dm2.serieHW<-HoltWinters(dm2.serie, beta=FALSE, gamma=FALSE)
+    dm2.seriePred<-forecast.HoltWinters(dm2.serieHW, h=12)
+    plot.forecast(dm2.seriePred,ylab="ZPG5 (Millones de pesos)",xlab="Tiempo",main="ZPG5 - Datos mensuales y proyecciones",tck=1,col="red",lwd=2)
+  })  
+  
+  
+  
   output$Desc1TPlot<-renderPlot({ 
     plot(tabla0[,2],xlab="Tiempo", ylim=c(min(tabla0[,c(2:4)],na.rm=TRUE),max(tabla0[,c(2:4)],na.rm=TRUE)),
          ylab="ZDFI", type="l",xaxt="n",main="ZDFI",tck = 1)
@@ -285,6 +334,43 @@ shinyServer(function(input, output, clientData, session) {
     print(reactive({input$cliente})())
   })
   
+  ##################################################################################################  
+  #Graficas y Outputs
+  #Ventas, costos
+  
+  output$VCPlot<-renderPlot({
+    ts.plot(vt.serie,cm2.serie,gpars=list(tck=1),col=c("red","blue"),lwd=2)
+    mtext(text=c("Ventas(VPRS)","Costo Cedido (VPR1)"), side=3, 
+          at=c(2011.5,2012.5),
+          col=c("red","blue"),cex=1.5)
+  })
+  
+  
+  output$Prueba4 <- renderPrint({
+    print(reactive({input$cliente})())
+  })
+  
+  
+  ##################################################################################################  
+  #Market basket
+  
+  datosoriginales<-as.data.frame(read.csv("/Users/PandoraMac/Documents/Nadro/Datos/muestra_nadro2.csv",sep=','),header=FALSE,as.is = TRUE)
+  
+  output$VCPlot<-renderPlot({
+    ts.plot(vt.serie,cm2.serie,gpars=list(tck=1),col=c("red","blue"),lwd=2)
+    mtext(text=c("Ventas(VPRS)","Costo Cedido (VPR1)"), side=3, 
+          at=c(2011.5,2012.5),
+          col=c("red","blue"),cex=1.5)
+  })
+  
+  
+  output$Prueba6 <- renderPrint({
+    print(reactive({input$cliente})())
+  })
+  
+  
+  ##################################################################################################  
+
   })
     
 })

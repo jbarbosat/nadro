@@ -1,11 +1,15 @@
 #Agosto, 2013. Nadro.
 
+#PD: Hay que decir que las predicciones son de mentis, que la idea es que se puedan tener distintos modelos
+#y que se tunnen con distintos parámetros
+
 #En la misma carpeta donde estén los archivos ui.R y server.R debe estar muestra_nadro2.csv
 #(o, para esa iteración de la aplicación, el base_simulada.csv)
 #para evitar problemas y hay que sustituir el path a esa carpeta en setwd y runApp acá abajo: 
 
 setwd("/Users/PandoraMac/Documents/Nadro/nadro/")
 #install.packages("shiny")
+install.packages("forecast")
 library(shiny)
 runApp("/Users/PandoraMac/Documents/Nadro/nadro/")
 
@@ -40,3 +44,4 @@ agg2<-aggregate(datos()[,c(6:11)],list(FactorA=anios,FactorB=substr(datos()$dia,
 
 #Para análisis de series de tiempo
 #http://a-little-book-of-r-for-time-series.readthedocs.org/en/latest/src/timeseries.html
+#http://cran.r-project.org/web/views/TimeSeries.html
