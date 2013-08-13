@@ -64,6 +64,7 @@ shinyUI(pageWithSidebar(
     tabsetPanel(
       tabPanel("Ventas", textOutput("Prueba1"),
                h4("VPRS (Prec.factur.interna)"),
+               h5("Totales mensuales (Millones de Pesos)"),
 #                div(class="header", 
 #                   h6("2011",style="color:black;float:left;"),
 #                   h6("-2012",style="color:red;float:left;"),

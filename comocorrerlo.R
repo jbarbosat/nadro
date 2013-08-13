@@ -4,19 +4,20 @@
 #(o, para esa iteración de la aplicación, el base_simulada.csv)
 #para evitar problemas y hay que sustituir el path a esa carpeta en setwd y runApp acá abajo: 
 
-setwd("/Users/PandoraMac/Documents/Nadro/Shiny/")
+setwd("/Users/PandoraMac/Documents/Nadro/nadro/")
 #install.packages("shiny")
 library(shiny)
-runApp("/Users/PandoraMac/Documents/Nadro/Shiny/")
+runApp("/Users/PandoraMac/Documents/Nadro/nadro/")
 
 
 #Esto no hay que correrlo, pero lo dejo por si uno quiere correr cosas en R aparte de la App para verificar o 
 #probar formatos, antes de mandarlo a la App de Shiny
 
 library(ggplot2)
-s<-as.data.frame(read.csv("base_simulada.csv",sep=','),header=TRUE,
+s<-as.data.frame(read.csv("/Users/PandoraMac/Documents/Nadro/base_simulada2.csv",sep=','),header=TRUE,
                  colClasses=c("character","character","character","character","character",
                               "double","double","double","double","double","double"))
+
 
 datos<-function(){s}
 meses<-substr(datos()$dia,4,5)
@@ -36,3 +37,6 @@ agg2<-aggregate(datos()[,c(6:11)],list(FactorA=anios,FactorB=substr(datos()$dia,
 #https://github.com/wch/testapp/blob/master/setinput/ui.R
 #https://github.com/wch/testapp/blob/master/setinput/server.R
 #http://glimmer.rstudio.com/winstontest/setinput/
+
+#Para análisis de series de tiempo
+#http://a-little-book-of-r-for-time-series.readthedocs.org/en/latest/src/timeseries.html

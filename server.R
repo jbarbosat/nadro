@@ -2,7 +2,7 @@ library(shiny)
 library(ggplot2)
 ##################################################################################################  
 #Leemos los datos
-s<-as.data.frame(read.csv("base_simulada.csv",sep=','),header=TRUE,
+s<-as.data.frame(read.csv("/Users/PandoraMac/Documents/Nadro/base_simulada2.csv",sep=','),header=TRUE,
                            colClasses=c("character","character","character","character","character",
                                         "double","double","double","double","double","double"))
 
@@ -92,8 +92,6 @@ shinyServer(function(input, output, clientData, session) {
   ##################################################################################################  
   #Graficas y Outputs
   #ventas
-  
-  output$VentasAggrTabla<-renderTable({ 
     v.columna<-5 #de agg1
     v.pre.tabla1 <- reshape(agg1[,c(1,2,v.columna)], idvar = "FactorB", timevar = "FactorA", direction = "wide")
     v.indices<-order(names(v.pre.tabla1))
@@ -101,42 +99,48 @@ shinyServer(function(input, output, clientData, session) {
     #tabla<-cbind(pre.tabla2[,1],round(pre.tabla2[,2:13]/1000000,2))
     names(v.tabla)<-c("Year","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic")
     row.names(v.tabla)<-NULL
+  
+  output$VentasAggrTabla<-renderTable({ 
     print(v.tabla,justify="center")
   })
   
   output$VentasTPlot<-renderPlot({ 
-    vt.columna<-5 #de agg2
-    vt.pre.tabla1 <- reshape(agg2[,c(1,2,vt.columna)], idvar = "FactorB", timevar = "FactorA", direction = "wide")
-    vt.pre.tabla2<-vt.pre.tabla1[order(substr(vt.pre.tabla1[,1],4,5)),]
-    vt.indices<-order(names(vt.pre.tabla2))
-    vt.tabla<-vt.pre.tabla2[,vt.indices]
-    #tabla<-cbind(Fecha=pre.tabla3[,1],pre.tabla3[,2:4]/1000000)
+    #vt.nombres<-paste(c("Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"),rep(c("-11","-12","-13"),each=12),sep="")
+    vt.vector<-c(v.tabla[1,-1],v.tabla[2,-1],v.tabla[3,-1])
+    vt.serie<-ts(v.tabla[,-1],frequency=12, start=c(2011,1))
     
-#     plot(vt.tabla[,2],xlab="Tiempo", #ylim=c(min(na.exclude(tabla)),max(na.exclude(tabla))),
-#          ylab="Precios", type="l",xaxt="n",tck = 1)
-#     mtext(text=paste(c("2011","2012","2013")), side=3, 
-#         at=c(100,180,260),
-#         col=c("black","red","blue"),cex=1.5)
-#     axis(side=1,at=seq(1,366,by=10),labels=(vt.tabla$FactorB[seq(1,366,by=10)]),cex.axis=0.8, las=2)
-#     lines(vt.tabla[,3],col="red")
-#     lines(vt.tabla[,4],col="blue")
+#     vt.columna<-5 #de agg2
+#     vt.pre.tabla1 <- reshape(agg2[,c(1,2,vt.columna)], idvar = "FactorB", timevar = "FactorA", direction = "wide")
+#     vt.pre.tabla2<-vt.pre.tabla1[order(substr(vt.pre.tabla1[,1],4,5)),]
+#     vt.indices<-order(names(vt.pre.tabla2))
+#     vt.tabla<-vt.pre.tabla2[,vt.indices]
+#     #tabla<-cbind(Fecha=pre.tabla3[,1],pre.tabla3[,2:4]/1000000)
 #     
-    
-    fecha<-rep(vt.tabla[1:300,1],3)
-    anio<-rep(c("2011","2012","2013"),each=length(fecha)/3)
-    valor<-c(vt.tabla[1:300,2],vt.tabla[1:300,3],vt.tabla[1:300,4])
-    
-    #valor2<-runif(3*length(fecha))
-    #valor2[seq(5,90,by=5)]<-"NA"
-    prueba<-as.data.frame(cbind(fecha,anio,valor))
-    #id = seq_along(anio)
-    plot(ggplot(prueba, aes(x=as.numeric(rep(1:300,3)), y=as.vector(valor),group=anio,colour=anio))+geom_line())
-         #+scale_y_continuous(breaks = as.character(round(seq(as.double(min(as.vector(prueba$valor),na.rm=TRUE)), as.double(max(as.vector(prueba$valor),na.rm=TRUE)), length.out=10),1))))
-
-                               #c("1288995.0", "1336383.0", "1383771.0", "1431160.0", "1478548.0", "1525936.0", "1573324.0", "1620713.0", "1668101.0", "1715489.0")))
-    #qplot(rep(1:30,3), as.vector(valor2), data=prueba, group=anio, geom="line")
-    
-     
+# #     plot(vt.tabla[,2],xlab="Tiempo", #ylim=c(min(na.exclude(tabla)),max(na.exclude(tabla))),
+# #          ylab="Precios", type="l",xaxt="n",tck = 1)
+# #     mtext(text=paste(c("2011","2012","2013")), side=3, 
+# #         at=c(100,180,260),
+# #         col=c("black","red","blue"),cex=1.5)
+# #     axis(side=1,at=seq(1,366,by=10),labels=(vt.tabla$FactorB[seq(1,366,by=10)]),cex.axis=0.8, las=2)
+# #     lines(vt.tabla[,3],col="red")
+# #     lines(vt.tabla[,4],col="blue")
+# #     
+#     
+#     fecha<-rep(vt.tabla[1:300,1],3)
+#     anio<-rep(c("2011","2012","2013"),each=length(fecha)/3)
+#     valor<-c(vt.tabla[1:300,2],vt.tabla[1:300,3],vt.tabla[1:300,4])
+#     
+#     #valor2<-runif(3*length(fecha))
+#     #valor2[seq(5,90,by=5)]<-"NA"
+#     prueba<-as.data.frame(cbind(fecha,anio,valor))
+#     #id = seq_along(anio)
+#     plot(ggplot(prueba, aes(x=as.numeric(rep(1:300,3)), y=as.vector(valor),group=anio,colour=anio))+geom_line())
+#          #+scale_y_continuous(breaks = as.character(round(seq(as.double(min(as.vector(prueba$valor),na.rm=TRUE)), as.double(max(as.vector(prueba$valor),na.rm=TRUE)), length.out=10),1))))
+# 
+#                                #c("1288995.0", "1336383.0", "1383771.0", "1431160.0", "1478548.0", "1525936.0", "1573324.0", "1620713.0", "1668101.0", "1715489.0")))
+#     #qplot(rep(1:30,3), as.vector(valor2), data=prueba, group=anio, geom="line")
+#     
+#      
   })
   
   output$Prueba1 <- renderPrint({
