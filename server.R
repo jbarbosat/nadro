@@ -1,12 +1,17 @@
 library(shiny)
 library(ggplot2)
 library(forecast)
+library(arules)
+library(arulesViz)
 ##################################################################################################  
 #Leemos los datos
 s<-as.data.frame(read.csv("/Users/PandoraMac/Documents/Nadro/base_simulada2.csv",sep=','),header=TRUE,
                            colClasses=c("character","character","character","character","character",
                                         "double","double","double","double","double","double"))
 
+# s<-as.data.frame(read.csv("base_simulada2.csv",sep=','),header=TRUE,
+#                  colClasses=c("character","character","character","character","character",
+#                               "double","double","double","double","double","double"))
 
 shinyServer(function(input, output, clientData, session) {
   
@@ -354,15 +359,51 @@ shinyServer(function(input, output, clientData, session) {
   ##################################################################################################  
   #Market basket
   
-  datosoriginales<-as.data.frame(read.csv("/Users/PandoraMac/Documents/Nadro/Datos/muestra_nadro2.csv",sep=','),header=FALSE,as.is = TRUE)
+#   datosoriginales<-as.data.frame(read.csv("/Users/PandoraMac/Documents/Nadro/Datos/muestra_nadro2.csv",sep=','),header=FALSE,as.is = TRUE)
+#   #Filtré ventas que sí tengan importe
+#   datosSub<-subset(datosoriginales,(V33=="VPRS" & V1.1!="NA"))
+#   #Cruzamos facturas con ventas!=0 y clientes, para ver cuántos artículos tiene cada factura.
+#   vector<-as.vector(table(datosSub[,12],datosSub[,30]))
+#   vector2<-vector[vector!=0]
+#   hist(vector2)
+#   vector3<-vector2[vector2==20]
+#   hist(vector3)
+#   #Ya que decidimos quedarnos con facturas de 20 tickets, hacemos un aggregate pa' identificar los tickets.
+#   unos<-rep(1,nrow(datosSub))
+#   agg3<-aggregate(unos,list(FactorA=datosSub[,12],FactorB=datosSub[,30]),sum)
+#   agg4<-agg3[order(agg3$x,decreasing=TRUE),]
+#   agg5<-agg4[agg4$x==20,]
+#   agg5
+#   #Hecho, ahora un subset de datosSub y con esto trabajamos.
+#   pre.datos.market<-subset(datosSub,(V30==agg5$FactorB[1] |V30==agg5$FactorB[2] |V30==agg5$FactorB[3]
+#                                 |V30==agg5$FactorB[4] |V30==agg5$FactorB[5] |V30==agg5$FactorB[6]
+#                                 |V30==agg5$FactorB[7] |V30==agg5$FactorB[8] |V30==agg5$FactorB[9]
+#                                 |V30==agg5$FactorB[10] |V30==agg5$FactorB[11] |V30==agg5$FactorB[12]
+#                                 |V30==agg5$FactorB[13] |V30==agg5$FactorB[14] ) )
+#   
+#   datos.market<-as.data.frame(pre.datos.market[,c(30,23)])
+#   names(datos.market)<-c("Factura","Material")
+#   
+#   write.csv(datos.market,"datos_market.csv",row.names=FALSE)
+#   
+  datos.market<-read.csv("datos_market.csv")
+  head(datos.market)
+  datos.market[,1]<-as.factor(datos.market[,1])
+  datos.market[,2]<-as.factor(datos.market[,2])
+  datos.market<-unique(datos.market)
   
-  output$VCPlot<-renderPlot({
-    ts.plot(vt.serie,cm2.serie,gpars=list(tck=1),col=c("red","blue"),lwd=2)
-    mtext(text=c("Ventas(VPRS)","Costo Cedido (VPR1)"), side=3, 
-          at=c(2011.5,2012.5),
-          col=c("red","blue"),cex=1.5)
-  })
+  #datos.market2<-read.csv("datos_market2.csv")
+  datos.trans<-as(split(datos.market[,2], datos.market[,1]), "transactions")
+  inspect(datos.trans[1:5])
   
+  freq.itemsets <- apriori(datos.trans, parameter = list(supp = 0.03,
+                                                         target = "frequent itemsets"))
+  freq.itemsets
+  
+  freq.itemsets.sort <-sort(freq.itemsets, by = "support")
+  
+  
+  #tr <- read.transactions("datos_market2.csv", format = "basket", sep=",")
   
   output$Prueba6 <- renderPrint({
     print(reactive({input$cliente})())
