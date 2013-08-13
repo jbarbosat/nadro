@@ -119,23 +119,13 @@ shinyUI(pageWithSidebar(
                br(),
                h4("Totales mensuales (Millones de Pesos)"),
                plotOutput("VCPlot")
-#                plotOutput("DescM2Plot"), 
-#                #                div(class="header", 
-#                #                    h6("2011",style="color:black;float:left;"),
-#                #                    h6("-2012",style="color:red;float:left;"),
-#                #                    h6("-2013",style="color:blue;float:left;")),
-#                h4("Totales mensuales (Millones de Pesos)"),
-#                tableOutput("DescAggrTabla"),
-#                br(),
-#                h4("Descuentos diarios para el último año"),
-#                plotOutput("DescTPlot"), 
-#                h4("Descuentos diarios para 2011-2013"),
-#                plotOutput("Desc1TPlot"),
-#                plotOutput("Desc2TPlot")) 
               ),
       tabPanel("Top"),
-      tabPanel("Market Basket", textOutput("Prueba6")),
-      tabPanel("Geoespacial", textOutput("Prueba4"))
+      tabPanel("Market Basket", textOutput("Prueba6"),
+               plotOutput("Reglas"),
+               h4("Materiales en las reglas")
+               tableOutput("IdMatMB")),
+      tabPanel("Geoespacial", textOutput("Prueba7"))
       
       
     )
