@@ -358,36 +358,38 @@ shinyServer(function(input, output, clientData, session) {
   
   ##################################################################################################  
   #Market basket
-  
-#   datosoriginales<-as.data.frame(read.csv("/Users/PandoraMac/Documents/Nadro/Datos/muestra_nadro2.csv",sep=','),header=FALSE,as.is = TRUE)
-#   #Filtré ventas que sí tengan importe
-#   datosSub<-subset(datosoriginales,(V33=="VPRS" & V1.1!="NA"))
+  #
+  datosoriginales<-as.data.frame(read.csv("/Users/PandoraMac/Documents/Nadro/Datos/muestra_nadro2.csv",sep=','),header=FALSE,as.is = TRUE)
+  #Filtré ventas que sí tengan importe
+  datosSub<-subset(datosoriginales,(V33=="VPRS" & V1.1!="NA"))
 #   #Cruzamos facturas con ventas!=0 y clientes, para ver cuántos artículos tiene cada factura.
 #   vector<-as.vector(table(datosSub[,12],datosSub[,30]))
 #   vector2<-vector[vector!=0]
 #   hist(vector2)
 #   vector3<-vector2[vector2==20]
 #   hist(vector3)
-#   #Ya que decidimos quedarnos con facturas de 20 tickets, hacemos un aggregate pa' identificar los tickets.
-#   unos<-rep(1,nrow(datosSub))
-#   agg3<-aggregate(unos,list(FactorA=datosSub[,12],FactorB=datosSub[,30]),sum)
-#   agg4<-agg3[order(agg3$x,decreasing=TRUE),]
-#   agg5<-agg4[agg4$x==20,]
-#   agg5
-#   #Hecho, ahora un subset de datosSub y con esto trabajamos.
-#   pre.datos.market<-subset(datosSub,(V30==agg5$FactorB[1] |V30==agg5$FactorB[2] |V30==agg5$FactorB[3]
-#                                 |V30==agg5$FactorB[4] |V30==agg5$FactorB[5] |V30==agg5$FactorB[6]
-#                                 |V30==agg5$FactorB[7] |V30==agg5$FactorB[8] |V30==agg5$FactorB[9]
-#                                 |V30==agg5$FactorB[10] |V30==agg5$FactorB[11] |V30==agg5$FactorB[12]
-#                                 |V30==agg5$FactorB[13] |V30==agg5$FactorB[14] ) )
-#   
-#   datos.market<-as.data.frame(pre.datos.market[,c(30,23)])
-#   names(datos.market)<-c("Factura","Material")
-#   
-#   write.csv(datos.market,"datos_market.csv",row.names=FALSE)
-#   
-  datos.market<-read.csv("datos_market.csv")
+  
+  #aggregate por el importe total de ventas de las facturas.
+  agg4<-aggregate(datosSub[,36],list(FactorA=datosSub[,30]),sum)
+  agg5<-agg4[order(agg4$x,decreasing=TRUE),]
+  #Elegimos las primeras 20, arbitrariamente. De 178k a 25k pesos.
+  head(agg5,20)
+  #Ahora un subset de datosSub para sacar los 20 tickets.
+  pre.datos.market<-subset(datosSub, (V30==agg5$FactorA[1] |V30==agg5$FactorA[2] |V30==agg5$FactorA[3]
+                                |V30==agg5$FactorA[4] |V30==agg5$FactorA[5] |V30==agg5$FactorA[6]
+                                |V30==agg5$FactorA[7] |V30==agg5$FactorA[8] |V30==agg5$FactorA[9]
+                                |V30==agg5$FactorA[10] |V30==agg5$FactorA[11] |V30==agg5$FactorA[12]
+                                |V30==agg5$FactorA[13] |V30==agg5$FactorA[14] |V30==agg5$FactorA[15]
+                                |V30==agg5$FactorA[16] |V30==agg5$FactorA[17] |V30==agg5$FactorA[18]
+                                     |V30==agg5$FactorA[19] |V30==agg5$FactorA[20]) )
+  head(pre.datos.market)
+  datos.market<-as.data.frame(pre.datos.market[,c(30,23)])
+  names(datos.market)<-c("Factura","Material")
   head(datos.market)
+  write.csv(datos.market,"datos_market.csv",row.names=FALSE)
+  
+  #datos.market<-read.csv("datos_market.csv")
+  #head(datos.market)
   datos.market[,1]<-as.factor(datos.market[,1])
   datos.market[,2]<-as.factor(datos.market[,2])
   datos.market<-unique(datos.market)
@@ -396,7 +398,7 @@ shinyServer(function(input, output, clientData, session) {
   datos.trans<-as(split(datos.market[,2], datos.market[,1]), "transactions")
   inspect(datos.trans[1:5])
   
-  freq.itemsets <- apriori(datos.trans, parameter = list(supp = 0.03,
+  freq.itemsets <- apriori(datos.trans, parameter = list(supp = 0.07,
                                                          target = "frequent itemsets"))
   freq.itemsets
   
