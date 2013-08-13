@@ -123,7 +123,7 @@ shinyUI(pageWithSidebar(
       tabPanel("Top"),
       tabPanel("Market Basket", textOutput("Prueba6"),
                plotOutput("Reglas"),
-               h4("Materiales en las reglas")
+               h4("Materiales en las reglas"),
                tableOutput("IdMatMB")),
       tabPanel("Geoespacial", textOutput("Prueba7"))
       

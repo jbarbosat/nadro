@@ -264,4 +264,32 @@ Aparentemente el HANA ese ya hace todo eso así que yo opino que reportitos para
 David está pensando en 2 semanas para algo de mentiras y 4 para montar las cosas para 3 meses. Yo opino que 
 es muy poco tiempo pero habrá que ver. 
 
-- Adolfo opina que hay que agregar cosas geoespaciales y market basket. Bring in da big guns, people
+- Adolfo opina que hay que agregar predicciones a las series de tiempo, cosas geoespaciales y market basket. Bring in da big guns, people. No sólo exploratorio.
+
+
+- Después de ver a David y a Rocío (4:30 pm, Starbucks Francia), pensamos en agregar cosas:
+  - Rocío: Tabla con Top de productos vendidos o de clientes o de lo que sea.
+  - Yo: MArket Basket feliz
+  - David: Algo geoespacial de mentis
+
+
+Martes Agosto 13, 2012
+------------------------
+
+4:30pm en el Starbucks de Francia.
+
+Note to self:
+- Que David diga las cosas predictivas y que se van poder elegir y tunnear distintos modelos pa las series de tiempo
+- Que el Market Basket tbn va a poder tunnearse y que sirve de input pa saber cómo se mueven los inventarios.
+
+David y Rocío.
+
+Agregarle controlitos a las tabs, aunque no muevan nada, que sí estén.
+
+Chance en lo de Rocío una circle plot de cliente, producto y el radio = descuento o cosas así.
+
+A la de ventas/costos agregarle la serie de tiempo de unos descuentos y una cosa de ventas/costos tal cual.
+
+
+
+

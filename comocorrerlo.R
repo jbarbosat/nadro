@@ -7,7 +7,7 @@
 #(o, para esa iteración de la aplicación, el base_simulada.csv)
 #para evitar problemas y hay que sustituir el path a esa carpeta en setwd y runApp acá abajo: 
 
-# Datos_market tbn hay que agregarla al directorio
+# MarketBasket.RData tbn hay que agregarla al directorio
 
 
 setwd("/Users/PandoraMac/Documents/Nadro/nadro/")
