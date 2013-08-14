@@ -498,11 +498,12 @@ shinyServer(function(input, output, clientData, session) {
             horiz=TRUE, names.arg=c("INDUSTRIA","COMERCIO","ABARROTES","COMERCIAL","EXCLUSIVO", "FARMARED","GOBIERNO","HOSPITAL","INSTITUCIONAL","GENERICOS INTER","MAYOR","NADROLOGISTICA","POTENCIAL","SUBROGADOS","SANATORIOS","INTERCOMPAÑIA","PROVEEDORES","OTROS"), cex.names=0.5,las=1,xlim=c(0,100))
   })
   
-#  output$DescTopCl<-renderPlot({
-    #####GRÀFICA DE PUNTOS-RADIOS PARA CONOCER QUE TANTO DESCUENTO ESTÀN APLICANDO EN POR VENTAS EN EL TOP 10 DE SUCURSALES ########
-#    symbols(x=dfx$ev1, y=dfx$ev2, circles=dfx$ev3, inches=1/3, main="Descuentos vs Ventas",ylab="Ventas (MDP)", xlab=NA, bg=rainbow(5), fg=NULL,lwd.ticks=2, col.ticks = "blue", xaxt = 'n',cex.axis=.8, )
-#    axis(1, at=1:10, labels=c("NUEVA WALMART","TIENDAS SORIANA","SUPER ISSSTE","TIENDAS CHEDRAHUI","PEMEX", "AXA SALUD","COSTCO","SUPERAMA","PEPSICO","SPORT CITY"),cex.axis=.45,las=2)
-#  })
+ output$DescTopCl<-renderPlot({
+    ####GRÀFICA DE PUNTOS-RADIOS PARA CONOCER QUE TANTO DESCUENTO ESTÀN APLICANDO EN POR VENTAS EN EL TOP 10 DE SUCURSALES ########
+    dfx <-data.frame(ev1=1:10, ev2=sample(10:99, 10), ev3=10:1)
+    symbols(x=dfx$ev1, y=dfx$ev2, circles=dfx$ev3, inches=1/3, main="Descuentos vs Ventas",ylab="Ventas (MDP)", xlab=NA, bg=rainbow(5), fg=NULL,lwd.ticks=2, col.ticks = "blue", xaxt = 'n',cex.axis=.8, )
+    axis(1, at=1:10, labels=c("NUEVA WALMART","TIENDAS SORIANA","SUPER ISSSTE","TIENDAS CHEDRAHUI","PEMEX", "AXA SALUD","COSTCO","SUPERAMA","PEPSICO","SPORT CITY"),cex.axis=.6,las=2)
+ })
   
   ##################################################################################################  
 
