@@ -282,14 +282,12 @@ Note to self:
 - Que David diga las cosas predictivas y que se van poder elegir y tunnear distintos modelos pa las series de tiempo
 - Que el Market Basket tbn va a poder tunnearse y que sirve de input pa saber cómo se mueven los inventarios.
 
-David y Rocío.
+David y Rocío:
 
-Agregarle controlitos a las tabs, aunque no muevan nada, que sí estén.
-
-Chance en lo de Rocío una circle plot de cliente, producto y el radio = descuento o cosas así.
-
-A la de ventas/costos agregarle la serie de tiempo de unos descuentos y una cosa de ventas/costos tal cual.
-
+- Agregarle controlitos a las tabs, aunque no muevan nada, que sí estén.
+- Chance en lo de Rocío una circle plot de cliente, producto y el radio = descuento o cosas así.
+- A la de ventas/costos agregarle la serie de tiempo de unos descuentos y una cosa de ventas/costos tal cual.
+(done)
 
 
 

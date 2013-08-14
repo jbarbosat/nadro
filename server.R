@@ -478,19 +478,24 @@ shinyServer(function(input, output, clientData, session) {
   #Top Productos
   output$TopProducto<-renderPlot({
     producto<-c(24,23,20, 19,18,15,10,9,8,7)
-    barplot(producto, main="Top 10 Productos", horiz=TRUE, col = c(1:10), names.arg=c("LACTACYD","VARTALON","ASPIRINA-PROTEC","CELEBREX ","DOLO-NEUROBION FORTE", "EVRA","CIALIS","ULSEN","KRYTANTEK","MICARDIS PLUS"), cex.names=0.7,las=1,xlim=c(0,25))
+    barplot(producto, main="Top 10 Productos", horiz=TRUE,
+            col=gray(0:10/10),, names.arg=c("LACTACYD","VARTALON","ASPIRINA-PROTEC","CELEBREX ","DOLO-NEUROBION FORTE", "EVRA","CIALIS","ULSEN","KRYTANTEK","MICARDIS PLUS"), cex.names=0.7,las=1,xlim=c(0,25))
   })
   
   #Top clientes
   output$TopCliente<-renderPlot({
     sucursales<-c(48,40,39,38,35,30,22,20,15,11)
-    barplot(sucursales, main="Top 10 Clientes", horiz=TRUE, col = c(1:10),names.arg=c("NUEVA WALMART","TIENDAS SORIANA","SUPER ISSSTE","TIENDAS CHEDRAHUI","PETROLEOS MEXICANO", "AXA SALUD","COSTCO","SUPERAMA","PEPSICO","SPORT CITY"), cex.names=0.7,las=1,xlim=c(0,50))
+    #(palette(blue(seq(0,.9,len=10))))
+    barplot(sucursales, main="Top 10 Clientes", horiz=TRUE, 
+            col=gray(0:10/10),
+            names.arg=c("NUEVA WALMART","TIENDAS SORIANA","SUPER ISSSTE","TIENDAS CHEDRAHUI","PETROLEOS MEXICANO", "AXA SALUD","COSTCO","SUPERAMA","PEPSICO","SPORT CITY"), cex.names=0.7,las=1,xlim=c(0,50))
   })  
   
   #Top sector
   output$TopSector<-renderPlot({
     sector<-c(30,40,10,45,35,30,60,20,15,60,95,70,53,68,80,78,60,20)
-    barplot(sector, main="Ventas por Sector", horiz=TRUE, col = c(1:18), names.arg=c("INDUSTRIA","COMERCIO","ABARROTES","COMERCIAL","EXCLUSIVO", "FARMARED","GOBIERNO","HOSPITAL","INSTITUCIONAL","GENERICOS INTER","MAYOR","NADROLOGISTICA","POTENCIAL","SUBROGADOS","SANATORIOS","INTERCOMPAÑIA","PROVEEDORES","OTROS"), cex.names=0.5,las=1,xlim=c(0,100))
+    barplot(sector, main="Ventas por Sector", col=gray(0:18/18),
+            horiz=TRUE, names.arg=c("INDUSTRIA","COMERCIO","ABARROTES","COMERCIAL","EXCLUSIVO", "FARMARED","GOBIERNO","HOSPITAL","INSTITUCIONAL","GENERICOS INTER","MAYOR","NADROLOGISTICA","POTENCIAL","SUBROGADOS","SANATORIOS","INTERCOMPAÑIA","PROVEEDORES","OTROS"), cex.names=0.5,las=1,xlim=c(0,100))
   })
   
   ##################################################################################################  
