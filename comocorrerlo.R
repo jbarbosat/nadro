@@ -12,9 +12,9 @@
 
 setwd("/Users/PandoraMac/Documents/Nadro/nadro/")
 #install.packages("shiny")
-install.packages("forecast")
-install.packages("arules")
-install.packages("arulesViz")
+#install.packages("forecast")
+#install.packages("arules")
+#install.packages("arulesViz")
 library(shiny)
 runApp("/Users/PandoraMac/Documents/Nadro/nadro/")
 

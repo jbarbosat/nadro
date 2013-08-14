@@ -156,7 +156,9 @@ shinyUI(pageWithSidebar(
                h4("Clientes con más ventas"),
                plotOutput("TopCliente"),
                h4("Sectores con más ventas"),
-               plotOutput("TopSector")
+               plotOutput("TopSector"),
+               h4("Descuentos para clientes con más ventas"),
+               plotOutput("DescTopCl")
               ),
                
       tabPanel("Market Basket", textOutput("Prueba6"),
@@ -170,6 +172,7 @@ shinyUI(pageWithSidebar(
                plotOutput("Reglas"),
                h4("Materiales en las reglas"),
                tableOutput("IdMatMB")),
+      
       tabPanel("Geoespacial", textOutput("Prueba7"))
       
       
