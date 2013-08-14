@@ -290,4 +290,19 @@ David y Rocío:
 (done)
 
 
+Martes Agosto 14, 2012
+------------------------
+
+Ponerle cositos de tiempo a la slide d david. Done.
+
+Quitar proyecciones de la tab de costos y de descuentos. Done.
+ 
+Más bien hacer que ventas se llame precios. Done.
+
+
+Y que esas 3 tabs sean precios, desc y costos cómo se mueven al mover precios?
+
+Y en rentabilidad = ventas - costos +- condiciones de precios.
+Scarme coeficientes de la manga para que en la esa ventana muevas los 3 sliders y veas q pasa.
+
 
