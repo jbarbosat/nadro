@@ -1,14 +1,10 @@
 library(shiny)
 
-# Define UI for miles per gallon application
 shinyUI(pageWithSidebar(
   
-  # Application title
   headerPanel("Análisis de condiciones de precios"),
   
-#https://groups.google.com/forum/?fromgroups=#!topic/shiny-discuss/D5p9VzQQggw
   sidebarPanel(
-    
     tags$head(
       tags$style(type="text/css", "label.radio { display: inline-block; }", ".radio input[type=\"radio\"] { float: none; }"),
       tags$style(type="text/css", "select { max-width: 200px; }"),
@@ -19,82 +15,85 @@ shinyUI(pageWithSidebar(
     ),
     
     selectInput(inputId = "isector",
-                label = "Sector:",
-                #choices = c("Todo", "Industria","Comercio","ABARROTES","COMERCIAL","EXCLUSIVO","FARMARED","GOBIERNO",
-                #            "HOSPITAL","INSTITUCIONAL","GENERICOS INTERCAMB","MAYOR","NADROLOGISTICA","OTROS",
-                #            "POTENCIAL","SUBROGADOS","SANATORIO","INTERCOMPAÑIA","PROVEEDORES"),
-                choices=c("Todos","Exclusivo","Institucional","Mayor"),
-                selected = "Todos"),
-    
-      selectInput(inputId = "cliente",
-                  label = "Cliente:",
-                  choices = "Todos",
-                  selected="Todos"),
-      
-      selectInput(inputId = "material",
-                label = "Material",
-                choices = c("Todos","MICARDIS PLUS80/12.5MG TAB28 021",
-                            "KRYTANTEK OFTE20/2MG GTS 5ML 125",
-                            "ULSEN-PCS 40 MG CAPS 14      161",
-                            "VIAGRA DISPENSER 100MG TAB1 C/10",
-                            "CIALIS 20 MG TAB 1           002",
-                            "EMPLAY 3 TWOPACK PROGSSGOLD900GB Y",
-                            "EVRA 6MG/600MCG PARCHES 3    014",
-                            "VYTORIN 10/20 MG CPR 28      033",
-                            "DOLO-NEUROBION FORTE GRAG30  010",
-                            "CELEBREX 200 MG CAPS 30      156",
-                            "SINGULAIR 10MG CPR RECUB 20  061",
-                            "ARTRENE-SR150MG100MCG CAPS LP30",
-                            "ZINTREPID 10/20 MG CPR 28    174",
-                            "ASPIRINA-PROTEC 100MG TAB 28",
-                            "FOSAMAX PLUS 70MG/5600UICPR4 083",
-                            "DEXIVANT 60 MG LIB RET CAP14 118",
-                            "JANUMET 50/850MG CPR56 RECUB 091",
-                            "COMBIVENT.5/2.5MGAMP10X2.5ML 042",
-                            "VARTALON COMP1500/1200MGSB30 097",
-                            "LACTACYD SH HIG FEMENI 160ML 017"),
-                selected = "Todos"),
-    
-      br(),
-    
-    checkboxInput(inputId = "ifEscenarios",
-                    label = "Correr escenarios para ventas",
-                    value = FALSE),
+              label = "Sector:",
+              #choices = c("Todo", "Industria","Comercio","ABARROTES","COMERCIAL","EXCLUSIVO","FARMARED","GOBIERNO",
+              #            "HOSPITAL","INSTITUCIONAL","GENERICOS INTERCAMB","MAYOR","NADROLOGISTICA","OTROS",
+              #            "POTENCIAL","SUBROGADOS","SANATORIO","INTERCOMPAÑIA","PROVEEDORES"),
+              choices=c("Todos","Exclusivo","Institucional","Mayor"),
+              selected = "Todos"),
   
-    helpText("Sólo se mostrarán escenarios si Material es distinto de 'Todos'."),
-  
-    br(),
-    helpText("Presione 'Actualizar vista' para aplicar las opciones elegidas."),
-  
-    submitButton("Actualizar vista"),
+    selectInput(inputId = "cliente",
+                label = "Cliente:",
+                choices = "Todos",
+                selected="Todos"),
+    
+    selectInput(inputId = "material",
+              label = "Material",
+              choices = c("Todos","MICARDIS PLUS80/12.5MG TAB28 021",
+                          "KRYTANTEK OFTE20/2MG GTS 5ML 125",
+                          "ULSEN-PCS 40 MG CAPS 14      161",
+                          "VIAGRA DISPENSER 100MG TAB1 C/10",
+                          "CIALIS 20 MG TAB 1           002",
+                          "EMPLAY 3 TWOPACK PROGSSGOLD900GB Y",
+                          "EVRA 6MG/600MCG PARCHES 3    014",
+                          "VYTORIN 10/20 MG CPR 28      033",
+                          "DOLO-NEUROBION FORTE GRAG30  010",
+                          "CELEBREX 200 MG CAPS 30      156",
+                          "SINGULAIR 10MG CPR RECUB 20  061",
+                          "ARTRENE-SR150MG100MCG CAPS LP30",
+                          "ZINTREPID 10/20 MG CPR 28    174",
+                          "ASPIRINA-PROTEC 100MG TAB 28",
+                          "FOSAMAX PLUS 70MG/5600UICPR4 083",
+                          "DEXIVANT 60 MG LIB RET CAP14 118",
+                          "JANUMET 50/850MG CPR56 RECUB 091",
+                          "COMBIVENT.5/2.5MGAMP10X2.5ML 042",
+                          "VARTALON COMP1500/1200MGSB30 097",
+                          "LACTACYD SH HIG FEMENI 160ML 017"),
+              selected = "Todos"),
+    
+    wellPanel(
+      checkboxInput(inputId = "ifEscenarios",
+                  label = "Correr escenarios para ventas",
+                  value = FALSE),
+      helpText("Sólo se mostrarán escenarios si Material es distinto de 'Todos'.")
+    ),
+    
+    wellPanel(
+      helpText("Presione 'Actualizar vista' al seleccionar un nuevo Sector o un nuevo Cliente."),
+      submitButton("Actualizar vista")
+    ),
     
     conditionalPanel(condition = "input.ifEscenarios == true && input.material != 'Todos'",
-                        helpText("Elija cambios porcentuales de precios para los próximos 6 meses y presione 'Actualizar vista'."),
-                         sliderInput(inputId = "p1", label = "Mes 1",
-                                     min = -100, max = 100, value = 0, step = 1),
-                         sliderInput(inputId = "p2", label = "Mes 2",
-                                     min = -100, max = 100, value = 0, step = 1),
-                         sliderInput(inputId = "p3", label = "Mes 3",
-                                     min = -100, max = 100, value = 0, step = 1),
-                         sliderInput(inputId = "p4", label = "Mes 4",
-                                     min = -100, max = 100, value = 0, step = 1),
-                         sliderInput(inputId = "p5", label = "Mes 5",
-                                     min = -100, max = 100, value = 0, step = 1),
-                         sliderInput(inputId = "p6", label = "Mes 6",
-                                     min = -100, max = 100, value = 0, step = 1))
-  ),# sidebar panel
+                     br(),
+                     helpText("Elija cambios porcentuales de precios sobre el precio promedio para los próximos 6 meses y presione 'Actualizar vista'."),
+                     sliderInput(inputId = "p1", label = "Mes 1",
+                                 min = -100, max = 100, value = 0, step = 1),
+                     sliderInput(inputId = "p2", label = "Mes 2",
+                                 min = -100, max = 100, value = 0, step = 1),
+                     sliderInput(inputId = "p3", label = "Mes 3",
+                                 min = -100, max = 100, value = 0, step = 1),
+                     sliderInput(inputId = "p4", label = "Mes 4",
+                                 min = -100, max = 100, value = 0, step = 1),
+                     sliderInput(inputId = "p5", label = "Mes 5",
+                                 min = -100, max = 100, value = 0, step = 1),
+                     sliderInput(inputId = "p6", label = "Mes 6",
+                                 min = -100, max = 100, value = 0, step = 1))
+  ),
   
   mainPanel(
     tabsetPanel(
-      tabPanel("Precios", textOutput("Prueba1"),
-               h4("VPRS (Prec.factur.interna)"),
-               plotOtput("VentasTPlot"), 
+      tabPanel("Ventas", textOutput("Prueba1"),
+               h4("VPRS (Prec.factur.interna) x Cantidad"),
+               plotOutput("VentasTPlot"), 
                br(),
                h4("Totales mensuales (Millones de Pesos)"),
-               tableOutput("VentasAggrTabla")
+               tableOutput("VentasAggrTabla"),
+               br(),
+               h4("Escenarios de Precios"),
+               textOutput("PrecioBase1"),
+               plotOutput("EscVentasPlot")
               ),
       tabPanel("Costos", textOutput("Prueba2"),
-               h4("VPR1 (Costo Prom. a Ceder) y VPR2 (Costo Prom. Cedido)"),
                h4("Totales mensuales (Millones de Pesos)"),
                plotOutput("CostosM1Plot"), 
                plotOutput("CostosM2Plot"), 
@@ -132,15 +131,8 @@ shinyUI(pageWithSidebar(
                h4("Rentabilidad"),
                plotOutput("RentPlot")
               ),
-      tabPanel("Top",
+      tabPanel("Top", textOutput("Prueba5"),
                h4("Productos más vendidos"),
-               selectInput(inputId = "periodo1",
-                           label = "Periodo:",
-                           choices =  c("Todos","Ene 2011", "Feb 2011","Mar 2011","Abr 2011","May 2011","Jun 2011","Jul 2011","Ago 2011","Sep 2011","Oct 2011",
-                           "Nov 2011","Dic 2011","Ene 2012","Feb 2012","Mar 2012","Abr 2012","May 2012","Jun 2012","Jul 2012","Ago 2012",
-                           "Sep 2012","Oct 2012","Nov 2012","Dic 2012","Ene 2013","Feb 2013","Mar 2013","Abr 2013","May 2013","Jun 2013",
-                           "Jul 2013","Ago 2013","Sep 2013","Oct 2013","Nov 2013","Dic 2013"),
-                            selected="Todos"),
                plotOutput("TopProducto"),
                h4("Clientes con más ventas"),
                plotOutput("TopCliente"),
@@ -148,23 +140,13 @@ shinyUI(pageWithSidebar(
                plotOutput("TopSector"),
                h4("Descuentos para clientes con más ventas"),
                plotOutput("DescTopCl")
+              ),     
+       tabPanel("MarketBasket", textOutput("Prueba6"),
+              h4("Materiales en las reglas"),
+              plotOutput("Reglas"),
+               tableOutput("IdMatMB")
               ),
-               
-      tabPanel("Market Basket", textOutput("Prueba6"),
-               selectInput(inputId = "periodo2",
-                           label = "Periodo:",
-                           choices =  c("Todos","Ene 2011", "Feb 2011","Mar 2011","Abr 2011","May 2011","Jun 2011","Jul 2011","Ago 2011","Sep 2011","Oct 2011",
-                                        "Nov 2011","Dic 2011","Ene 2012","Feb 2012","Mar 2012","Abr 2012","May 2012","Jun 2012","Jul 2012","Ago 2012",
-                                        "Sep 2012","Oct 2012","Nov 2012","Dic 2012","Ene 2013","Feb 2013","Mar 2013","Abr 2013","May 2013","Jun 2013",
-                                        "Jul 2013","Ago 2013","Sep 2013","Oct 2013","Nov 2013","Dic 2013"),
-                           selected="Todos"),
-               plotOutput("Reglas"),
-               h4("Materiales en las reglas"),
-               tableOutput("IdMatMB")),
-      
       tabPanel("Geoespacial", textOutput("Prueba7"))
-      
-      
     )
   )
 ))
