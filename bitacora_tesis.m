@@ -312,3 +312,6 @@ Notas mentales de lo que estoy haciendo:
 Si uno no elige un artículo distinto de todos, tiene una predicción equisona de intervalos de confianza.
 
 
+- Había pedos con el sitio de github así q subí a dropbox la última versión en la que ya pinche murió
+el fuckin market basket del mal... GGGG por culpa del encoding a la fuckin hora de imprimir!!!
+
