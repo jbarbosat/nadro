@@ -18,6 +18,7 @@ Si uno no elige un artículo distinto de todos, tiene una predicción equisona d
 el fuckin market basket del mal... GGGG por culpa del encoding a la fuckin hora de imprimir!!!
 
 Pendientes:
+-Falta que david pase su csv....
 -Agregar lo de David SIN EL CHINGADERÍN DEL TIEMPO
 -Comentarles a todos lo del fuckin encoding a la pinche hora de imprimir. Estaría bien googlear y
 solucionarlo heroicamente...
