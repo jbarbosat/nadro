@@ -273,7 +273,7 @@ es muy poco tiempo pero habrá que ver.
   - David: Algo geoespacial de mentis
 
 
-Martes Agosto 13, 2012
+Martes Agosto 13, 2013
 ------------------------
 
 4:30pm en el Starbucks de Francia.
@@ -290,7 +290,7 @@ David y Rocío:
 (done)
 
 
-Martes Agosto 14, 2012
+Martes Agosto 14, 2014
 ------------------------
 
 Ponerle cositos de tiempo a la slide d david. Done.
@@ -304,5 +304,11 @@ Y que esas 3 tabs sean precios, desc y costos cómo se mueven al mover precios?
 
 Y en rentabilidad = ventas - costos +- condiciones de precios.
 Scarme coeficientes de la manga para que en la esa ventana muevas los 3 sliders y veas q pasa.
+
+
+Notas mentales de lo que estoy haciendo:
+
+- Precios y ventas. 
+Si uno no elige un artículo distinto de todos, tiene una predicción equisona de intervalos de confianza.
 
 
