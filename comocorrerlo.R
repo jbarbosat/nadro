@@ -16,7 +16,7 @@ setwd("/Users/PandoraMac/Documents/Nadro/nadro/")
 #install.packages("arules")
 #install.packages("arulesViz")
 library(shiny)
-runApp("/Users/PandoraMac/Documents/Nadro/nadro2/")
+runApp("/Users/PandoraMac/Documents/Nadro/nadro/")
 
 
 #Esto no hay que correrlo, pero lo dejo por si uno quiere correr cosas en R aparte de la App para verificar o 

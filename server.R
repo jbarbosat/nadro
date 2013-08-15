@@ -3,6 +3,7 @@ library(ggplot2)
 library(forecast)
 library(arules)
 library(arulesViz)
+library(sp)
 ##################################################################################################  
 #Leemos los datos
 s<-as.data.frame(read.csv("/Users/PandoraMac/Documents/Nadro/base_simulada2.csv",sep=','),header=TRUE,
@@ -568,11 +569,55 @@ shinyServer(function(input, output, clientData, session) {
   })
   
   ##################################################################################################  
-
+  #Mapa feliz
   output$Prueba7 <- renderPrint({
     print("Listo")
   })
   
+  #Mapa1
+  ### Bajar la base del mapa de http://www.gadm.org/country
+  ub_mexico <- "MEX_adm1.RData"
+  #Creamos los objetos de R
+  load(ub_mexico)
+  mexico <- gadm
+  
+  output$Mapa1<-renderPlot({
+    plot(spplot(mexico[1]))
+  })
+  
+  #Mapa3
+  ub_mexico2 <- "MEX_adm2.RData"
+  #Creamos los objetos de R
+  load(ub_mexico2)
+  mexico2 <- gadm
+  #str(mexico2)
+  output$Mapa3<-renderPlot({
+    plot(spplot(mexico2[1]))
+  })
+  
+  #Mapa2
+#   muestra <-read.csv(file="muestra.csv", head=FALSE, sep=",")
+#   str(muestra)
+#   names(muestra)<-c('y','x','z')
+#   coordinates(muestra)=~x+y
+#   str(muestra)
+#   #val<-runif(305877)
+#   val<-runif(1544) #para muestra (no muestra2)
+#   muestra@data$val<-val
+#   
+#   l2 = list("SpatialPolygonsRescale", layout.north.arrow(), offset = c(181300,329800), 
+#             scale = 400)
+#   l3 = list("SpatialPolygonsRescale", layout.scale.bar(), offset = c(180500,329800), 
+#             scale = 500, fill=c("transparent","black"))
+#   l4 = list("sp.text", c(180500,329900), "0")
+#   l5 = list("sp.text", c(181000,329900), "500 m")
+#   
+#   output$Mapa2<-renderPlot({
+#     plot(spplot(muestra, c("val"), sp.layout=list(l2,l3,l4,l5, which = 2),
+#                 key.space=list(x=0.1,y=.95,corner=c(0,4.5))))
+#   })
+  
+  ##################################################################################################  
   
   })
     
