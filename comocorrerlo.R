@@ -16,7 +16,7 @@ setwd("/Users/PandoraMac/Documents/Nadro/nadro/")
 #install.packages("arules")
 #install.packages("arulesViz")
 library(shiny)
-runApp("/Users/PandoraMac/Documents/Nadro/nadro/")
+runApp("/Users/PandoraMac/Documents/Nadro/nadro2/")
 
 
 #Esto no hay que correrlo, pero lo dejo por si uno quiere correr cosas en R aparte de la App para verificar o 
@@ -28,15 +28,15 @@ s<-as.data.frame(read.csv("/Users/PandoraMac/Documents/Nadro/base_simulada2.csv"
                               "double","double","double","double","double","double"))
 
 
-datos<-function(){s}
-meses<-substr(datos()$dia,4,5)
-anios<-substr(datos()$dia,7,10)
-dias<-datos()$dia2
+datos<-s
+meses<-substr(datos$dia,4,5)
+anios<-substr(datos$dia,7,10)
+dias<-datos$dia2
 #Por meses
-pre.agg1<-aggregate(datos()[,c(6:11)],list(FactorA=meses,FactorB=anios),sum)
+pre.agg1<-aggregate(datos[,c(6:11)],list(FactorA=meses,FactorB=anios),sum)
 agg1<-cbind(pre.agg1[,c(1:2)],round(pre.agg1[,c(3:8)]/1000000,2))
 #Por días
-agg2<-aggregate(datos()[,c(6:11)],list(FactorA=anios,FactorB=substr(datos()$dia,1,5)),sum)
+agg2<-aggregate(datos[,c(6:11)],list(FactorA=anios,FactorB=substr(datos$dia,1,5)),sum)
 
 
 #http://stackoverflow.com/questions/13592225/how-can-i-pass-data-between-functions-in-a-shiny-app
