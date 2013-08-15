@@ -306,6 +306,7 @@ shinyServer(function(input, output, clientData, session) {
   
   output$DescAggrTabla<-renderTable({ 
     row.names(d.tabla)<-NULL
+    print(d.tabla,justify="center")
   })
   
     dm1.vector<-as.double(na.omit(unlist(c(d.tabla[1,-1],d.tabla[3,-1],d.tabla[5,-1]))))/1000
