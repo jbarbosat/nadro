@@ -596,26 +596,26 @@ shinyServer(function(input, output, clientData, session) {
   })
   
   #Mapa2
-#   muestra <-read.csv(file="muestra.csv", head=FALSE, sep=",")
-#   str(muestra)
-#   names(muestra)<-c('y','x','z')
-#   coordinates(muestra)=~x+y
-#   str(muestra)
-#   #val<-runif(305877)
-#   val<-runif(1544) #para muestra (no muestra2)
-#   muestra@data$val<-val
-#   
-#   l2 = list("SpatialPolygonsRescale", layout.north.arrow(), offset = c(181300,329800), 
-#             scale = 400)
-#   l3 = list("SpatialPolygonsRescale", layout.scale.bar(), offset = c(180500,329800), 
-#             scale = 500, fill=c("transparent","black"))
-#   l4 = list("sp.text", c(180500,329900), "0")
-#   l5 = list("sp.text", c(181000,329900), "500 m")
-#   
-#   output$Mapa2<-renderPlot({
-#     plot(spplot(muestra, c("val"), sp.layout=list(l2,l3,l4,l5, which = 2),
-#                 key.space=list(x=0.1,y=.95,corner=c(0,4.5))))
-#   })
+  muestra <-read.csv(file="muestra.csv", head=FALSE, sep=",")
+  str(muestra)
+  names(muestra)<-c('y','x','z')
+  coordinates(muestra)=~x+y
+  str(muestra)
+  #val<-runif(305877)
+  val<-runif(1544) #para muestra (no muestra2)
+  muestra@data$val<-val
+  
+  l2 = list("SpatialPolygonsRescale", layout.north.arrow(), offset = c(181300,329800), 
+            scale = 400)
+  l3 = list("SpatialPolygonsRescale", layout.scale.bar(), offset = c(180500,329800), 
+            scale = 500, fill=c("transparent","black"))
+  l4 = list("sp.text", c(180500,329900), "0")
+  l5 = list("sp.text", c(181000,329900), "500 m")
+  
+  output$Mapa2<-renderPlot({
+    plot(spplot(muestra, c("val"), sp.layout=list(l2,l3,l4,l5, which = 2),
+                key.space=list(x=0.1,y=.95,corner=c(0,4.5))))
+  })
   
   ##################################################################################################  
   
@@ -623,3 +623,6 @@ shinyServer(function(input, output, clientData, session) {
     
 })
 
+#ggmap. dibuja rápido y le pones madres encima
+
+#mapbox

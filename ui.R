@@ -14,6 +14,14 @@ shinyUI(pageWithSidebar(
       tags$style(type='text/css', ".span4 { max-width: 300px; }")
     ),
     
+    selectInput(inputId = "periodo",
+                label = "Periodo:",
+                choices =  c("Todos","Ene 2011", "Feb 2011","Mar 2011","Abr 2011","May 2011","Jun 2011","Jul 2011","Ago 2011","Sep 2011","Oct 2011",
+                             "Nov 2011","Dic 2011","Ene 2012","Feb 2012","Mar 2012","Abr 2012","May 2012","Jun 2012","Jul 2012","Ago 2012",
+                             "Sep 2012","Oct 2012","Nov 2012","Dic 2012","Ene 2013","Feb 2013","Mar 2013","Abr 2013","May 2013","Jun 2013",
+                             "Jul 2013","Ago 2013","Sep 2013","Oct 2013","Nov 2013","Dic 2013"),
+                selected="Todos"),
+    
     selectInput(inputId = "isector",
               label = "Sector:",
               #choices = c("Todo", "Industria","Comercio","ABARROTES","COMERCIAL","EXCLUSIVO","FARMARED","GOBIERNO",

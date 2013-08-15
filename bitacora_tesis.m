@@ -18,8 +18,8 @@ Si uno no elige un artículo distinto de todos, tiene una predicción equisona d
 el fuckin market basket del mal... GGGG por culpa del encoding a la fuckin hora de imprimir!!!
 
 Pendientes:
--Falta que david pase su csv....
--Agregar lo de David SIN EL CHINGADERÍN DEL TIEMPO
+-Falta que david pase su csv.... DONE
+-Agregar lo de David SIN EL CHINGADERÍN DEL TIEMPO Nel; lo dejamos. 
 -A los objetos de David hay que cambiarles el nombre para que sólo se loadeeen una vez y desde afuera, como cosos
 globales. ahorita no se puede porque las dos chingaderas se llaman gam...
 -Comentarles a todos lo del fuckin encoding a la pinche hora de imprimir. Estaría bien googlear y
