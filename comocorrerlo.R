@@ -50,3 +50,15 @@ agg2<-aggregate(datos[,c(6:11)],list(FactorA=anios,FactorB=substr(datos$dia,1,5)
 #Para análisis de series de tiempo
 #http://a-little-book-of-r-for-time-series.readthedocs.org/en/latest/src/timeseries.html
 #http://cran.r-project.org/web/views/TimeSeries.html
+
+#Para tener tres páneles...
+#http://www.econometricsbysimulation.com/2013/06/more-explorations-of-shiny.html
+#2. Allow for three panels in the user interface. 
+#I simply modified the pageWithSidebar function replacing 
+#'div(class = "row-fluid", sidebarPanel, mainPanel)' with 
+#'#'div(class = "row-fluid", left,  middle, right)'.  
+#'
+  # This is a UI page with three panels
+#  threepage <- function(headerPanel,left,middle,right) {
+#    bootstrapPage(div(class = "container-fluid", div(class = "row-fluid",
+#                                                     headerPanel), div(class = "row-fluid", left,  middle, right)))}

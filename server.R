@@ -354,6 +354,7 @@ shinyServer(function(input, output, clientData, session) {
   
   
   output$Desc1TPlot<-renderPlot({ 
+    #par(mar=c(0,0,0,0))
     plot(tabla0[,2],xlab="Tiempo", ylim=c(min(tabla0[,c(2:4)],na.rm=TRUE),max(tabla0[,c(2:4)],na.rm=TRUE)),
          ylab="ZDFI", type="l",xaxt="n",main="ZDFI",tck = 1)
     mtext(text=paste(c("2011","2012","2013")), side=3, 
@@ -365,6 +366,7 @@ shinyServer(function(input, output, clientData, session) {
   })
   
   output$Desc2TPlot<-renderPlot({ 
+    #par(mar=c(0,0,0,0))
     plot(tabla0[,5],xlab="Tiempo", ylim=c(min(tabla0[,c(5:7)],na.rm=TRUE),max(tabla0[,c(5:7)],na.rm=TRUE)),
          ylab="ZPG5", type="l",xaxt="n",main="ZPG5",tck = 1)
     mtext(text=paste(c("2011","2012","2013")), side=3, 
