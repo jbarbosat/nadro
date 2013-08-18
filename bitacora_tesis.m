@@ -1,4 +1,14 @@
-Martes Agosto 14, 2014
+Jueves Agosto 16, 2013
+----------------------
+
+Todo en orden. Rocío va a hacer un ppt. Hay que esperar que David diga q onda con Arias y/o con la banda d Nadro.
+
+Adolfo: ggmap & mapbox. Stuff to checkout. 
+
+
+
+
+Martes Agosto 14, 2013
 ------------------------
   
 -Ponerle cositos de tiempo a la slide d david. Done. and undone!! Esto dará broncas.
