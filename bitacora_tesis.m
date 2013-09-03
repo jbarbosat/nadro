@@ -1,3 +1,14 @@
+Lunes Septiembre 2, 2013
+------------------------
+
+- A la gente de Nadro le pareció interesante calcular rentabilidades de canastas en tiempo real. 
+- Existen "productos gancho"; hay q detectarlos con market basket analysis. Suena a q este rollo es prioritario vs otras cosas que se nos habían ocurrido.
+- Hubo pedo x sacar los datos de ahí => vamos a tener q ir a nadro a trabajar. 
+- Por lo pronto, a darle al reporte para acabar con esto lo más pronto posible.
+
+
+
+
 Jueves Agosto 16, 2013
 ----------------------
 
