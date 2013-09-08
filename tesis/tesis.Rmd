@@ -10,8 +10,39 @@ pandoc -s -V geometry:margin=0.7in -V lang=spanish reporte_01.md -o reporte_01.p
 
 \end{abstract}
 
-1. Introducción
+0. Portada. Y ver si hay que poner la hojita de disclosure (seguro sí) y ver si dice lo mismo que las tesis de lic.
+
+1. dedicatoria y agradecimientos cursis.
+
+2. Prólogo. 
+Algún debraye sobre el análisis de datos? sobre los chingos de datos? sobre educación? mates?
+sobre lo importante que es en este mundo jodido que los datos hablen.
+conseguir epígrafe chido sobre.... chance el típico de lots of data does not equal lots of knowledge.
+
+3. Introducción
 --------------- 
+
+De qué habla la tesis? Qué hice? Quién es Nadro? Qué problema quiero resolver?
+
+- ch1 Nadro y lo que hacen. 
+- ch2 La base.
+- ch3 Limpieza d datos. Sí, creo que amerita todo un capítulo.
+- ch4 Qué hicimos? Cómo lo implementamos? Modelos. Market Basket. Lo que salga.
+- ch 5 Discusión de resultados. Qué salió? Cosas de performance? Cosas mejorables.
+- ch 6 Conclusiones. Relevancia de mi trabajo. Del análisis de datos. 
+          De la limpieza y preparación de datos.
+          Interdisciplinariedad? 
+          Chance algo como lo que decían david y adolfo sobre el perfil de la gente que puede hacer esto. No sólo que sepas lo técnico sino que puedas comunicarlo y venderlo. Chance algo sobre la industria.
+- ch 7 Referencias. 
+
+
+
+
+NOTA MENTAL: DESDE EL INICIO HACER CADA COSA EN ARCHIVOS SEPARADOS
+
+
+------ Plantilla
+
 
 En este trabajo se utiliza la base encontrada en [Best buy mobile website](https://www.kaggle.com/c/acm-sf-chapter-hackathon-big/data?train.csv.) que contiene información sobre 3 meses durante los cuales 1.2 millones de usuarios hicieron 1.8 millones de clicks en los productos que ofrece el sitio. Esta base es parte de un concurso en \textsc{Kaggle} cuyo objetivo es ver qué productos de BestBuy se deben de recomendar a los clientes de acuerdo con la búsqueda que llevan a cabo. Se tienen los archivos `train.csv` (232.51Mb) y `test.csv` (145.42Mb) con datos sobre los productos que se eligieron (con click) después de haber hecho cierta búsqueda. No se tiene información sobre qué productos fueron comprados; sólo sobre los que fueron seleccionados por los usuarios para obtener más características sobre ellos. 
 
