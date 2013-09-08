@@ -1,3 +1,23 @@
+Sábado Septiembre 7,2013
+------------------------
+Mugre latex en la mac no funciona. Pensé que era un pedo de librerías pero quién sabe qué diabos. 
+No fuckin jala lo que había hecho para la tesis de licenciatura. Whatever, luego me peleo con esto
+porque x ahora voy a estofar todo en .Rmd's y ya para el formato me peleo con lo que me tenga que pelear.
+De cualquier forma subí a github el todo.tex de la criptotesis. Tiene todas mis madres de formato. 
+
+Necesito bibliografia. Por ahora, de market basket. Está el libro q usamos con luis felipe.
+Necesito conseguir artículos como hice para la de licenciatura y escribir. No pensaba tener cuaderno para
+la tesis pero sí lo necesito. No puedo estar sin rayar cosas. 
+
+Así qué... artículos. escribir. latexear? puedo ir armando un chapter de cosas técnicas. 
+Hmmm... qué tanto de teoría se pone en una tesis d maestría? 
+
+Tarea:
+- Echarle un ojo a una tesis d maestría. Estarán en santa tere? Habrá en río hondo?
+- Ver si cambia el parrafito de disclosure que pone uno al inicio de la tesis.
+
+
+
 Lunes Septiembre 2, 2013
 ------------------------
 
@@ -5,7 +25,6 @@ Lunes Septiembre 2, 2013
 - Existen "productos gancho"; hay q detectarlos con market basket analysis. Suena a q este rollo es prioritario vs otras cosas que se nos habían ocurrido.
 - Hubo pedo x sacar los datos de ahí => vamos a tener q ir a nadro a trabajar. 
 - Por lo pronto, a darle al reporte para acabar con esto lo más pronto posible.
-
 
 
 
