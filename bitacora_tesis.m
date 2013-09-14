@@ -1,12 +1,15 @@
 Sábado Septiembre 14, 2013
 --------------------------
-Tuvimos junta ayer con César Something. Pepsi. 
+Tuvimos junta ayer con César Something @ Pepsico. 
 
 - Tienen que pasarnos el modelo o chunche que hicieron antes, del cual concluyeron que existen
 momentos en los que no hay papitas en las tienditas.
 - Miércoles temprano: Vernos para que Alfonso Something nos cuente qué datos existen. 
 - Jueves en la tarde: Tener listo qué datos necesitamos. No sólo en términos de variables sino de
 "granularidad" y periodo y si es sólo para papitas y si son sólo algunas tienditas y blo, blo.
+
+
+Divagaciones...
 
 - Supongamos que de hecho existen momentos en los que no hay papitas en las tiendas, lo cual no 
 suena improbable. Entonces, queremos explicar wtf. Cómo madres haremos esto... 
@@ -20,25 +23,77 @@ las papitas a partir de lo que piden los dudes de las tienditas.
 para dar insights iniciales. 
 
 - Demanda de papitas. Hay aquí que armar un pedo espacial? Seguro vamos a tener que cruzar esto con
-info del inegi. Madres socioecon. Chance madres demográficas; yo supongo uqe más niños => más papitas.
+info del inegi. Madres socioecon. Chance madres demográficas; yo supongo que más niños => más papitas.
 Cruzar con localización de escuelas? Tenemos la base de datos de David!
 
-- Igual y 
+- En el exploratorio necesitamos info de edades. Ver si la edad de la gente que vive cerca de la tiendita
+influye. Si sí, y veo que más niños => más papitas, hacemos el desmadre de escuelas. Si no depende de la edad,
+nos quedamos con madres socioecon. 
 
+- Variables geográficas? Meh.
+
+- David habló de los repartidores y sus características...
+
+- Ah y los precios... Hmmmm... Papas baratas => no son muy sensibles a cambios en precios? Sí?
+
+- Un arbolín? Si la población es tal y el mes pasado sucedió tal en el inventario y bla bla, entonces reparta
+más papitas que el mes pasado? Entonces reparta 5 papitas? Estaría cool que la delta de papitas fuera la variable
+respuesta.
+
+- Modelos por clusters... Chance un clustering thing previo. No debe ser la misma historia en todas las tienditas.
+Ahora, si las tienditas están clasificadas... Distintos modelos x tipo de tiendita.
+
+- Igual y en el exploratorio podemos agarrar cuatro ejes: repartidores, demographic stuff, variables socioecon. y
+algo de series de tiempo con los inventarios anteriores.... Y un clustering de tienditas. 
+Correr modelines sencillos para ver si alguno de estos ejes funciona y definir EL modelo con base en eso. 
+O al menos yo supongo que no vale la pena armar un modelo mega cerdo con variables chafas de cada tipo. Si resulta
+que un tipo de variables pesan más, igual y vale la pena clavarse en eso desde el inicio. Por ejemplo, lo de las edades
+que dije; si la edad de la gente importa, chance clustereo municipios con base en las edades. Y entonces hago lo de las
+escuelas y me pongo a buscar fechas de exámenes bimestrales o cosas así.
+
+- Chaaance hacer esto por tipo de variables lo que nos puede dar es una idea de las variables que más pesan para
+dividir los datos con base en esas variables y hacer distintos modelos. Por ejemplo, si lo que más pesa es el mes,
+hacemos modelos mensuales y ya.
+
+- Hmmm, cómo sé qué variables pesan más... No, no, más bien, si hiciéramos eso en el exploratorio, es un pedo de
+decir si cierto tipo de variables sirven para explicar el número de papitas. Entonces todo el mundo se avienta regre-
+siones Poisson? 
+
+- Si importa todo, pues importa todo y ya.
+
+- Regresión poisson? Predecir el número de papitas? Con variables temporales. 
+
+- O igual y el pedo es más como lo que decían en Nadro; que el repartidor tenga en su ipod un reportito resumen de la
+tienda y decida? 
 
 
 
 Must do research on:
 - Modelos espaciales.
 - Demanda de papitas, ja.
-- Ir bajando madres del inegi.
+- Ir bajando madres del inegi. A huevo deben servir.
+- Mapitas!
+
 
 Cosas que debo preguntar:
-- Tienen coordenadas de las tienditas?
+- Tienen coordenadas de las tienditas? Son sólo tienditas o tbn oxxos y walmarts y así? Tenemos más info de las
+tienditas?
 - Cómo se determinan las rutas?
 - Cómo le hacen para repartir madres?
 - Quiero un modelo explicativo de la escasez de papitas? Si sí, necesitamos definir "falta de papitas"
-- 
+- Quiero predecir la demanda de papitas para esta semana? Quiero que la de la tiendita diga "Dejame 5 papitas"
+y el repartidor diga "No, señora, le dejo 6" o al revés? Es factible que esto suceda? Queremos cambiar el 
+paradigma de la repartición de papitas? Decirle a los de merca que cambien este pedo?
+- Qué pedo con los precios de las papas? Porque luego en los oxxos hay promociones... Esas promociones q pedo?
+Quién las hace? Tbn hay condiciones de precio como con nadro?
+
+
+Ojo con:
+- Acotar qué tiendas y qué papitas. Eso lo deciden esos weyes.
+- Hay que hablar con luis felipe y/o zarate... Especialmente ahorita que no sabemos qué onda. 
+- Lo de siempre; dividir en prueba, validación y train. No entrenar con el futuro. El de validación puede servir
+para ver q pedo con modelitos exploratorios. En el test debe haber un año, I opin. 
+
 
 
 Sábado Septiembre 7,2013
