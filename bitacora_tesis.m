@@ -1,3 +1,46 @@
+Sábado Septiembre 14, 2013
+--------------------------
+Tuvimos junta ayer con César Something. Pepsi. 
+
+- Tienen que pasarnos el modelo o chunche que hicieron antes, del cual concluyeron que existen
+momentos en los que no hay papitas en las tienditas.
+- Miércoles temprano: Vernos para que Alfonso Something nos cuente qué datos existen. 
+- Jueves en la tarde: Tener listo qué datos necesitamos. No sólo en términos de variables sino de
+"granularidad" y periodo y si es sólo para papitas y si son sólo algunas tienditas y blo, blo.
+
+- Supongamos que de hecho existen momentos en los que no hay papitas en las tiendas, lo cual no 
+suena improbable. Entonces, queremos explicar wtf. Cómo madres haremos esto... 
+
+- Necesitamos preguntar cómo funciona el pedo de repartir papitas. Hipótesis: Cada semana pasa el
+camión repartidor y el dude de la tiendita pide las papitas que quiere. 
+- No tenemos info del inventario. Nadie tiene idea del inventario. Podemos inferir cómo se mueven
+las papitas a partir de lo que piden los dudes de las tienditas. 
+
+- Plot de la cantidad de papas pedidas en el tiempo. Por tiendita. Chance empezar con aggregates
+para dar insights iniciales. 
+
+- Demanda de papitas. Hay aquí que armar un pedo espacial? Seguro vamos a tener que cruzar esto con
+info del inegi. Madres socioecon. Chance madres demográficas; yo supongo uqe más niños => más papitas.
+Cruzar con localización de escuelas? Tenemos la base de datos de David!
+
+- Igual y 
+
+
+
+
+Must do research on:
+- Modelos espaciales.
+- Demanda de papitas, ja.
+- Ir bajando madres del inegi.
+
+Cosas que debo preguntar:
+- Tienen coordenadas de las tienditas?
+- Cómo se determinan las rutas?
+- Cómo le hacen para repartir madres?
+- Quiero un modelo explicativo de la escasez de papitas? Si sí, necesitamos definir "falta de papitas"
+- 
+
+
 Sábado Septiembre 7,2013
 ------------------------
 Mugre latex en la mac no funciona. Pensé que era un pedo de librerías pero quién sabe qué diabos. 
