@@ -1,0 +1,43 @@
+\newcommand\epigraph[5]{
+\vspace{1em}\hfill{}\begin{minipage}{#1}{\begin{spacing}{0.9}
+\small\noindent\textit{#2}\end{spacing}
+\vspace{1em}
+\hfill{}{\small\textsc{#3}}}\vspace{2em}
+{\begin{spacing}{0.9}
+\small\noindent\textit{#4}\end{spacing}
+\vspace{1em}
+\hfill{}{\small\textsc{#5}}}\vspace{2em}
+\end{minipage}}  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Prólogo}
+
+\epigraph{2.9in}{A female $\left[\ldots\right]$ should study alone in private the sixty-four practices that form a part of the Kama Shastra $\left[\ldots\right]$:
+\begin{enumerate}\item[44.] The art of understanding writing in cipher, and the writing of words in a peculiar way.\end{enumerate}}{The Kama Sutra of Vatsyayana}
+{\begin{flushright} La cryptographie est un auxiliaire puissant de la tactique militaire.\end{flushright}}{Général Lewal, Études de guerre}
+
+\noindent Cuando uno menciona la palabra \textsl{criptografía} y explica que su objetivo es proteger la información transmitida entre dos actores para que nadie más que ellos entienda el mensaje, las personas inmediatamente piensan en cosas como \textsl{El Código da Vinci} o en la máquina \textsl{Enigma} durante la Segunda Guerra Mundial.  En el imaginario colectivo, la criptografía está asociada solamente a secretos de Estado o a comunicación en tiempos de guerra. Sin embargo, el hecho de que muchos de los criptosistemas que conocemos hayan surgido en un contexto militar no significa que su uso a lo largo de los siglos haya estado limitado sólo a ese ámbito. El querer ocultar información de los demás es tan innato a los hombres como el mismo acto de buscar comunicarnos; en ocasiones es tan importante el transmitir un mensaje a otro como el que únicamente esa persona tenga conocimiento de él. Un ejemplo simple de esto son los alfabetos secretos %(como el de la figura \ref{alfabetinmio}) 
+que las niñas de 10 años inventan para intercambiar cartas o escribir diarios. 
+%
+
+%\begin{figure}[placement=ht]
+%\begin{center}
+%\includegraphics[width=3in,height=1.5in]{alfabetin.jpg}
+%\label{alfabetinmio}
+%\caption{Ejemplo de alfabeto secreto.}
+%\end{center}
+%\end{figure}
+
+\bigskip La historia de la criptografía es más larga de lo que podríamos suponer. Muestra de ello es su presencia en el Kama Sutra \cite{kama} como una de las 64 actividades que una buena esposa debe dominar. En la antigüedad, además de la criptografía, era común el uso de la \textsl{esteganografía}, que busca esconder objetos dentro de otros. Un ejemplo de ello son las diversas técnicas para ocultar cartas dentro de las ropas de un mensajero o los tatuajes en el cuero cabelludo de esclavos rapados. Durante la Edad Media, no hubo grandes avances en materia de criptografía, pues, con tantas acusaciones de brujería, resultaba más riesgoso escribir textos ininteligibles que enviar cartas con algún sirviente de confianza y esperar que no fueran interceptadas. Fue hasta la época del Renacimiento que la criptografía fue reconocida y utilizada de manera abierta, principalmente como modo de comunicación entre gobernantes y militares. Por ejemplo, cuenta Kahn en \cite{kahn} que tanto en tiempos del Cardenal Richelieu en el siglo XVII como de Napoleón Bonaparte un siglo después, existían academias militares en las que se enseñaba criptografía a los soldados franceses. Sin embargo, existen en la literatura algunos ejemplos aislados anteriores al siglo XX que muestran que no sólo los gobernantes y militares hacían uso de métodos criptográficos\footnote{Algunos ejemplos son \textsl{Physiologie du mariage}, de Honoré de Balzac; \textsl{The gold bug} de Edgar Allan Poe y el gran cuento de Sir Arthur Connan Doyle, \textsl{The adventure of the dancing men}, entre otros.}. 
+
+\bigskip A pesar de estos pocos ejemplos, durante muchos años, la mayoría de los métodos que se creaban y perfeccionaban surgían a partir de necesidades relacionadas con inteligencia militar. No fue sino hasta la década de 1960-1970 que se generalizó la necesidad de implementar criptosistemas para la seguridad del público en general. Con la proliferación de las computadoras surgió la necesidad de proteger la información digital que no sólo bancos y grandes empresas estaban generando, sino también personas comunes. Muestra de ello es el establecimiento en la década de los setenta por parte del gobierno de los Estados Unidos de un estándar de encriptación para información no clasificada. A partir de entonces, se han hecho muchos avances en materia tanto de criptografía como de criptoanálisis que se basan en la dificultad de resolver computacionalmente ciertos problemas. Algunos de ellos serán mencionados más adelante.
+
+\bigskip Definitivamente, el interés por preservar la seguridad de la información no es reciente. Sin embargo, hoy en día ha dejado de ser algo que interese sólo a los altos mandos militares. De hecho, también ha dejado de ser algo que incumba únicamente a quienes diseñan software. Empresas y gobiernos difunden campañas advirtiendo a la población sobre los riesgos de proporcionar contraseñas a extraños y cada día se establecen nuevas estrategias para que las transacciones de dinero por Internet sean más seguras. A diferencia de lo sucedido en décadas anteriores, los métodos que se implementan actualmente requieren cada vez más de usuarios responsables e informados que hagan un buen uso de ellos.
+
+\bigskip La criptografía requiere en nuestros tiempos de la colaboración de investigadores de muchas áreas del conocimiento. La necesidad de tener dispositivos transmitiendo información entre sí ha hecho de ella algo más que el simple ocultar mensajes de posibles intrusos; también involucra, por ejemplo, protocolos de autentificación, para garantizar que las personas con quienes nos comunicamos sean quienes dicen ser. Así, nosotros como matemáticos, entre otras cosas, diseñamos junto con los ingenieros algoritmos que se basan en la dificultad computacional de resolver ciertos problemas, pero es importante tener en mente que en el momento de implementarlos están presentes, desde posibles ataques o errores en las computadoras, hasta aspectos legales, administrativos e incluso psicológicos.
+
+\bigskip El que la criptografía sea algo de uso tan generalizado en nuestros días permite que cada vez más personas se involucren en el diseño de métodos más seguros y eficientes. En general, se busca que el único modo de romper los métodos que se proponen sea probando todas las llaves posibles y que haya tantas de éstas que incluso las computadoras más poderosas tarden meses o incluso años en hacerlo. 
+
+\bigskip En este trabajo estudiaremos un algoritmo de encriptación y otro de intercambio de llaves propuestos por Dima Grigoriev y Vladimir Shpilrain \cite{art} que se basan en \textit{álgebras tropicales}. En el primer capítulo se da una introducción a las álgebras tropicales y se presentan conceptos sobre complejidad computacional, con base en \cite{cravioto}, \cite{diane}, \cite{mik}, \cite{strum} y \cite{app}. En el capítulo 2 se presenta un breve resumen histórico sobre el desarrollo de la criptografía, con base en \cite{rsa}, \cite{fraleigh}, \cite{kahn}, \cite{des}, \cite{artescit}, \cite{criptolibro}, \cite{kasiski} y \cite{sueto}. En los capítulos 3 y 4 se exponen los antecedentes matemáticos en que se basa la criptografía tropical a partir de las siguientes fuentes: \cite{maxls}, \cite{cook}, \cite{art}, \cite{mult}, \cite{quant}, \cite{diane}, \cite{mik}, \cite{strum} y \cite{stick}. En el capítulo 5 se plantean los algoritmos estudiados y se discuten los resultados obtenidos al implementarlos en \textsc{Matlab} y realizar algunas pruebas con \textsc{Maple}. El código utilizado para ello se incluye al final de este documento a modo de anexo al igual que definiciones básicas sobre expresiones booleanas, con base en \cite{cravioto}. Finalmente, se presentan algunas conclusiones respecto al trabajo realizado.
+
+
+

@@ -1,0 +1,178 @@
+library(shiny)
+
+shinyUI(pageWithSidebar(
+  
+  headerPanel("Análisis de condiciones de precios"),
+  
+  sidebarPanel(
+    tags$head(
+      tags$style(type="text/css", "label.radio { display: inline-block; }", ".radio input[type=\"radio\"] { float: none; }"),
+      tags$style(type="text/css", "select { max-width: 200px; }"),
+      tags$style(type="text/css", "textarea { max-width: 185px; }"),
+      tags$style(type="text/css", ".jslider { max-width: 200px; }"),
+      tags$style(type='text/css', ".well { max-width: 310px; }"),
+      tags$style(type='text/css', ".span4 { max-width: 300px; }")
+    ),
+    
+    selectInput(inputId = "periodo",
+                label = "Periodo:",
+                choices =  c("Todos","Ene 2011", "Feb 2011","Mar 2011","Abr 2011","May 2011","Jun 2011","Jul 2011","Ago 2011","Sep 2011","Oct 2011",
+                             "Nov 2011","Dic 2011","Ene 2012","Feb 2012","Mar 2012","Abr 2012","May 2012","Jun 2012","Jul 2012","Ago 2012",
+                             "Sep 2012","Oct 2012","Nov 2012","Dic 2012","Ene 2013","Feb 2013","Mar 2013","Abr 2013","May 2013","Jun 2013",
+                             "Jul 2013","Ago 2013","Sep 2013","Oct 2013","Nov 2013","Dic 2013"),
+                selected="Todos"),
+    
+    selectInput(inputId = "isector",
+              label = "Sector:",
+              #choices = c("Todo", "Industria","Comercio","ABARROTES","COMERCIAL","EXCLUSIVO","FARMARED","GOBIERNO",
+              #            "HOSPITAL","INSTITUCIONAL","GENERICOS INTERCAMB","MAYOR","NADROLOGISTICA","OTROS",
+              #            "POTENCIAL","SUBROGADOS","SANATORIO","INTERCOMPAÑIA","PROVEEDORES"),
+              choices=c("Todos","Exclusivo","Institucional","Mayor"),
+              selected = "Todos"),
+  
+    selectInput(inputId = "cliente",
+                label = "Cliente:",
+                choices = "Todos",
+                selected="Todos"),
+    
+    selectInput(inputId = "material",
+              label = "Material",
+              choices = c("Todos","MICARDIS PLUS80/12.5MG TAB28 021",
+                          "KRYTANTEK OFTE20/2MG GTS 5ML 125",
+                          "ULSEN-PCS 40 MG CAPS 14      161",
+                          "VIAGRA DISPENSER 100MG TAB1 C/10",
+                          "CIALIS 20 MG TAB 1           002",
+                          "EMPLAY 3 TWOPACK PROGSSGOLD900GB Y",
+                          "EVRA 6MG/600MCG PARCHES 3    014",
+                          "VYTORIN 10/20 MG CPR 28      033",
+                          "DOLO-NEUROBION FORTE GRAG30  010",
+                          "CELEBREX 200 MG CAPS 30      156",
+                          "SINGULAIR 10MG CPR RECUB 20  061",
+                          "ARTRENE-SR150MG100MCG CAPS LP30",
+                          "ZINTREPID 10/20 MG CPR 28    174",
+                          "ASPIRINA-PROTEC 100MG TAB 28",
+                          "FOSAMAX PLUS 70MG/5600UICPR4 083",
+                          "DEXIVANT 60 MG LIB RET CAP14 118",
+                          "JANUMET 50/850MG CPR56 RECUB 091",
+                          "COMBIVENT.5/2.5MGAMP10X2.5ML 042",
+                          "VARTALON COMP1500/1200MGSB30 097",
+                          "LACTACYD SH HIG FEMENI 160ML 017"),
+              selected = "Todos"),
+    
+    wellPanel(
+      checkboxInput(inputId = "ifEscenarios",
+                  label = "Correr escenarios para ventas",
+                  value = FALSE),
+      helpText("Sólo se mostrarán escenarios si Material es distinto de 'Todos'.")
+    ),
+    
+    wellPanel(
+      helpText("Presione 'Actualizar vista' al seleccionar un nuevo Sector o un nuevo Cliente."),
+      submitButton("Actualizar vista")
+    ),
+    
+    conditionalPanel(condition = "input.ifEscenarios == true && input.material != 'Todos'",
+                     br(),
+                     helpText("Elija cambios porcentuales de precios sobre el precio promedio para los próximos 6 meses y presione 'Actualizar vista'."),
+                     sliderInput(inputId = "p1", label = "Mes 1",
+                                 min = -100, max = 100, value = 0, step = 1),
+                     sliderInput(inputId = "p2", label = "Mes 2",
+                                 min = -100, max = 100, value = 0, step = 1),
+                     sliderInput(inputId = "p3", label = "Mes 3",
+                                 min = -100, max = 100, value = 0, step = 1),
+                     sliderInput(inputId = "p4", label = "Mes 4",
+                                 min = -100, max = 100, value = 0, step = 1),
+                     sliderInput(inputId = "p5", label = "Mes 5",
+                                 min = -100, max = 100, value = 0, step = 1),
+                     sliderInput(inputId = "p6", label = "Mes 6",
+                                 min = -100, max = 100, value = 0, step = 1))
+  ),
+  
+  mainPanel(
+    tabsetPanel(
+      tabPanel("Ventas", textOutput("Prueba1"),
+               h4("VPRS (Prec.factur.interna) x Cantidad"),
+               plotOutput("VentasTPlot"), 
+               br(),
+               h4("Totales mensuales (Millones de Pesos)"),
+               tableOutput("VentasAggrTabla"),
+               br(),
+               h4("Escenarios de Precios"),
+               textOutput("PrecioBase1"),
+               plotOutput("EscVentasPlot")
+              ),
+      tabPanel("Costos", textOutput("Prueba2"),
+               h4("Totales mensuales (Millones de Pesos)"),
+               plotOutput("CostosM1Plot"), 
+               plotOutput("CostosM2Plot"), 
+               h4("Totales mensuales (Millones de Pesos)"),
+               tableOutput("CostosAggrTabla"),
+               br(),
+               h4("Totales anuales (Millones de Pesos)"),
+               plotOutput("CostosHPlot"), 
+               br(),
+               h4("Costos diarios para el último año"),
+               plotOutput("CostosTPlot"),
+               h4("Costos diarios para 2011-2013"),
+               plotOutput("Costos1TPlot"), 
+               plotOutput("Costos2TPlot") 
+               ),
+      tabPanel("Descuentos", textOutput("Prueba3"),
+               h4("ZDFI (SD Ds Financiero) y ZPG5 (SDPromoNad Gral Fact)"),
+               h4("Totales mensuales (Millones de Pesos)"),
+               plotOutput("DescM1Plot"), 
+               plotOutput("DescM2Plot"), 
+               h4("Totales mensuales (Millones de Pesos)"),
+               tableOutput("DescAggrTabla"),
+               br(),
+               h4("Descuentos diarios para el último año"),
+               plotOutput("DescTPlot"), 
+               h4("Descuentos diarios para 2011-2013"),
+               plotOutput("Desc1TPlot"),
+               plotOutput("Desc2TPlot")
+               ),
+      tabPanel("Rentabilidad", textOutput("Prueba4"),
+               h4("VPRS (Prec.factur.interna) y VPR2 (Costo Prom. Cedido)"),
+               br(),
+               h4("Totales mensuales (Millones de Pesos)"),
+               plotOutput("VCPlot"),
+               h4("Rentabilidad"),
+               plotOutput("RentPlot")
+              ),
+      tabPanel("Top", textOutput("Prueba5"),
+               h4("Productos más vendidos"),
+               plotOutput("TopProducto"),
+               h4("Clientes con más ventas"),
+               plotOutput("TopCliente"),
+               h4("Sectores con más ventas"),
+               plotOutput("TopSector"),
+               h4("Descuentos para clientes con más ventas"),
+               plotOutput("DescTopCl")
+              ),     
+       tabPanel("MarketBasket", textOutput("Prueba6"),
+              h4("Materiales en las reglas"),
+              plotOutput("Reglas"),
+               tableOutput("IdMatMB")
+              ),
+      tabPanel("Geoespacial", textOutput("Prueba7"),
+                        selectInput(inputId = "periodoDavid",
+                                    label = "Periodo:",
+                                    choices =  c("Todos","Ene 2011", "Feb 2011","Mar 2011","Abr 2011","May 2011","Jun 2011","Jul 2011","Ago 2011","Sep 2011","Oct 2011",
+                                                 "Nov 2011","Dic 2011","Ene 2012","Feb 2012","Mar 2012","Abr 2012","May 2012","Jun 2012","Jul 2012","Ago 2012",
+                                                 "Sep 2012","Oct 2012","Nov 2012","Dic 2012","Ene 2013","Feb 2013","Mar 2013","Abr 2013","May 2013","Jun 2013",
+                                                 "Jul 2013","Ago 2013","Sep 2013","Oct 2013","Nov 2013","Dic 2013"),
+                                    selected="Todos"),
+                        selectInput(inputId = "variable",
+                                    label = "Dimensión",
+                                    choices =  c("Ventas","Precio", "Costo","DEscuento"),
+                                    selected="Ventas"),
+                        h4("Análisis espacial de ventas/condiciones de precio (por entidad)"),
+                        plotOutput("Mapa1"),
+                        h4("Análisis espacial de ventas/condiciones de precio (por municipio)"),
+                        plotOutput("Mapa3"),
+                        h4("Análisis espacial de ventas/condiciones de precio (por cliente)"),
+                        plotOutput("Mapa2")
+               )
+    )
+  )
+))
