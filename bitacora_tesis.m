@@ -28,10 +28,26 @@ de papitas?
 Sí, porque no es un pedo de rediseñar rutas... Es un pedo de entender qué gente no compra papas... O será que ya 
 entienden eso? Saben quiénes no compran papas? GGGG
 
+O es un pedo de simulación y escenarios? No o sí? 
+
+A ver, acotemos. Qué sí puedo hacer? En orden de factibilidad...
+- Explicar qué tipo de clientes no compran papitas (distintos modelos para distintas razones de no-compra?)
+- Puedo encontrar rutas óptimas en términos de sí-venta de papitas? La ruta que maximiza la proba de que todos los
+tienditos compren? Que minimiza el número de semanas en que menos del x% de los posibles tienditos compra? 
+- Puedo simular... qué pasaría si hago tal o cual cosa? Yo no sé nada de eso...
+
+- Uh, puedo hacer clusters de clientes? O definir zonas geográficas y ahí identificar vecindades (bolas, regiones) 
+de los clientes más compradores y ver qué pedo con las tienditas vecinas. Esto me suena a gráficas... OMG! la competencia entre tienditaaaas!!! Yo supongo que no debe importar tanto como la competencia entre papas.
+Así que no. 
+
+Conclusiones:
+- Quizá el pedo de explicar qué tipo de clientes es en el exploratorio? Chance lo de los distintos sets de variables
+que había pensado?
+- Checando mis notitas del día... Fecha de transmisión = la buena. La fecha de carga es cuándo se envió el camión.
+A veces hay un delay de un día. 
 
 
-
-Y otro pedo: Otra vez la definición de variable y makes no sense! 
+Y otro pedo: Otra vez la definición de variable $y$ makes no sense! 
 
 Pendientes:
 - Hacer este pedo privado
