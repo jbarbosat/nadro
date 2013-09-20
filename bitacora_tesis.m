@@ -1,3 +1,36 @@
+Miércoles Septiembre 18, 2013
+------------------------------
+
+Junta para ver wtf con las variables...
+
+PROBLEMOTA: Quieren saber qué hacer para que en cada visita al cliente haya una venta!!?? Welcome to the real world ¬¬
+La pregunta es: qué puedo hacer? Vale que rediseñe rutas? será que tengo en mis manos un problema mega marrano de
+optimización? 
+
+A ver... 
+
+Supongamos que sí. Que diseño las rutas para el próximo mes de todos los señorines repartidores de papitas. 
+Qué información tomo para diseñar esa ruta? Qué información influye en la venta del próximo mes? 
+
+Ok. Entonces, primero necesito explicar la venta o no venta de papitas en una semana. Ver qué variables
+influyen en eso. (logit o afines? con pito mil millones de mugres? O bien, muchas logits para muchos clusters!)
+Ah, pero si hago muchos logits para muchos clusters... Es que es una mamada, hay cosas que no puedes cambiar!
+Si el **** cliente decide cerrar su tiendita cuando va el camión o no tiene dinero para comprar mugres papitas....
+
+
+
+Y otro pedo: Otra vez la definición de variable y makes no sense! 
+
+Pendientes:
+- Hacer este pedo privado
+- Trepar la presentación de lo q hicieron ellos.
+- Trepar mi archivo master of variable definitions and stuff.
+
+Viernes. Nos darán epsilon datos. 
+
+
+
+
 Sábado Septiembre 14, 2013
 --------------------------
 Tuvimos junta ayer con César Something @ Pepsico. 
