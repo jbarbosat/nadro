@@ -14,8 +14,20 @@ Qué información tomo para diseñar esa ruta? Qué información influye en la v
 
 Ok. Entonces, primero necesito explicar la venta o no venta de papitas en una semana. Ver qué variables
 influyen en eso. (logit o afines? con pito mil millones de mugres? O bien, muchas logits para muchos clusters!)
-Ah, pero si hago muchos logits para muchos clusters... Es que es una mamada, hay cosas que no puedes cambiar!
-Si el **** cliente decide cerrar su tiendita cuando va el camión o no tiene dinero para comprar mugres papitas....
+Ah, pero si hago muchos logits para muchos clusters... 
+
+Es que es una mamada, hay cosas que no puedes cambiar! Si el **** cliente decide cerrar su tiendita cuando 
+va el camión o no tiene dinero para comprar mugres papitas.... La solución es una inception! Para que los de las 
+tienditas siempre compren!!! Me mato.
+
+Sigh. Ok, no puedo modificar el que el señor tiendito tenga o no dinero para comprar papas ni muchas otras cosas.
+Claramente la gente de merca y esas madres tiene que pensar en qué hará con los pobres tienditos que no compran
+papas; yo qué!? Entonces, lo que yo puedo hacer es... Logit again? Explicar qué factores influyen en la no-compra
+de papitas? 
+
+Sí, porque no es un pedo de rediseñar rutas... Es un pedo de entender qué gente no compra papas... O será que ya 
+entienden eso? Saben quiénes no compran papas? GGGG
+
 
 
 
