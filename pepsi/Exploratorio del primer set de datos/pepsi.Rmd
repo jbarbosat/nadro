@@ -1,0 +1,47 @@
+% 20-sept-2013
+% Primer micro conjunto de datos que tenemos de pepsi.
+
+
+Tenemos un montón de carpetitas cuyo nombre significa:
+
+- A - Agencia
+- S - Sucursal
+ 
+- Ejemplo: S7590845
+
+    * S - Sucursal
+    * 759 - ID sucursal
+    * 08 - Bloque 8(Agosto)  04 Bloque 4 (Abril)
+    * 4 - semana 4
+    * 5 - dÌa 5
+ 
+- Archivos -cif = Cifras de control internas
+
+Dentro de cada carpeta, los archivos se llaman igual: 
+- creven.txt
+- dcd.txt
+- indcli.txt
+- indpro.txt
+- indtie.txt
+- dcd.cif		
+- indcli.cif
+- indpro.cif
+- indtie.cif
+- r2.txt
+
+Los `.cif` tienen unos atributos "resumen" del archivo `.txt` que les toca. 
+
+Bash para abrir archivos, cambiarles el encoding y sustituir la ß por pipes porque R no lo lee bien.
+
+```{bash}
+iconv -f WINDOWS-1252 -t utf-8 indtie.txt > indtie_utf8.txt
+
+sed /s/ß/|/g’ indtie_utf8.txt > indtie_R.txt
+
+```
+
+
+s<-as.data.frame(read.table("./A3490435/indtie.txt", sep="ß"),header=FALSE)
+
+setwd("/Users/PandoraMac/Documents/Datos Muestra/")
+
