@@ -1,0 +1,235 @@
+% 21-sept-2013
+% Exploración del primer micro conjunto de datos que tenemos de pepsi.
+% Makefile: 
+
+Carpetas
+----------------------------------------------------------------------------------------------------
+
+Tenemos un montón de carpetitas cuyo nombre significa:
+
+- A - Agencia
+- S - Sucursal= centros de distribución de papitas. De ahí salen los camiones.
+ 
+- Ejemplo: S7590845
+    * S - Sucursal
+    * 759 - ID sucursal
+    * 08 - Bloque 8(Agosto)  04 Bloque 4 (Abril)
+    * 4 - semana 4
+    * 5 - dÌa 5
+- Archivos -cif = Cifras de control internas
+
+Tenemos carpetas con los siguientes nombres:
+```
+MacBook-Air-de-Jessica:Datos Muestra PandoraMac$ ls
+A3490435  S4540435  S4540835  S7590435	S7590835
+A3490436	S4540436	S4540836	S7590436	S7590836
+A3490445	S4540445	S4540845	S7590445	S7590845
+A3490446	S4540446	S4540846	S7590446	S7590846
+```
+
+Entonces tenemos 200 Mb de:
+- Una agencia, 2 sucursales
+- De "bloques" agosto y abril
+- Semanas 3 y 4 del bloque
+- Días 5 y 6, que creo que son viernes y sábado.
+
+
+Dentro de cada carpeta, los archivos se llaman igual: 
+- creven.txt
+- dcd.txt
+- indcli.txt
+- indpro.txt
+- indtie.txt
+- dcd.cif		
+- indcli.cif
+- indpro.cif
+- indtie.cif
+- r2.txt
+
+Los `.cif` tienen unos atributos "resumen" del archivo `.txt` que les toca. 
+
+Bash para abrir archivos, cambiarles el encoding y sustituir la ß por pipes porque R no lo lee bien.
+Probamos con uno:
+
+```{bash}
+cd "/Users/PandoraMac/Documents/David/pepsi2/Datos_Muestra/A3490435"
+iconv -f WINDOWS-1252 -t utf-8 indtie.txt > utf8_indtie.txt
+sed 's/ß/|/g' utf8_indtie.txt > R_indtie.txt
+```
+
+```{r}
+setwd("/Users/PandoraMac/Documents/David/pepsi2/Datos_Muestra/")
+s<-as.data.frame(read.table("./A3490435/R_indtie.txt", sep="|"),header=FALSE)
+head(s)
+
+   V1  V2         V3    V4     V5  V6   V7
+1 349   2 2013-04-18 90200 193100 212 -629
+2 349   7 2013-04-18 93300  63900  89  174
+3 349   9 2013-04-18 75300  62900  96   84
+4 349  10 2013-04-18 83200  64900 175  103
+5 349  16 2013-04-18 83500  73100  19   64
+6 349 100 2013-04-18 72000  64800  12   32
+```
+
+Perfecto! Nos ponemos en "Datos Muestra", que es la carpeta que contiene todas las carpetitas.
+En bash hacemos:
+
+```{bash}
+for folder in *
+do
+  cd $folder
+  for archivo in *.txt
+  do
+    iconv -f WINDOWS-1252 -t utf-8 $archivo > utf8_$archivo.mod
+    sed 's/ß/|/g' utf8_$archivo.mod > R_$archivo.mod
+    rm utf8_$archivo.mod
+  done
+  cd ..
+done
+```
+
+Archivos A3490435
+----------------------------------------------------------------------------------------------------
+
+Podemos concatenar todos los archivos del mismo tipo. En cada carpetita hay lo que pasó en un día
+en una sucursal. Fijémonos en A3490435 a ver qué.
+
+# Creven
+
+Está vacío. Sepa qué onda con él. 
+
+# Dcd : Info de clientes
+
+En teoría tienen 99 variables. Pero no todos los renglones tienen igual número de columnas.
+
+V3 da el tipo de cliente. Son clientes Eventuales y P = clientes nuevos sin clasificar. 
+
+```{r}
+s<-read.table("./A3490435/R_dcd.txt.mod", sep="|",header=FALSE)
+
+Error en scan(file, what, nmax, sep, dec, quote, skip, nlines, na.strings, )
+              la linea 4 no tiene 97 elementos
+
+#Si le ponemos fill=TRUE, da 97 variables
+```
+
+Nope, no hay que dejar que R haga lo que quiera. Así ya tiene más sentido:
+```{r}
+nombres<-paste("X",c(1:99),sep="")
+s<-read.table("./A3490435/R_dcd.txt.mod", sep="|",header=FALSE,col.names=nombres,fill=TRUE)
+```
+
+# Indcli: Archivo resumen del cliente en el día
+
+32 Columnas. 1788 lineas.
+
+```{r}
+nombres<-paste("X",c(1:32),sep="")
+s<-read.table("./A3490435/R_indcli.txt.mod", sep="|",header=FALSE,col.names=nombres,fill=TRUE)
+```
+
+# Indpro: Archivo x producto, x cliente, x ruta de las cosas vendidas o no. Este es el archivo +imp
+
+17 Columnas. 21,431 líneas.
+```{r}
+nombres<-paste("X",c(1:17),sep="")
+s<-read.table("./A3490435/R_indpro.txt.mod", sep="|",header=FALSE,col.names=nombres,fill=TRUE)
+```
+
+# Indtie: Info de las horas
+
+Hay 7 variables. 72 renglones
+OJO: están en formato 24hrs peeero las 9:05 am = 90500 y las 11am = 110000. 
+Es decir, no tienen igual número de caracteres. We may have to padd some timestamps with a zero at the
+beginning.
+
+```{r}
+nombres<-paste("X",c(1:7),sep="")
+s<-read.table("./A3490435/R_indtie.txt.mod", sep="|",header=FALSE,col.names=nombres,fill=TRUE)
+```
+
+
+Archivos S4540435
+----------------------------------------------------------------------------------------------------
+
+Ni idea de la diferencia entre agencia y sucursal. Pero acá parece haber más registros que en 
+la otra que es agencia.
+
+# Creven
+
+Está vacío. Sepa qué onda con él. 
+
+# Dcd : Info de clientes
+
+Forzamos a R a que lea 99 columnas.
+```{r}
+nombres<-paste("X",c(1:99),sep="")
+s<-read.table("./S4540435/R_dcd.txt.mod", sep="|",header=FALSE,col.names=nombres,fill=TRUE)
+```
+
+También hay eventuales y nuevos sin mucha info. 
+
+# Indcli: Archivo resumen del cliente en el día.
+
+32 Columnas. 4062 cosas. Cada registro para cada cliente y cada ruta en el día.
+
+```{r}
+nombres<-paste("X",c(1:32),sep="")
+s<-read.table("./S4540435/R_indcli.txt.mod", sep="|",header=FALSE,col.names=nombres,fill=TRUE)
+```
+
+# Indpro: Archivo x producto, x cliente, x ruta de las cosas vendidas o no. Este es el archivo + imp
+
+17 Columnas. 39,582 líneas.
+```{r}
+nombres<-paste("X",c(1:17),sep="")
+s<-read.table("./S4540435/R_indpro.txt.mod", sep="|",header=FALSE,col.names=nombres,fill=TRUE)
+```
+
+# Indtie: Info de las horas.
+
+Hay 7 variables. 194 renglones
+OJO: están en formato 24hrs peeero las 9:05 am = 90500 y las 11am = 110000. 
+Es decir, no tienen igual número de caracteres. We may have to padd some timestamps with a zero at the
+beginning.
+
+```{r}
+nombres<-paste("X",c(1:7),sep="")
+s<-read.table("./S4540435/R_indtie.txt.mod", sep="|",header=FALSE,col.names=nombres,fill=TRUE)
+```
+
+
+Pegando archivos
+----------------------------------------------------------------------------------------------------
+
+Les voy a agregar una columna a cada archivo con el nombre de la carpeta. Quizá esté de más, pero equis. 
+Y después, concateno archivos. Estoy omitiendo el `creven` porque no sabemos qué onda con él.
+En la carpeta `Datos_Muestra`, que contiene todas las carpetitas, hacemos:
+
+```{bash}
+archivos=( "R_indpro.txt.mod" "R_dcd.txt.mod" "R_indtie.txt.mod" "R_indcli.txt.mod" "R_r2.txt.mod" )
+for folder in *
+do
+  date
+  cd $folder
+  for archivo in "${archivos[@]}"
+    do
+    path="/Users/PandoraMac/Documents/David/pepsi2/Datos_R/$archivo"
+    awk -v carpeta=$folder -v file=$archivo -v dir=$path 'BEGIN{ FS = "|" }; { print carpeta"|"$0 >> dir }' $archivo  
+  done
+  cd ..
+  date
+done
+```
+
+Tarda menos de un segundo por carpeta.
+
+
+
+
+
+
+
+    
+
+
