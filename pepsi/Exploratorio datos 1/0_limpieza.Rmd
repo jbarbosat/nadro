@@ -1,5 +1,5 @@
 % 20-sept-2013
-% Primer micro conjunto de datos que tenemos de pepsi.
+% Limpieza del primer micro conjunto de datos que tenemos de pepsi.
 % Makefile: 
 
 Carpetas
@@ -215,7 +215,7 @@ do
   for archivo in "${archivos[@]}"
     do
     path="/Users/PandoraMac/Documents/David/pepsi2/Datos_R/$archivo"
-    awk -v carpeta=$folder -v file=$archivo -v dir=$path 'BEGIN{ FS = "|" }; { print carpeta$0 >> dir }' $archivo  
+    awk -v carpeta=$folder -v file=$archivo -v dir=$path 'BEGIN{ FS = "|" }; { print carpeta"|"$0 >> dir }' $archivo  
   done
   cd ..
   date
@@ -223,6 +223,9 @@ done
 ```
 
 Tarda menos de un segundo por carpeta.
+
+
+
 
 
 
