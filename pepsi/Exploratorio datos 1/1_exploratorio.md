@@ -36,7 +36,8 @@ DHP_PRECTE	    | precio          |   Precio Cliente
 
 
 
-```{r,eval=FALSE}
+
+```r
 setwd("/Users/PandoraMac/Documents/David/pepsi2/Datos_R/")
 nombres<-c("carpeta","prod.id","cliente","ruta.id","centro.id","fecha.trans","fecha.carga","cia.id","vta.imp","vta.units","dummy.vta","invent.0","u.devol","u.rot","u.capt","u.sug", "u.falt","precio")
 s<-as.data.frame(read.table("R_indpro.txt.mod", sep="|",header=FALSE,
@@ -61,8 +62,10 @@ head(s)
 ```
 
 
+
 Primero, filtramos por compañía:
-```{r,eval=FALSE}
+
+```r
 > table(s$cia.id)
 
      1     10     11     14      2      3     30     31 
@@ -70,6 +73,7 @@ Primero, filtramos por compañía:
 
 s<-subset(s,s$cia.id=="1")
 ```
+
 
 La cía 1 es Sabritas. Así que sólo tenemos 442K transacciones.
 
@@ -79,7 +83,8 @@ Tables simples
 
 - carpeta
 - prod.id. poquitos productos tienen más de 5K registros. 
-```{r,eval=FALSE}
+
+```r
 > length(table(s$prod.id))
 [1] 710
 > min(table(s$prod.id))
@@ -92,8 +97,10 @@ Tables simples
 [1] 442155
 ```
 
+
 - cliente.id. Nos dijeron que la clave del cliente cambia con el centro de distribución, así que:
-```{r,eval=FALSE}
+
+```r
 > head(table(s$cliente,s$centro.id))
             
                454  759
@@ -110,28 +117,34 @@ Tables simples
 s$cliente.id<-paste(s$cliente,s$centro.id,sep="-")
 ```
 
+
 - ruta.id
-```{r,eval=FALSE}
+
+```r
 > length(table(s$ruta.id)) #383 en total... la mayoría son de papitas
 [1] 230
 > plot(table(s$ruta.id))
 ```
 
+
 ![rutas](images/plot01.pdf)
 
 - centro.id
-```{r,eval=FALSE}
+
+```r
 > table(s$centro.id) #en los datos originales hay oootro centro, que no distribuye papitas
 
    454    759 
 289823 152332 
 ```
 
+
 - fecha.trans, fecha.carga
 Transferencia <= carga
 
 - vta.imp
-```{r,eval=FALSE}
+
+```r
 summary(s$vta.imp)
      Min.   1st Qu.    Median      Mean   3rd Qu.      Max.      NAs 
 -33860.00     20.24     29.50     41.93     47.20  89530.00      5189 
@@ -139,11 +152,13 @@ summary(s$vta.imp)
 #hist(s$vta.imp)
 ```
 
+
 Hay muchos negativos. Habrá que ver q onda con ellos.
 
 
 - vta.units
-```{r,eval=FALSE}
+
+```r
 summary(s$vta.units)
      Min.   1st Qu.    Median      Mean   3rd Qu.      Max.      NAs 
 -5024.000     4.000     5.000     7.728     9.000 10800.000      4951 
@@ -151,76 +166,93 @@ summary(s$vta.units)
 plot(s$vta.units)
 ```
 
+
 ![unidades](images/plot02.png)
 
 - dummy.vta
-```{r,eval=FALSE}
+
+```r
 table(s$dummy.vta)
      0      1 
   7364 434791 
 ```
 
+
 El $2\%$ no fue venta... 
 
 - invent.0
 summary(s$vta.units)
-```{r,eval=FALSE}
+
+```r
 > summary(s$invent.0)
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NAs 
      NA      NA      NA     NaN      NA      NA  442155 
 ```
 
+
 - u.devol
-```{r,eval=FALSE}
+
+```r
 summary(s$u.devol)
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NAs 
   0.000   0.000   0.000   0.025   0.000 100.000   27432 
 plot(s$u.devol)
 ```
 
+
 ![devueltas](images/plot03.png)
 
 "u.rot"
-```{r,eval=FALSE}
+
+```r
 summary(s$u.rot)
    Min.  1st Qu.   Median     Mean  3rd Qu.     Max.     NAs 
    0.000    0.000    0.000    0.891    0.000 5024.000    15458 
 plot(s$u.rot)
 ```
 
+
 ![rotadas](images/plot04.png)
 
 - u.capt
-```{r,eval=FALSE}
+
+```r
 summary(s$u.capt)
     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.     NAs 
    0.000    4.000    5.000    7.643    9.000 5921.000    26854 
 plot(s$u.capt)
 ```
 
+
 ![capturadas](images/plot05.png)
 
 - u.sug
-```{r,eval=FALSE}
+
+```r
 summary(s$u.sug)
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NAs 
       0       0       0       0       0       0   27590 
 ```
 
+
 - u.falt
-```{r,eval=FALSE}
+
+```r
 summary(s$u.falt)
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NAs 
       0       0       0       0       0       0   27590 
 ```
 
+
 - precio
-```{r,eval=FALSE}
+
+```r
 summary(s$precio)
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NAs 
    0.43    4.22    5.06    6.12    5.90  161.80   31945 
 plot(s$precio)
 ```
+
 
 ![precio](images/plot06.png)
 
