@@ -11,7 +11,7 @@ Cosas x hacer:
   - Forecasting methods for retail,
 aunque creo que más bien ella estaba pensando en optimizar la distribución y nosotros queremos una cosa más simple. 
 - Echarle ojo a las dos tristes diapositivas que nos pasaron.
-
+- Bajé un artículo de algo que chance pueda servir.. http://www.jstor.org/stable/40057049
 
 Miércoles Septiembre 18, 2013
 ------------------------------
