@@ -1,3 +1,18 @@
+Martes Septiembre 24, 2013
+---------------------------
+
+Cosas x hacer: 
+- Acabar el exploratorio con las cosas q Adolfo sugirió. So far lo tengo por variable muy equis.
+- Buscar (suggested by Gaby): 
+  - Points of distribution. PODs
+  - POint of dispensing location
+  - RealOp
+  - Capacity optimization 
+  - Forecasting methods for retail,
+aunque creo que más bien ella estaba pensando en optimizar la distribución y nosotros queremos una cosa más simple. 
+- Echarle ojo a las dos tristes diapositivas que nos pasaron.
+
+
 Miércoles Septiembre 18, 2013
 ------------------------------
 
