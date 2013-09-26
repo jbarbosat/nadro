@@ -1,4 +1,4 @@
-% 21-sept-2013
+% 25-sept-2013
 % Exploración del primer micro conjunto de datos que tenemos de pepsi.
 % Makefile: pandoc -s -V geometry:margin=0.7in -V lang=spanish 1_exploratorio.md -o Exploratorio.pdf
 
@@ -228,7 +228,7 @@ plot(s$precio)
 Tables dobles
 -------------------------------------------------------------------------------------------------------
   
-  ```{r}
+```{r,eval=FALSE}
 setwd("/Users/PandoraMac/Documents/David/pepsi2/Datos_R/")
 nombres2<-c("carpeta","cliente","ruta.id","centro.id","fecha.trans","fecha.carga","cia.id",
             "cap.cliente", "vta.imp","vta.units","vta.pop","vis.prog","vis.prog.real","vis.real","vis.efe",
@@ -264,39 +264,231 @@ n.dinero n.cerrado n.lleno n.no.ta n.mto n.sv.sv time.aten time.trans vis/ejec v
 6        0         0       0       0     0       0         0          0        0         0  
 ```
 
-Nos interesan las variables que empiezan con "n".
-```{r}
+Volvemos a corregir lo del id de cliente y nos quedamos sólo con la cía 1
+```{r,eval=FALSE}
+t$cliente.id<-paste(t$cliente,t$centro.id,sep="-")
+t<-subset(t,t$cia.id==1)
+```
+
+Son 38 K registros. Nos interesan las variables que empiezan con "n".
+```{r,eval=FALSE}
 for (i in c("n.dinero","n.cerrado","n.lleno","n.no.ta","n.mto","n.sv.sv")){
   cat(i)
   print(table(t[,i]))
 }
 
 n.dinero
-0     1 
-57667  2483 
+    0     1 
+37107   924 
 n.cerrado
-0     1 
-58456  1694 
+    0     1 
+36941  1090 
 n.lleno
-0     1 
-58414  1736 
+    0     1 
+37241   790 
 n.no.ta
-0     1 
-59907   243 
+    0     1 
+37940    91 
 n.mto
-0 
-60150 
+    0 
+38031 
 n.sv.sv
-0     1 
-55939  4211 
+    0     1 
+36163  1868 
 ```
 
-Volvemos a corregir lo del id de cliente:
-  ```{r}
+No hay nadie en mantenimiento, así que la omitiremos.
+
+Tablas cruzadas:
+```{r,eval=FALSE}
+variables<-c("n.dinero","n.cerrado","n.lleno","n.no.ta","n.sv.sv")
+table(t[,variables]) #borramos las tablas que están llenas de ceros
+
+, , n.lleno = 0, n.no.ta = 0, n.sv.sv = 0
+
+        n.cerrado
+n.dinero     0     1
+       0 33268  1090
+       1   924     0
+
+, , n.lleno = 1, n.no.ta = 0, n.sv.sv = 0
+
+        n.cerrado
+n.dinero     0     1
+       0   790     0
+       1     0     0
+
+, , n.lleno = 0, n.no.ta = 1, n.sv.sv = 0
+
+        n.cerrado
+n.dinero     0     1
+       0    91     0
+       1     0     0
+
+, , n.lleno = 0, n.no.ta = 0, n.sv.sv = 1
+
+        n.cerrado
+n.dinero     0     1
+       0  1868     0
+       1     0     0
+```
+
+En ningún caso se prenden dos banderas, je. Hagamos un subset para cada variable y vemos qué hay.
+```{r,eval=FALSE}
+variables<-c("n.dinero","n.cerrado","n.lleno","n.no.ta","n.sv.sv")
+columnas<-c(4,12:21)
+for(col in columnas)
+{
+  print(names(t)[col])
+  x1<-table(t[t$n.dinero==1,col])/sum(table(t[t$n.dinero==1,col]))
+  x2<-table(t[t$n.cerrado==1,col])/sum(table(t[t$n.cerrado==1,col]))
+  x3<-table(t[t$n.lleno==1,col])/sum(table(t[t$n.lleno==1,col]))
+  x4<-table(t[t$n.no.ta==1,col])/sum(table(t[t$n.no.ta==1,col]))
+  x5<-table(t[t$n.sv.sv==1,col])/sum(table(t[t$n.sv.sv==1,col]))
+  #noms<-c(names(x1),names(x2),names(x3),names(x4),names(x5))
+  noms<-c(rep("din",nrow(x1)),rep("cerr",nrow(x2)),rep("lleno",nrow(x3)),
+          rep("no.ta",nrow(x4)),rep("sv.sv",nrow(x5)))
+  numeros<-c(x1,x2,x3,x4,x5)
+  print(rbind(noms,round(numeros,3)))
+  #print(numeros)
+}  
+```
+
+En totales:
+```{r,eval=FALSE}
+[1] "centro.id"
+        454   759   454    759    454     759     454     759     454     759    
+noms    "din" "din" "cerr" "cerr" "lleno" "lleno" "no.ta" "no.ta" "sv.sv" "sv.sv"
+numeros "611" "313" "645"  "445"  "639"   "151"   "72"    "19"    "1511"  "357"  
+[1] "vis.prog"
+        0     1     0      1      0       1       0       1       1      
+noms    "din" "din" "cerr" "cerr" "lleno" "lleno" "no.ta" "no.ta" "sv.sv"
+numeros "72"  "852" "13"   "1077" "124"   "666"   "13"    "78"    "1868" 
+[1] "vis.prog.real"
+        0     1     0      1      0       1       0       1       0       1      
+noms    "din" "din" "cerr" "cerr" "lleno" "lleno" "no.ta" "no.ta" "sv.sv" "sv.sv"
+numeros "142" "782" "224"  "866"  "217"   "573"   "29"    "62"    "1846"  "22"   
+[1] "vis.real"
+        0     1     0      1      0       1       0       1       0       1      
+noms    "din" "din" "cerr" "cerr" "lleno" "lleno" "no.ta" "no.ta" "sv.sv" "sv.sv"
+numeros "112" "812" "218"  "872"  "180"   "610"   "27"    "64"    "1846"  "22"   
+[1] "vis.efe"
+        0     0      0       0       0      
+noms    "din" "cerr" "lleno" "no.ta" "sv.sv"
+numeros "924" "1090" "790"   "91"    "1868" 
+[1] "vis.scan"
+        0     1     0      1      0       1       0       1       0       1      
+noms    "din" "din" "cerr" "cerr" "lleno" "lleno" "no.ta" "no.ta" "sv.sv" "sv.sv"
+numeros "112" "812" "218"  "872"  "180"   "610"   "27"    "64"    "1846"  "22"   
+[1] "vis.tot.scan"
+        0     1     0      1      0       1       0       1       0       1      
+noms    "din" "din" "cerr" "cerr" "lleno" "lleno" "no.ta" "no.ta" "sv.sv" "sv.sv"
+numeros "112" "812" "218"  "872"  "180"   "610"   "27"    "64"    "1846"  "22"   
+[1] "vis.no.vta"
+        1     1      1       1       1      
+noms    "din" "cerr" "lleno" "no.ta" "sv.sv"
+numeros "924" "1090" "790"   "91"    "1868" 
+[1] "vis.no.real"
+        0     0      0       0       0       1      
+noms    "din" "cerr" "lleno" "no.ta" "sv.sv" "sv.sv"
+numeros "924" "1090" "790"   "91"    "22"    "1846" 
+[1] "vis.svta.min"
+        0     0      0       0       0      
+noms    "din" "cerr" "lleno" "no.ta" "sv.sv"
+numeros "924" "1090" "790"   "91"    "1868" 
+[1] "vis.svm.imp"
+        0     0      0       0       0      
+noms    "din" "cerr" "lleno" "no.ta" "sv.sv"
+numeros "924" "1090" "790"   "91"    "1868" 
+```
+
+En porcentajes:
+```{r,eval=FALSE}
+[1] "centro.id"
+     454     759     454     759     454     759     454     759     454     759    
+noms "din"   "din"   "cerr"  "cerr"  "lleno" "lleno" "no.ta" "no.ta" "sv.sv" "sv.sv"
+     "0.661" "0.339" "0.592" "0.408" "0.809" "0.191" "0.791" "0.209" "0.809" "0.191"
+
+[1] "vis.prog"
+     0       1       0       1       0       1       0       1       1      
+noms "din"   "din"   "cerr"  "cerr"  "lleno" "lleno" "no.ta" "no.ta" "sv.sv"
+     "0.078" "0.922" "0.012" "0.988" "0.157" "0.843" "0.143" "0.857" "1"    
+
+[1] "vis.prog.real"
+     0       1       0       1       0       1       0       1       0       1      
+noms "din"   "din"   "cerr"  "cerr"  "lleno" "lleno" "no.ta" "no.ta" "sv.sv" "sv.sv"
+     "0.154" "0.846" "0.206" "0.794" "0.275" "0.725" "0.319" "0.681" "0.988" "0.012"
+
+[1] "vis.real"
+     0       1       0      1      0       1       0       1       0       1      
+noms "din"   "din"   "cerr" "cerr" "lleno" "lleno" "no.ta" "no.ta" "sv.sv" "sv.sv"
+     "0.121" "0.879" "0.2"  "0.8"  "0.228" "0.772" "0.297" "0.703" "0.988" "0.012"
+
+[1] "vis.efe"
+     0     0      0       0       0      
+noms "din" "cerr" "lleno" "no.ta" "sv.sv"
+     "1"   "1"    "1"     "1"     "1"    
+
+[1] "vis.scan"
+     0       1       0      1      0       1       0       1       0       1      
+noms "din"   "din"   "cerr" "cerr" "lleno" "lleno" "no.ta" "no.ta" "sv.sv" "sv.sv"
+     "0.121" "0.879" "0.2"  "0.8"  "0.228" "0.772" "0.297" "0.703" "0.988" "0.012"
+
+[1] "vis.tot.scan"
+     0       1       0      1      0       1       0       1       0       1      
+noms "din"   "din"   "cerr" "cerr" "lleno" "lleno" "no.ta" "no.ta" "sv.sv" "sv.sv"
+     "0.121" "0.879" "0.2"  "0.8"  "0.228" "0.772" "0.297" "0.703" "0.988" "0.012"
+
+[1] "vis.no.vta"
+     1     1      1       1       1      
+noms "din" "cerr" "lleno" "no.ta" "sv.sv"
+     "1"   "1"    "1"     "1"     "1"    
+
+[1] "vis.no.real"
+     0     0      0       0       0       1      
+noms "din" "cerr" "lleno" "no.ta" "sv.sv" "sv.sv"
+     "1"   "1"    "1"     "1"     "0.012" "0.988"
+
+[1] "vis.svta.min"
+     0     0      0       0       0      
+noms "din" "cerr" "lleno" "no.ta" "sv.sv"
+     "1"   "1"    "1"     "1"     "1"    
+
+[1] "vis.svm.imp"
+     0     0      0       0       0      
+noms "din" "cerr" "lleno" "no.ta" "sv.sv"
+     "1"   "1"    "1"     "1"     "1"   
+```
+
+
+JOIN de INDCLI e INDPRO
+-------------------------------------------------------------------------------------------------------
+
+```{r,eval=FALSE}
+setwd("/Users/PandoraMac/Documents/David/pepsi2/Datos_R/")
+nombres<-c("carpeta","prod.id","cliente","ruta.id","centro.id","fecha.trans","fecha.carga","cia.id",
+  "vta.imp","vta.units","dummy.vta","invent.0","u.devol","u.rot","u.capt","u.sug", "u.falt","precio")
+
+s<-as.data.frame(read.table("R_indpro.txt.mod", sep="|",header=FALSE,
+                            colClasses=c(rep("character",8),"numeric",rep("integer",8),"numeric")))
+
+nombres2<-c("carpeta","cliente","ruta.id","centro.id","fecha.trans","fecha.carga","cia.id",
+            "cap.cliente", "vta.imp","vta.units","vta.pop","vis.prog","vis.prog.real","vis.real","vis.efe",
+            "vis.scan","vis.tot.scan","vis.no.vta","vis.no.real","vis.svta.min","vis.svm.imp","n.dinero",
+            "n.cerrado","n.lleno","n.no.ta","n.mto","n.sv.sv","time.aten","time.trans","vis/ejec",
+            "vis/ttras","hora.llega","hora.sale")
+
+t<-as.data.frame(read.table("R_indcli.txt.mod", sep="|",header=FALSE,
+                            colClasses=c(rep("character",6),rep("numeric",14),rep("character",8),
+                                         rep("numeric",2),"character","character")))
+
+names(s)<-nombres
+names(t)<-nombres2
+s$cliente.id<-paste(s$cliente,s$centro.id,sep="-")
+s<-subset(s,s$cia.id==1)
 t$cliente.id<-paste(t$cliente,t$centro.id,sep="-")
+t<-subset(t,t$cia.id==1)
 ```
-
-Y ahora sí, hacemos subset de 
 
 
 OJO: Qué onda con unidades capturadas y no sé qué tanto?
