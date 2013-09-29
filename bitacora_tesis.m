@@ -1,5 +1,13 @@
-Martes Septiembre 24, 2013
----------------------------
+Viernes Septiembre 27, 2013
+-------------------------------
+
+Mandamos un ppt con el requerimiento de info (miércoles), posible modo de estimación de inventarios, 
+estimación del espacio que ocuparán los datos después de pre-procesar (300Gb, which I believe to be 
+super small). Nos lo regresar pidiendo que hiciéramos un desmadrín en excel. David lo mandó el viernes.
+La próxima semana haremos teamback e intentaremos juntarnos con Felipe... Chance, jueves después de las 2
+en Polanco. David sale de clases a la 1 en Santa Tere. A ver qué pasa.
+
+Habrá que ver qué dicen. Sigo teniendo pendiente:
 
 Cosas x hacer: 
 - Acabar el exploratorio con las cosas q Adolfo sugirió. So far lo tengo por variable muy equis.
@@ -12,6 +20,7 @@ Cosas x hacer:
 aunque creo que más bien ella estaba pensando en optimizar la distribución y nosotros queremos una cosa más simple. 
 - Echarle ojo a las dos tristes diapositivas que nos pasaron.
 - Bajé un artículo de algo que chance pueda servir.. http://www.jstor.org/stable/40057049
+
 
 Miércoles Septiembre 18, 2013
 ------------------------------
