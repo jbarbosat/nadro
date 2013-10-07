@@ -16,6 +16,19 @@ Al estar presentes en zonas de enfrentamientos armados, los miembros del ICRC es
 
 El propósito de este trabajo es analizar la información
 
-Utilizando como fuentes de información Google News y Twitter, se busca adaptar el protocolo descrito por Michele Coscia y Viridiana Ríos en **Knowing Where and How Criminal Organizations Operate Using Web Content**
+responder preguntas como.... averiguar las zonas donde la icrc está en más riesgo. 
+
+Existe gente dentro de la cruz roja que crea modelos para ver dónde es más eficiente que esté la cruz roja y en dónde está en mayor riesgo. Así que como primer objetivo de este desmadre es proporcionarle información al dude que hace los modelos. hay gente en la cruz roja que lee noticias todo el tiempo, genera resumensitos y los da a alguien más. deberíamos poder automatizar esto. que la gente ya no busque noticias, for instance. 
+
+el problema de qué análisis hacer no es tan claro pero lo podemos sacar de la wishlist de software de la icrc
+
+ahora el pedo del proyecto es ver cómo le hago para montar algo así. cómo deifino las palabras. qué insfraestructura necesito para guardar las noticias y leugo cómo las despliego para que la gente se ahorre el paso de buscar.
+
+Utilizando como fuentes de información Google News y Twitter, se busca adaptar el protocolo descrito por Michele Coscia y Viridiana Ríos en **Knowing Where and How Criminal Organizations Operate Using Web Content** para 
+
+Definir palabras.
+Scrapping de Google News y Twitter. Arquitectura.
+Análisis de esa información. Ellas contaron. Chance hacer algo más? Cosas de análisis semántico.
+Visualización. Dashboard.
 
 

@@ -1,3 +1,21 @@
+Jueves Octubre 3,2013
+---------------------
+
+Vimos a Felipe. El audio está en el dropbox, porque dijo cosas muy útiles. Tengo que volver a escucharlo
+y anotar acá todo. Pero so far lo que recuerdo:
+
+- Felipe propuso un modo de inferir inventarios. Dijo que lo hagamos por 
+dos productitos; 5 skus de cada uno. Chance sabritas y fritos porque es probable que en sabritas no haya
+mucho que mejorar. 
+- No hay que pedir toda la info desde el inicio! Uno o dos años, área metropol. Inferir inventarios, de ahi ver
+quién sí tiene papitas de más o de menos y ver wtf. 
+- No lo hagamos con todo; no trabajemos de más!
+- Análisis por tienda; ya que tengamos bien definido las tiendas que no tienen suficiente o que tienen papitas
+de más, ver wtf.
+- Pedir primero info de esos skus; luego lo otro. 
+
+
+
 Viernes Septiembre 27, 2013
 -------------------------------
 
