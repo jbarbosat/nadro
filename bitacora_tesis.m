@@ -1,3 +1,11 @@
+Martes Octubre 15, 2013
+-----------------------
+Tuvimos otra reunión con César después de hablar con Felipe y nos pasó 800MB de datos. Están comprimidosy todo.
+Hemos seguido intercambiando mails sobre presentación y otras cosas.
+
+La idea es que tenemos 2 o 3 sku's correspondientes a la zona norte. Con ellos queremos calcular inventario 
+de la tienda para ver si hay tiendas a las que se les está dejando una cantidad inadecuada de papitas.
+
 Jueves Octubre 3,2013
 ---------------------
 
