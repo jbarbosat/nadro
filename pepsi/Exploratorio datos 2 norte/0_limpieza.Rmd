@@ -1,0 +1,99 @@
+% 15-oct-2013
+% Limpieza del conjunto de datos del norte que tenemos de pepsi.
+% Makefile: 
+
+
+
+Archivos
+----------------------------------------------------------------------------------------------------
+
+Tenemos 1.14 GB (zippeados) en un montón de archivos:
+
+- SF_ExtCustomerData, ProductData y RoutesData
+- SF_ExtCustServiceDat201211: Hay 2012 y 2013 y luego: 011-015, 021-024, 031-034, 041-045, 051-054, 
+061-064, 071-075, 081-084 (82-84 para 2013), 091-094, 101-105 (no para 2013), 111-114 (no para 2013), 
+121-124(no para 2013).
+- SF_ExtSalesData: Hay 2012 y luego: 011-015, 021-024, 031-034, 041-045, 051-054, 
+061-064, 071-074, 084, 91, 92, 94, 113,122-124. Para 2013 hay: 011-013, 021, 033, 034, 041, 043, 045, 071, 075, 084, 092, 093.
+ 
+Descomprimir todo:
+```{bash}
+for f in *.zip;
+do 
+unzip "$f"; 
+rm "$f";
+done
+```
+
+
+
+SalesData2012XXX
+----------------------------------------------------------------------------------------------------
+
+En las 2 últimas dos columnas de los archivos Sales Data aparece la devolución.
+
+Ejemplo:
+
+830I000000002|N/A|0436|2012-03-16|PESOS|EACH|1720.0000|50.0000|0.0000|0|106
+
+- SUC.ID_SUC_CORP||MCLI.ID_CLI_CORP AS CUSTKEY_CUSTNUMBER - 830I000000002
+- 'N/A' AS COD_BARRAS, - N/A
+- PRO.ID_PROD_ODS, - 0436
+- TO_CHAR(DIA.DIA_FECHA,'YYYY-MM-DD') CALENDARDATE, - 2012-03-16
+- 'PESOS' AS CURRENCY, - PESOS
+- 'EACH' AS MEDIDA, - EACH
+- SUM(VTA.VENTA_CAPT_PES) AS VENTA_CAPT_PES, --> SALESAMOUNT – 1720.0000
+- SUM(VTA.VENTA_CAPT_UNI) AS VENTA_CAPT_UNI, --> SALESQUANTITY – 50.0000
+- SUM(VTA.HHC_UNI_DEVUELTAS*VTA.PRECIO_CLIENTE) AS DEVOL_PES, --> UNSALEABLEAMOUNT – 0.0000
+- SUM(VTA.HHC_UNI_DEVUELTAS) AS DEVOL_UNI    --> UNSALEABLEQUANTITY  - 106
+- RUT.ID_RUTA
+
+
+
+CustomerData
+----------------------------------------------------------------------------------------------------
+
+Ejemplo:
+
+10I000000002|10I000000002|EVENTUAL AJUSTES|0|N/A|N/A|0|MEXICO|||2|DTS|21|OTROS|0|N/A|0|N/A||||3|NORTE|55N360|DIV COAHUILA|10|SALTILLO EDI|||N/A|N/A|N/A
+
+- B.ID_SUC_CORP||A.ID_CLI_CORP, 
+- B.ID_SUC_CORP||A.ID_CLI_CORP, 
+- A.DES_CLIENTE,
+- A.DES_CALLE, 
+- 'N/A', 
+- 'N/A', 
+- A.DES_CP, 
+- 'MEXICO', 
+- A.DES_CORX, 
+- A.DES_CORY, 
+- 2, 
+- 'DTS',
+- A.ID_TIPOCLIENTE, 
+- C.DES_TIPOCLIENTE, 
+- 0, 
+- 'N/A', 
+- 0, 
+- 'N/A', 
+- NULL AS ID_RUTA_CORP, 
+- NULL AS DES_RUTA, 
+- NULL AS DES_TIPORUTA, ----------> D.ID_RUTA_CORP, D.DES_RUTA, DES_TIPORUTA,
+- G.ID_ZONA, 
+- G.DES_ZONA, 
+- F.ID_DIV_ODS, 
+- F.DES_DIVISION,
+- B.ID_SUC_CORP, 
+- B.DES_SUCURSAL, 
+- NULL AS ID_DISTRITO, 
+- NULL AS DES_DISTRITO, 
+- 'N/A', 
+- 'N/A', 
+- 'N/A'
+
+
+
+ProductData
+----------------------------------------------------------------------------------------------------
+
+Catálogo de productos.
+
