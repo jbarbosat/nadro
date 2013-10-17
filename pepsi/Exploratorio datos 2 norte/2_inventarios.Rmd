@@ -1,5 +1,5 @@
-% 15-oct-2013
-% Cálculo de inventarios para el conjunto de datos que tenemos de la zona norte de pepsi.
+% 17-oct-2013
+% Cálculo de inventarios para clientes agrupados por tipo para el conjunto de datos que tenemos de la zona norte de pepsi.
 % Makefile: pandoc -s -V geometry:margin=0.7in -V lang=spanish 2_inventarios.md -o Inventarios.pdf
 
 
