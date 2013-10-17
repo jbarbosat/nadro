@@ -4,7 +4,7 @@
 
 
 
-Archivos
+Total de Archivos
 ----------------------------------------------------------------------------------------------------
 
 Tenemos 1.14 GB (zippeados) en un montón de archivos:
@@ -109,5 +109,14 @@ N/A|428601|PMF_UNALLOCATED|3|PMF_UNALLOCATED|-1|PMF_UNALLOCATED|PMF_UNALLOCATED
 N/A|428602|PMF_UNALLOCATED|3|PMF_UNALLOCATED|-1|PMF_UNALLOCATED|PMF_UNALLOCATED
 N/A|428603|PMF_UNALLOCATED|3|PMF_UNALLOCATED|-1|PMF_UNALLOCATED|PMF_UNALLOCATED
 ```
+
+
+Filtro de David para Sales
+---------------------------------------------------------------------------------------------
+Con SED y más magia de bash, David filtró para sólo 3 sku's y ahora tenemos sólo tres achivos:
+
+- churrumais.dat - 292 MB
+- fritos.dat - 220 MB
+- papas.dat - 445 MB
 
 
