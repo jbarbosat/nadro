@@ -1,3 +1,10 @@
+Jueves Octubre 17, 2103
+-----------------------
+
+Análisis 1: Promedios por producto y por tipo de cliente en el tiempo (t-1, t-2, t-3)
+
+
+
 Martes Octubre 15, 2013
 -----------------------
 Tuvimos otra reunión con César después de hablar con Felipe y nos pasó 800MB de datos. Están comprimidosy todo.
