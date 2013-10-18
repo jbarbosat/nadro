@@ -40,7 +40,8 @@ Sabritas normales
 - 10: DEVOL_UNI    --> UNSALEABLEQUANTITY  - 106
 - 11: RUT.ID_RUTA
 
-```{r,eval=FALSE}
+
+```r
 setwd("/Users/PandoraMac/Documents/David/pepsi2/Datos Norte 3 papitas/")
 clientes<-as.data.frame(read.table("SF_ExtCustomerData.txt", sep="|", quote="", header=FALSE,fill=TRUE,stringsAsFactors = FALSE,colClasses=rep("character",32)))
 head(clientes)
@@ -81,10 +82,12 @@ s<-as.data.frame(read.table("papas2.dat", sep="|",header=FALSE,
 names(s)<-nombres
 ```
 
+
 Y ahora, veamos de qué tipo son los clientes que tenemos. Primero, filtrar todos los clientes del
 catálogo con únicamente los que están en la tabla de papitas. Luego ya el merge. Y lo escribimos
 en un archivo, por si crashea R o lo que sea. Hacer el merge tardó como 5 minutos pero de todos modos.
-```{r,eval=FALSE}
+
+```r
 tipo_cliente<-subset(clientes_sum,id_cliente%in%s$id_cliente)
 datos<-merge(x = s, y = tipo_cliente, by = "id_cliente", all.x=TRUE)
 write.table(datos,"papas3.dat",sep="|",row.names = FALSE,col.names =FALSE)
@@ -100,8 +103,10 @@ head(datos)
 6 804I000000001     N/A    1892 2012-04-02  PESOS   EACH  259.60      44       0       0    1272 EVENTUAL
 ```
 
+
 ¿Y cuántos clientes hay de cada tipo?
-```{r,eval=FALSE}
+
+```r
 table(clientes_sum[,2])
                                                             1                             10 
                           3376                             19                              2 
@@ -172,18 +177,22 @@ PRIMARIA A SECUNDARIA GOBIERNO           PRIMARIA DE GOBIERNO            PRIMARI
 ```
 
 
+
 Quedamos en tomar las ventas como positivas; tanto en unidades como en dineros:
-```{r,eval=FALSE}
-datos$vta_din2<-abs(datos$vta_din)
-datos$vta_uni2<-abs(datos$vta_uni)
-datos$dev_din2<-abs(datos$dev_din)
-datos$dev_uni2<-abs(datos$dev_uni)
+
+```r
+datos$vta_din2 <- abs(datos$vta_din)
+datos$vta_uni2 <- abs(datos$vta_uni)
+datos$dev_din2 <- abs(datos$dev_din)
+datos$dev_uni2 <- abs(datos$dev_uni)
 ```
+
 
 Para el análisis agregado que queremos, hay que promediar por fecha y por tipo_cli ventas y devoluciones
 en unidades y dinero.
 
-```{r,eval=FALSE}
+
+```r
 rm(s)
 rm(clientes_sum)
 rm(tipo_cliente)
@@ -205,32 +214,38 @@ write.table(agregados_tipo,"papas_agregados_tipo.csv",sep=",",row.names = FALSE)
 
 
 
+
 Fritos
 --------------------------------------------------------------------------------------------------
 
-```{r,eval=FALSE}
+
+```r
 setwd("/Users/PandoraMac/Documents/David/pepsi2/Datos Norte 3 papitas/")
-clientes<-as.data.frame(read.table("SF_ExtCustomerData.txt", sep="|", quote="", header=FALSE,fill=TRUE,stringsAsFactors = FALSE,colClasses=rep("character",32)))
+clientes <- as.data.frame(read.table("SF_ExtCustomerData.txt", sep = "|", quote = "", 
+    header = FALSE, fill = TRUE, stringsAsFactors = FALSE, colClasses = rep("character", 
+        32)))
 
-#v14 es la buena.
+# v14 es la buena.
 
-clientes_sum<-clientes[,c(1,14)]
+clientes_sum <- clientes[, c(1, 14)]
 rm(clientes)
-names(clientes_sum)<-c("id_cliente","tipo_cli")
+names(clientes_sum) <- c("id_cliente", "tipo_cli")
 
-#Habíamos guardado en fritos2.dat las papas con los sku's buenos
+# Hab<U+00ED>amos guardado en fritos2.dat las papas con los sku's buenos
 
-nombres<-c("id_cliente","codbarr","id_prod","fecha","moneda","medida","vta_din","vta_uni","dev_din",
-           "dev_uni","id_ruta")
-s<-as.data.frame(read.table("fritos2.dat", sep="|",header=FALSE,
-                 colClasses=c(rep("character",6),rep("numeric",4),"integer")))
-names(s)<-nombres
+nombres <- c("id_cliente", "codbarr", "id_prod", "fecha", "moneda", "medida", 
+    "vta_din", "vta_uni", "dev_din", "dev_uni", "id_ruta")
+s <- as.data.frame(read.table("fritos2.dat", sep = "|", header = FALSE, colClasses = c(rep("character", 
+    6), rep("numeric", 4), "integer")))
+names(s) <- nombres
 ```
+
 
 Y ahora, veamos de qué tipo son los clientes que tenemos. Primero, filtrar todos los clientes del
 catálogo con únicamente los que están en la tabla de papitas. Luego ya el merge. Y lo escribimos
 en un archivo, por si crashea R o lo que sea. Hacer el merge tardó como 5 minutos pero de todos modos.
-```{r,eval=FALSE}
+
+```r
 tipo_cliente<-subset(clientes_sum,id_cliente%in%s$id_cliente)
 datos<-merge(x = s, y = tipo_cliente, by = "id_cliente", all.x=TRUE)
 write.table(datos,"fritos3.dat",sep="|",row.names = FALSE,col.names =FALSE)
@@ -243,8 +258,10 @@ write.table(datos,"fritos3.dat",sep="|",row.names = FALSE,col.names =FALSE)
 6 804I000000001     N/A    7378 2012-09-12  PESOS   EACH   80.96      16       0       0   27302 EVENTUAL
 ```
 
+
 ¿Y cuántos clientes hay de cada tipo?
-```{r,eval=FALSE}
+
+```r
 table(clientes_sum[,2])
                                                             1                             10 
                           3376                             19                              2 
@@ -315,18 +332,22 @@ PRIMARIA A SECUNDARIA GOBIERNO           PRIMARIA DE GOBIERNO            PRIMARI
 ```
 
 
+
 Quedamos en tomar las ventas como positivas; tanto en unidades como en dineros:
-```{r,eval=FALSE}
-datos$vta_din2<-abs(datos$vta_din)
-datos$vta_uni2<-abs(datos$vta_uni)
-datos$dev_din2<-abs(datos$dev_din)
-datos$dev_uni2<-abs(datos$dev_uni)
+
+```r
+datos$vta_din2 <- abs(datos$vta_din)
+datos$vta_uni2 <- abs(datos$vta_uni)
+datos$dev_din2 <- abs(datos$dev_din)
+datos$dev_uni2 <- abs(datos$dev_uni)
 ```
+
 
 Para el análisis agregado que queremos, hay que promediar por fecha y por tipo_cli ventas y devoluciones
 en unidades y dinero.
 
-```{r,eval=FALSE}
+
+```r
 rm(s)
 rm(clientes_sum)
 rm(tipo_cliente)
@@ -350,32 +371,38 @@ write.table(agregados_tipo,"fritos_agregados_tipo.csv",sep=",",row.names = FALSE
 
 
 
+
 Churrumais
 --------------------------------------------------------------------------------------------------
 
-```{r,eval=FALSE}
+
+```r
 setwd("/Users/PandoraMac/Documents/David/pepsi2/Datos Norte 3 papitas/")
-clientes<-as.data.frame(read.table("SF_ExtCustomerData.txt", sep="|", quote="", header=FALSE,fill=TRUE,stringsAsFactors = FALSE,colClasses=rep("character",32)))
+clientes <- as.data.frame(read.table("SF_ExtCustomerData.txt", sep = "|", quote = "", 
+    header = FALSE, fill = TRUE, stringsAsFactors = FALSE, colClasses = rep("character", 
+        32)))
 
-#v14 es la buena.
+# v14 es la buena.
 
-clientes_sum<-clientes[,c(1,14)]
+clientes_sum <- clientes[, c(1, 14)]
 rm(clientes)
-names(clientes_sum)<-c("id_cliente","tipo_cli")
+names(clientes_sum) <- c("id_cliente", "tipo_cli")
 
-#Habíamos guardado en fritos2.dat las papas con los sku's buenos
+# Hab<U+00ED>amos guardado en fritos2.dat las papas con los sku's buenos
 
-nombres<-c("id_cliente","codbarr","id_prod","fecha","moneda","medida","vta_din","vta_uni","dev_din",
-           "dev_uni","id_ruta")
-s<-as.data.frame(read.table("churrumais2.dat", sep="|",header=FALSE,
-                 colClasses=c(rep("character",6),rep("numeric",4),"integer")))
-names(s)<-nombres
+nombres <- c("id_cliente", "codbarr", "id_prod", "fecha", "moneda", "medida", 
+    "vta_din", "vta_uni", "dev_din", "dev_uni", "id_ruta")
+s <- as.data.frame(read.table("churrumais2.dat", sep = "|", header = FALSE, 
+    colClasses = c(rep("character", 6), rep("numeric", 4), "integer")))
+names(s) <- nombres
 ```
+
 
 Y ahora, veamos de qué tipo son los clientes que tenemos. Primero, filtrar todos los clientes del
 catálogo con únicamente los que están en la tabla de papitas. Luego ya el merge. Y lo escribimos
 en un archivo, por si crashea R o lo que sea. Hacer el merge tardó como 5 minutos pero de todos modos.
-```{r,eval=FALSE}
+
+```r
 tipo_cliente<-subset(clientes_sum,id_cliente%in%s$id_cliente)
 datos<-merge(x = s, y = tipo_cliente, by = "id_cliente", all.x=TRUE)
 write.table(datos,"churrumais3.dat",sep="|",row.names = FALSE,col.names =FALSE)
@@ -390,8 +417,10 @@ head(datos)
 6 804I000000001     N/A    1679 2013-07-27  PESOS   EACH   21.10       5       0       0    8139 EVENTUAL
 ```
 
+
 ¿Y cuántos clientes hay de cada tipo?
-```{r,eval=FALSE}
+
+```r
 table(clientes_sum[,2])
                                                             1                             10 
                           3376                             19                              2 
@@ -462,18 +491,22 @@ PRIMARIA A SECUNDARIA GOBIERNO           PRIMARIA DE GOBIERNO            PRIMARI
 ```
 
 
+
 Quedamos en tomar las ventas como positivas; tanto en unidades como en dineros:
-```{r,eval=FALSE}
-datos$vta_din2<-abs(datos$vta_din)
-datos$vta_uni2<-abs(datos$vta_uni)
-datos$dev_din2<-abs(datos$dev_din)
-datos$dev_uni2<-abs(datos$dev_uni)
+
+```r
+datos$vta_din2 <- abs(datos$vta_din)
+datos$vta_uni2 <- abs(datos$vta_uni)
+datos$dev_din2 <- abs(datos$dev_din)
+datos$dev_uni2 <- abs(datos$dev_uni)
 ```
+
 
 Para el análisis agregado que queremos, hay que promediar por fecha y por tipo_cli ventas y devoluciones
 en unidades y dinero.
 
-```{r,eval=FALSE}
+
+```r
 rm(s)
 rm(clientes_sum)
 rm(tipo_cliente)
@@ -494,4 +527,5 @@ head(agregados_tipo)
 write.table(agregados_tipo,"churrumais_agregados_tipo.csv",sep=",",row.names = FALSE)
 #write.table(agregados_cli,"churrumais_agregados_cli.csv",sep=",",row.names = FALSE)
 ```
+
 
