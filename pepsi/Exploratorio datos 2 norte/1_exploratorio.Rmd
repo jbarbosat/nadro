@@ -22,7 +22,7 @@ Variables de los archivos SALESbloblo
 - 11: RUT.ID_RUTA
 
 **Hay que borrar el campo 2 de código de barras; nomás estorba.**
-**También el de moneda y medida, a menos que cambien**
+**También el de moneda y medida, a menos que cambien. No cambian. Lo verificamos con los tables más adelante**
 
 Churrumais
 --------------------------------------------------------------------------------------------------
@@ -521,6 +521,7 @@ Papitas buenas:c(7450,7452, 4253, 7398, 4378, 1300, 2954, 1928, 1702, 1446, 2630
 datos<- subset(s,s$id_prod%in%c(7450,7452, 4253, 7398, 4378, 1300, 2954, 1928, 1702, 1446, 2630,
                                 4300, 4185, 4195, 4203, 3486, 2910, 1493, 4304, 3288, 1737, 
                                 1739,1301, 3276, 1892,2684, 517801,517800,4631))
+write.table(datos,"papas2.dat",sep="|",row.names = FALSE,col.names =FALSE)
 rm(s)
 ```
 
