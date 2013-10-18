@@ -1,9 +1,29 @@
 % 17-oct-2013
-% Cálculo de inventarios para clientes agrupados por tipo para el conjunto de datos que tenemos de la zona norte de pepsi.
+% Cálculo de series de tiempo para clientes agrupados por tipo para la zona norte de pepsi y 3 productos
 % Makefile: pandoc -s -V geometry:margin=0.7in -V lang=spanish 2_inventarios.md -o Inventarios.pdf
 
-Tenemos un catálogo de clientes cuya Id consiste en ID_SUC_CORP y ID_CLI_CORP concatenados.
-Del catálogo sacamos el tipo de cliente.
+Después de filtrar en el exploratorio los sku's colados, en este archivo ahora se trata de producir 
+un archivo con las ventas y devoluciones promedio de cada tipo de cliente y de cada fecha. 
+Después, con estos promedios, calcularemos inventarios. 
+
+Para poder dividir a los clientes por tipo, tenemos en la tabla de cliente info de eso: misceláneas,
+hospitales, escuelas, etc. La llave para unir el catálogo de clientes con la info de ventas
+es un Id de clientes que consiste en ID_SUC_CORP y ID_CLI_CORP concatenados.
+
+De este archivo se generan fritos3, papas3 y churrumais3, que son tablas con los valores de ventas
+y devoluciones en unidades y pesos para cada tipo de cliente y cada día.
+
+**NOTA IMPORTANTE:** Para calcular los inventarios de los clientes (tienditas) y sus ventas a los
+consumidores (gente que compra papas en las tienditas), estamos tomando valor absoluto de ventas y 
+devoluciones porque hay valores negativos. Suponemos que tiene que ver con promociones en las que la
+gente llega al OXXO y canjea un cupón de "papitas gratis". No nos importa distinguir entre papas 
+consumidas y pagadas y papas consumidas y gratis porque al final es demanda de papas. Quizá tenga más
+sentido omitir los valores negativos, pero a mí me late que no.
+
+En el archivo de inventario ya se generan grafiquitas con las series de tiempo de cada tipo de cliente
+para cada producto.
+
+
 
 Sabritas normales
 --------------------------------------------------------------------------------------------------

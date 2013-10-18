@@ -111,12 +111,14 @@ N/A|428603|PMF_UNALLOCATED|3|PMF_UNALLOCATED|-1|PMF_UNALLOCATED|PMF_UNALLOCATED
 ```
 
 
-Filtro de David para Sales
+Filtro de David y José Luis para Sales
 ---------------------------------------------------------------------------------------------
-Con SED y más magia de bash, David filtró para sólo 3 sku's y ahora tenemos sólo tres achivos:
+Con SED y más magia de bash, David y José Luis filtraron para sólo 3 productos.
 
 - churrumais.dat - 292 MB
 - fritos.dat - 220 MB
 - papas.dat - 445 MB
 
+Pero se colaron sku's de productos que no eran del mismo tipo. En exploratorio dedico una parte a 
+verificar que los sku's estén chidos.
 
