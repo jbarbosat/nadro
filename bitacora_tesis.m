@@ -1,8 +1,22 @@
+Viernes Octubre 18, 2103
+-----------------------
+
+José Luis encontró cosas negativas, pero parece que no tiene bronca.
+Nos concentraremos en misceláneas. Ojo, hay que sumar por cliente y por día porque hay registros
+repetidos, según José Luis pero uno para ventas y otro para devoluciones.
+
+Y luego, promedios semanales! Para eso:
+```
+x <- as.POSIXlt("2013-10-18")
+strftime(x,format="%W")
+```
+
 Jueves Octubre 17, 2103
 -----------------------
 
 Análisis 1: Promedios por producto y por tipo de cliente en el tiempo (t-1, t-2, t-3)
-
+A José Luis le toca hacerlo por cliente y a mí por grupos de clientes. Ya elegimos
+fritos, churrumais y papitas.
 
 
 Martes Octubre 15, 2013
