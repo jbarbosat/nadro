@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Sabritas normales</title>
+<title>Churrumais</title>
 
 <style type="text/css">
 body, td {
@@ -179,92 +179,131 @@ hljs.initHighlightingOnLoad();
 
 <body>
 <p>Después de filtrar en el exploratorio los sku&#39;s colados y después de hacer en seriesdetiempo 
-las agrupaciones por fecha y tipo de cliente, en este archivo ahora se trata de producir 
+las agrupaciones por semana y tipo de cliente, en este archivo ahora se trata de producir 
 un archivo con las ventas y devoluciones promedio de cada tipo de cliente y de cada fecha. 
 Después, con estos promedios, calcularemos inventarios y ventas a consumidores finales.</p>
 
-<p><strong>NOTA IMPORTANTE:</strong> Para calcular los inventarios de los clientes (tienditas) y sus ventas a los
+<p><strong>NOTA IMPORTANTE 1:</strong> Para calcular los inventarios de los clientes (tienditas) y sus ventas a los
 consumidores (gente que compra papas en las tienditas), estamos tomando valor absoluto de ventas y 
 devoluciones porque hay valores negativos. Suponemos que tiene que ver con promociones en las que la
 gente llega al OXXO y canjea un cupón de &ldquo;papitas gratis&rdquo;. No nos importa distinguir entre papas 
 consumidas y pagadas y papas consumidas y gratis porque al final es demanda de papas. Quizá tenga más
 sentido omitir los valores negativos, pero a mí me late que no.</p>
 
-<h2>Sabritas normales</h2>
+<p><strong>NOTA IMPORTANTE 2:</strong> Sumamos las cosas por semana y por cliente y luego promediamos por tipo y por
+semana.</p>
+
+<h2>Churrumais</h2>
 
 <pre><code class="r">setwd(&quot;/Users/PandoraMac/Documents/David/pepsi2/Datos Norte 3 papitas/&quot;)
-nombres &lt;- c(&quot;tipo_cliente&quot;, &quot;fecha&quot;, &quot;vta_din&quot;, &quot;vta_uni&quot;, &quot;dev_din&quot;, &quot;dev_uni&quot;)
-s &lt;- as.data.frame(read.table(&quot;papas_agregados_tipo.csv&quot;, sep = &quot;,&quot;, header = TRUE, 
-    colClasses = c(rep(&quot;character&quot;, 2), rep(&quot;numeric&quot;, 4))))
-names(s) &lt;- nombres
-s2 &lt;- s[order(s$fecha), ]
-datos &lt;- subset(s2, s$tipo_cliente != &quot;&quot;)
-datos$tipo_cliente[datos$tipo_cliente == &quot;CINE / TEATRO&quot;] &lt;- &quot;CINE_TEATRO&quot;
-datos$tipo_cliente[datos$tipo_cliente == &quot;LONCHERIA / FOND&quot;] &lt;- &quot;LONCHERIA_FONDA&quot;
+nombres&lt;-c(&quot;tipo_cliente&quot;,&quot;anio_semana&quot;,&quot;vta_din2&quot;,&quot;vta_uni2&quot;,&quot;dev_din2&quot;,&quot;dev_uni2&quot;)
+s&lt;-as.data.frame(read.table(&quot;churrumais3.dat&quot;, sep=&quot;|&quot;,header=FALSE,
+                 colClasses=c(rep(&quot;character&quot;,2),rep(&quot;numeric&quot;,4))))
+s[,2]&lt;-paste(substr(s[,2],4,8),&quot;-&quot;,substr(s[,2],1,2),sep=&quot;&quot;)
+names(s)&lt;-nombres
+s2&lt;-s[order(s$anio_semana),]
+datos&lt;-subset(s2,s2$tipo_cliente!=&quot;&quot;)
+datos$tipo_cliente[datos$tipo_cliente==&quot;CINE / TEATRO&quot;]&lt;-&quot;CINE_TEATRO&quot;
+datos$tipo_cliente[datos$tipo_cliente==&quot;LONCHERIA / FOND&quot;]&lt;-&quot;LONCHERIA_FONDA&quot;
 length(table(datos$tipo_cliente))
+[1] 89
 
-par(mfrow = c(5, 1))
-myfunction &lt;- function(x) {
-    png(file = paste(&quot;/Users/PandoraMac/Documents/David/nadro_pepsi_git/pepsi/Exploratorio datos 2 norte/images/papas/ts&quot;, 
-        paste(unlist(strsplit(x$tipo_cliente[1], &quot; &quot;)), collapse = &quot;&quot;), &quot;.png&quot;, 
-        sep = &quot;&quot;))
-    plot(ts(x[, c(4, 6)]), plot.type = c(&quot;single&quot;), col = c(&quot;blue&quot;, &quot;red&quot;), 
-        main = x$tipo_cliente[1])
-    # axis(1,at=1:nrow(x),labels=x$fecha,las=1)
-    dev.off()
+head(datos)
+          tipo_cliente anio_semana vta_din2 vta_uni2   dev_din2   dev_uni2
+7062                 1     2011-52  13.4800   4.0000 0.00000000 0.00000000
+7063         ABARROTES     2011-52  22.5336   6.6891 0.04035095 0.01197358
+7064               BAR     2011-52  25.2750   7.5000 0.00000000 0.00000000
+7065           BODEGAS     2011-52  23.2530   6.9000 0.00000000 0.00000000
+7066 CASETA TELEFONICA     2011-52   6.7400   2.0000 0.00000000 0.00000000
+7067   CENTRO DEPORTIV     2011-52  18.5350   5.5000 0.00000000 0.00000000
+
+myfunction&lt;-function(x){
+  png(file = paste(&quot;/Users/PandoraMac/Documents/David/nadro_pepsi_git/pepsi/Exploratorio datos 2 norte/images/churrumais/venta_dev_&quot;,paste(unlist(strsplit(x$tipo_cliente[1],&quot; &quot;)),collapse=&quot;&quot;),&quot;.png&quot;,sep=&quot;&quot;),
+  width = 5, height = 3, units = &quot;in&quot;, res= 800, pointsize = 4)
+  ventas&lt;-x[4:nrow(x),4]
+  devols&lt;-x[1:(nrow(x)-3),6]
+  plot(ts(cbind(ventas+devols,ventas-devols,ventas)),plot.type = c(&quot;single&quot;),col=c(&quot;red&quot;,&quot;blue&quot;,&quot;black&quot;),,xaxt = &quot;n&quot;)
+  axis(1,at=1:length(ventas),labels=x$anio_semana[4:nrow(x)],las=2,cex=.2)
+  title(main=x$tipo_cliente[1],sub=&quot;Devoluciones con un lag de 3 semanas&quot;)
+  dev.off()
 }
-by(datos, datos$tipo_cliente, myfunction)
-par(mfrow = c(1, 1))
+by(datos,datos$tipo_cliente,myfunction)
+
 </code></pre>
 
 <h2>Fritos</h2>
 
 <pre><code class="r">setwd(&quot;/Users/PandoraMac/Documents/David/pepsi2/Datos Norte 3 papitas/&quot;)
-nombres &lt;- c(&quot;tipo_cliente&quot;, &quot;fecha&quot;, &quot;vta_din&quot;, &quot;vta_uni&quot;, &quot;dev_din&quot;, &quot;dev_uni&quot;)
-s &lt;- as.data.frame(read.table(&quot;fritos_agregados_tipo.csv&quot;, sep = &quot;,&quot;, header = TRUE, 
-    colClasses = c(rep(&quot;character&quot;, 2), rep(&quot;numeric&quot;, 4))))
-names(s) &lt;- nombres
-s2 &lt;- s[order(s$fecha), ]
-datos &lt;- subset(s2, s$tipo_cliente != &quot;&quot;)
-datos$tipo_cliente[datos$tipo_cliente == &quot;CINE / TEATRO&quot;] &lt;- &quot;CINE_TEATRO&quot;
-datos$tipo_cliente[datos$tipo_cliente == &quot;LONCHERIA / FOND&quot;] &lt;- &quot;LONCHERIA_FONDA&quot;
+nombres&lt;-c(&quot;tipo_cliente&quot;,&quot;anio_semana&quot;,&quot;vta_din2&quot;,&quot;vta_uni2&quot;,&quot;dev_din2&quot;,&quot;dev_uni2&quot;)
+s&lt;-as.data.frame(read.table(&quot;fritos3.dat&quot;, sep=&quot;|&quot;,header=FALSE,
+                 colClasses=c(rep(&quot;character&quot;,2),rep(&quot;numeric&quot;,4))))
+s[,2]&lt;-paste(substr(s[,2],4,8),&quot;-&quot;,substr(s[,2],1,2),sep=&quot;&quot;)
+names(s)&lt;-nombres
+s2&lt;-s[order(s$anio_semana),]
+datos&lt;-subset(s2,s2$tipo_cliente!=&quot;&quot;)
+datos$tipo_cliente[datos$tipo_cliente==&quot;CINE / TEATRO&quot;]&lt;-&quot;CINE_TEATRO&quot;
+datos$tipo_cliente[datos$tipo_cliente==&quot;LONCHERIA / FOND&quot;]&lt;-&quot;LONCHERIA_FONDA&quot;
 length(table(datos$tipo_cliente))
+[1] 88
 
-myfunction &lt;- function(x) {
-    png(file = paste(&quot;/Users/PandoraMac/Documents/David/nadro_pepsi_git/pepsi/Exploratorio datos 2 norte/images/fritos/ts&quot;, 
-        paste(unlist(strsplit(x$tipo_cliente[1], &quot; &quot;)), collapse = &quot;&quot;), &quot;.png&quot;, 
-        sep = &quot;&quot;))
-    plot(ts(x[, c(4, 6)]), plot.type = c(&quot;single&quot;), col = c(&quot;blue&quot;, &quot;red&quot;), 
-        main = x$tipo_cliente[1])
-    # axis(1,at=1:nrow(x),labels=x$fecha,las=1)
-    dev.off()
+head(datos)
+          tipo_cliente anio_semana vta_din2 vta_uni2   dev_din2   dev_uni2
+6943                 1     2011-52 20.24000 4.000000 0.00000000 0.00000000
+6944         ABARROTES     2011-52 28.82065 5.730893 0.04347686 0.00861141
+6945           BODEGAS     2011-52 27.32400 5.400000 0.00000000 0.00000000
+6946 CASETA TELEFONICA     2011-52 15.18000 3.000000 0.00000000 0.00000000
+6947   CENTRO DEPORTIV     2011-52 20.24000 4.000000 0.00000000 0.00000000
+6948   CENTRO RECREATI     2011-52 28.41385 5.615385 0.00000000 0.00000000
+
+myfunction&lt;-function(x){
+  png(file = paste(&quot;/Users/PandoraMac/Documents/David/nadro_pepsi_git/pepsi/Exploratorio datos 2 norte/images/fritos/venta_dev_&quot;,paste(unlist(strsplit(x$tipo_cliente[1],&quot; &quot;)),collapse=&quot;&quot;),&quot;.png&quot;,sep=&quot;&quot;),
+  width = 5, height = 3, units = &quot;in&quot;, res= 800, pointsize = 4)
+  ventas&lt;-x[4:nrow(x),4]
+  devols&lt;-x[1:(nrow(x)-3),6]
+  plot(ts(cbind(ventas+devols,ventas-devols,ventas)),plot.type = c(&quot;single&quot;),col=c(&quot;red&quot;,&quot;blue&quot;,&quot;black&quot;),,xaxt = &quot;n&quot;)
+  axis(1,at=1:length(ventas),labels=x$anio_semana[4:nrow(x)],las=2,cex=.2)
+  title(main=x$tipo_cliente[1],sub=&quot;Devoluciones con un lag de 3 semanas&quot;)
+  dev.off()
 }
-by(datos, datos$tipo_cliente, myfunction)
+by(datos,datos$tipo_cliente,myfunction)
+
 </code></pre>
 
-<h2>Churrumais</h2>
+<h2>Sabritas</h2>
 
 <pre><code class="r">setwd(&quot;/Users/PandoraMac/Documents/David/pepsi2/Datos Norte 3 papitas/&quot;)
-nombres &lt;- c(&quot;tipo_cliente&quot;, &quot;fecha&quot;, &quot;vta_din&quot;, &quot;vta_uni&quot;, &quot;dev_din&quot;, &quot;dev_uni&quot;)
-s &lt;- as.data.frame(read.table(&quot;churrumais_agregados_tipo.csv&quot;, sep = &quot;,&quot;, header = TRUE, 
-    colClasses = c(rep(&quot;character&quot;, 2), rep(&quot;numeric&quot;, 4))))
-names(s) &lt;- nombres
-s2 &lt;- s[order(s$fecha), ]
-datos &lt;- subset(s2, s$tipo_cliente != &quot;&quot;)
-datos$tipo_cliente[datos$tipo_cliente == &quot;CINE / TEATRO&quot;] &lt;- &quot;CINE_TEATRO&quot;
-datos$tipo_cliente[datos$tipo_cliente == &quot;LONCHERIA / FOND&quot;] &lt;- &quot;LONCHERIA_FONDA&quot;
+nombres&lt;-c(&quot;tipo_cliente&quot;,&quot;anio_semana&quot;,&quot;vta_din2&quot;,&quot;vta_uni2&quot;,&quot;dev_din2&quot;,&quot;dev_uni2&quot;)
+s&lt;-as.data.frame(read.table(&quot;papas3.dat&quot;, sep=&quot;|&quot;,header=FALSE,
+                 colClasses=c(rep(&quot;character&quot;,2),rep(&quot;numeric&quot;,4))))
+s[,2]&lt;-paste(substr(s[,2],4,8),&quot;-&quot;,substr(s[,2],1,2),sep=&quot;&quot;)
+names(s)&lt;-nombres
+s2&lt;-s[order(s$anio_semana),]
+datos&lt;-subset(s2,s2$tipo_cliente!=&quot;&quot;)
+datos$tipo_cliente[datos$tipo_cliente==&quot;CINE / TEATRO&quot;]&lt;-&quot;CINE_TEATRO&quot;
+datos$tipo_cliente[datos$tipo_cliente==&quot;LONCHERIA / FOND&quot;]&lt;-&quot;LONCHERIA_FONDA&quot;
 length(table(datos$tipo_cliente))
+[1] 90
 
-myfunction &lt;- function(x) {
-    png(file = paste(&quot;/Users/PandoraMac/Documents/David/nadro_pepsi_git/pepsi/Exploratorio datos 2 norte/images/churrumais/ts&quot;, 
-        paste(unlist(strsplit(x$tipo_cliente[1], &quot; &quot;)), collapse = &quot;&quot;), &quot;.png&quot;, 
-        sep = &quot;&quot;))
-    plot(ts(x[, c(4, 6)]), plot.type = c(&quot;single&quot;), col = c(&quot;blue&quot;, &quot;red&quot;), 
-        main = x$tipo_cliente[1])
-    # axis(1,at=1:nrow(x),labels=x$fecha,las=1)
-    dev.off()
+head(datos)
+          tipo_cliente anio_semana vta_din2  vta_uni2    dev_din2    dev_uni2
+7515                 1     2011-52 23.60000  4.000000 0.000000000 0.000000000
+7516         ABARROTES     2011-52 48.95558  8.297556 0.002403259 0.000407332
+7517         BALNEARIO     2011-52 23.60000  4.000000 0.000000000 0.000000000
+7518               BAR     2011-52 62.68750 10.625000 0.000000000 0.000000000
+7519           BODEGAS     2011-52 37.58519  6.370370 0.000000000 0.000000000
+7520 CASETA TELEFONICA     2011-52 38.35000  6.500000 0.000000000 0.000000000
+
+myfunction&lt;-function(x){
+  png(file = paste(&quot;/Users/PandoraMac/Documents/David/nadro_pepsi_git/pepsi/Exploratorio datos 2 norte/images/papas/venta_dev_&quot;,paste(unlist(strsplit(x$tipo_cliente[1],&quot; &quot;)),collapse=&quot;&quot;),&quot;.png&quot;,sep=&quot;&quot;),
+  width = 5, height = 3, units = &quot;in&quot;, res= 800, pointsize = 4)
+  ventas&lt;-x[4:nrow(x),4]
+  devols&lt;-x[1:(nrow(x)-3),6]
+  plot(ts(cbind(ventas+devols,ventas-devols,ventas)),plot.type = c(&quot;single&quot;),col=c(&quot;blue&quot;,&quot;red&quot;,&quot;black&quot;),,xaxt = &quot;n&quot;)
+  axis(1,at=1:length(ventas),labels=x$anio_semana[4:nrow(x)],las=2,cex=.2)
+  title(main=x$tipo_cliente[1],sub=&quot;Devoluciones con un lag de 3 semanas&quot;)
+  dev.off()
 }
-by(datos, datos$tipo_cliente, myfunction)
+by(datos,datos$tipo_cliente,myfunction)
 </code></pre>
 
 </body>

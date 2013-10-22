@@ -46,24 +46,97 @@ head(datos)
 
 myfunction<-function(x){
   png(file = paste("/Users/PandoraMac/Documents/David/nadro_pepsi_git/pepsi/Exploratorio datos 2 norte/images/churrumais/venta_dev_",paste(unlist(strsplit(x$tipo_cliente[1]," ")),collapse=""),".png",sep=""),
-  width = 6, units = "in", res = 1200, pointsize = 4)
+  width = 5, height = 3, units = "in", res= 800, pointsize = 4)
   ventas<-x[4:nrow(x),4]
   devols<-x[1:(nrow(x)-3),6]
-  #plot(ts(ventas,devols),plot.type = c("single"),col=c("blue","red"),main=x$tipo_cliente[1])
-  #ts(1:10, frequency = 53, start = c(2011, 52)) # 2nd Quarter of 1959
-  #plot(ts(x[4:nrow(x),4],x[1:(nrow(x)-3),6],frequency=),plot.type = c("multiple"),col=c("blue","red"),main=x$tipo_cliente[1])
-        #,xlab=x$fecha[4:nrow(x)])
-  #axis(1,at=1:length(ventas),labels=x$fecha[4:nrow(x)],las=1)
-  plot(ts(cbind(ventas,devols)),plot.type = c("single"),col=c("blue","red"),,xaxt = "n")
+  plot(ts(cbind(ventas+devols,ventas-devols,ventas)),plot.type = c("single"),col=c("red","blue","black"),,xaxt = "n")
   axis(1,at=1:length(ventas),labels=x$anio_semana[4:nrow(x)],las=2,cex=.2)
   title(main=x$tipo_cliente[1],sub="Devoluciones con un lag de 3 semanas")
   dev.off()
 }
 by(datos,datos$tipo_cliente,myfunction)
 
-#plot(ts(x[,c(4,6)],frequency=),plot.type = c("single"),col=c("blue","red"),main=x$tipo_cliente[1])
+```
+
+
+
+Fritos
+--------------------------------------------------------------------------------------------------
+
+```{r,eval=FALSE}
+setwd("/Users/PandoraMac/Documents/David/pepsi2/Datos Norte 3 papitas/")
+nombres<-c("tipo_cliente","anio_semana","vta_din2","vta_uni2","dev_din2","dev_uni2")
+s<-as.data.frame(read.table("fritos3.dat", sep="|",header=FALSE,
+                 colClasses=c(rep("character",2),rep("numeric",4))))
+s[,2]<-paste(substr(s[,2],4,8),"-",substr(s[,2],1,2),sep="")
+names(s)<-nombres
+s2<-s[order(s$anio_semana),]
+datos<-subset(s2,s2$tipo_cliente!="")
+datos$tipo_cliente[datos$tipo_cliente=="CINE / TEATRO"]<-"CINE_TEATRO"
+datos$tipo_cliente[datos$tipo_cliente=="LONCHERIA / FOND"]<-"LONCHERIA_FONDA"
+length(table(datos$tipo_cliente))
+[1] 88
+
+head(datos)
+          tipo_cliente anio_semana vta_din2 vta_uni2   dev_din2   dev_uni2
+6943                 1     2011-52 20.24000 4.000000 0.00000000 0.00000000
+6944         ABARROTES     2011-52 28.82065 5.730893 0.04347686 0.00861141
+6945           BODEGAS     2011-52 27.32400 5.400000 0.00000000 0.00000000
+6946 CASETA TELEFONICA     2011-52 15.18000 3.000000 0.00000000 0.00000000
+6947   CENTRO DEPORTIV     2011-52 20.24000 4.000000 0.00000000 0.00000000
+6948   CENTRO RECREATI     2011-52 28.41385 5.615385 0.00000000 0.00000000
+
+myfunction<-function(x){
+  png(file = paste("/Users/PandoraMac/Documents/David/nadro_pepsi_git/pepsi/Exploratorio datos 2 norte/images/fritos/venta_dev_",paste(unlist(strsplit(x$tipo_cliente[1]," ")),collapse=""),".png",sep=""),
+  width = 5, height = 3, units = "in", res= 800, pointsize = 4)
+  ventas<-x[4:nrow(x),4]
+  devols<-x[1:(nrow(x)-3),6]
+  plot(ts(cbind(ventas+devols,ventas-devols,ventas)),plot.type = c("single"),col=c("red","blue","black"),,xaxt = "n")
+  axis(1,at=1:length(ventas),labels=x$anio_semana[4:nrow(x)],las=2,cex=.2)
+  title(main=x$tipo_cliente[1],sub="Devoluciones con un lag de 3 semanas")
+  dev.off()
+}
+by(datos,datos$tipo_cliente,myfunction)
 
 ```
 
 
- 
+
+Sabritas
+--------------------------------------------------------------------------------------------------
+
+```{r,eval=FALSE}
+setwd("/Users/PandoraMac/Documents/David/pepsi2/Datos Norte 3 papitas/")
+nombres<-c("tipo_cliente","anio_semana","vta_din2","vta_uni2","dev_din2","dev_uni2")
+s<-as.data.frame(read.table("papas3.dat", sep="|",header=FALSE,
+                 colClasses=c(rep("character",2),rep("numeric",4))))
+s[,2]<-paste(substr(s[,2],4,8),"-",substr(s[,2],1,2),sep="")
+names(s)<-nombres
+s2<-s[order(s$anio_semana),]
+datos<-subset(s2,s2$tipo_cliente!="")
+datos$tipo_cliente[datos$tipo_cliente=="CINE / TEATRO"]<-"CINE_TEATRO"
+datos$tipo_cliente[datos$tipo_cliente=="LONCHERIA / FOND"]<-"LONCHERIA_FONDA"
+length(table(datos$tipo_cliente))
+[1] 90
+
+head(datos)
+          tipo_cliente anio_semana vta_din2  vta_uni2    dev_din2    dev_uni2
+7515                 1     2011-52 23.60000  4.000000 0.000000000 0.000000000
+7516         ABARROTES     2011-52 48.95558  8.297556 0.002403259 0.000407332
+7517         BALNEARIO     2011-52 23.60000  4.000000 0.000000000 0.000000000
+7518               BAR     2011-52 62.68750 10.625000 0.000000000 0.000000000
+7519           BODEGAS     2011-52 37.58519  6.370370 0.000000000 0.000000000
+7520 CASETA TELEFONICA     2011-52 38.35000  6.500000 0.000000000 0.000000000
+
+myfunction<-function(x){
+  png(file = paste("/Users/PandoraMac/Documents/David/nadro_pepsi_git/pepsi/Exploratorio datos 2 norte/images/papas/venta_dev_",paste(unlist(strsplit(x$tipo_cliente[1]," ")),collapse=""),".png",sep=""),
+  width = 5, height = 3, units = "in", res= 800, pointsize = 4)
+  ventas<-x[4:nrow(x),4]
+  devols<-x[1:(nrow(x)-3),6]
+  plot(ts(cbind(ventas+devols,ventas-devols,ventas)),plot.type = c("single"),col=c("blue","red","black"),,xaxt = "n")
+  axis(1,at=1:length(ventas),labels=x$anio_semana[4:nrow(x)],las=2,cex=.2)
+  title(main=x$tipo_cliente[1],sub="Devoluciones con un lag de 3 semanas")
+  dev.off()
+}
+by(datos,datos$tipo_cliente,myfunction)
+```

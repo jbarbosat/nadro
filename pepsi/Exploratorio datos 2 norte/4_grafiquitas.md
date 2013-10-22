@@ -1,0 +1,144 @@
+% 22-oct-2013
+% Gráficas de inventarios y ventas para clientes agrupados por tipo para la zona norte de pepsi y 3 productos
+% Makefile: pandoc -s -V geometry:margin=0.7in -V lang=spanish 4_grafiquitas.md -o Graficas.pdf
+
+Después de filtrar en el exploratorio los sku's colados y después de hacer en seriesdetiempo 
+las agrupaciones por semana y tipo de cliente, en este archivo ahora se trata de producir 
+un archivo con las ventas y devoluciones promedio de cada tipo de cliente y de cada fecha. 
+Después, con estos promedios, calcularemos inventarios y ventas a consumidores finales.
+
+**NOTA IMPORTANTE 1:** Para calcular los inventarios de los clientes (tienditas) y sus ventas a los
+consumidores (gente que compra papas en las tienditas), estamos tomando valor absoluto de ventas y 
+devoluciones porque hay valores negativos. Suponemos que tiene que ver con promociones en las que la
+gente llega al OXXO y canjea un cupón de "papitas gratis". No nos importa distinguir entre papas 
+consumidas y pagadas y papas consumidas y gratis porque al final es demanda de papas. Quizá tenga más
+sentido omitir los valores negativos, pero a mí me late que no.
+
+**NOTA IMPORTANTE 2:** Sumamos las cosas por semana y por cliente y luego promediamos por tipo y por
+semana.
+
+
+Churrumais
+--------------------------------------------------------------------------------------------------
+
+
+```r
+setwd("/Users/PandoraMac/Documents/David/pepsi2/Datos Norte 3 papitas/")
+nombres<-c("tipo_cliente","anio_semana","vta_din2","vta_uni2","dev_din2","dev_uni2")
+s<-as.data.frame(read.table("churrumais3.dat", sep="|",header=FALSE,
+                 colClasses=c(rep("character",2),rep("numeric",4))))
+s[,2]<-paste(substr(s[,2],4,8),"-",substr(s[,2],1,2),sep="")
+names(s)<-nombres
+s2<-s[order(s$anio_semana),]
+datos1<-subset(s2,s2$tipo_cliente!="")
+datos1$tipo_cliente[datos1$tipo_cliente=="CINE / TEATRO"]<-"CINE_TEATRO"
+datos1$tipo_cliente[datos1$tipo_cliente=="LONCHERIA / FOND"]<-"LONCHERIA_FONDA"
+length(table(datos1$tipo_cliente))
+[1] 89
+
+```
+
+
+
+
+Fritos
+--------------------------------------------------------------------------------------------------
+
+
+```r
+setwd("/Users/PandoraMac/Documents/David/pepsi2/Datos Norte 3 papitas/")
+nombres<-c("tipo_cliente","anio_semana","vta_din2","vta_uni2","dev_din2","dev_uni2")
+ss<-as.data.frame(read.table("fritos3.dat", sep="|",header=FALSE,
+                 colClasses=c(rep("character",2),rep("numeric",4))))
+ss[,2]<-paste(substr(ss[,2],4,8),"-",substr(ss[,2],1,2),sep="")
+names(ss)<-nombres
+ss2<-ss[order(ss$anio_semana),]
+datos2<-subset(ss2,ss2$tipo_cliente!="")
+datos2$tipo_cliente[datos2$tipo_cliente=="CINE / TEATRO"]<-"CINE_TEATRO"
+datos2$tipo_cliente[datos2$tipo_cliente=="LONCHERIA / FOND"]<-"LONCHERIA_FONDA"
+length(table(datos2$tipo_cliente))
+[1] 88
+
+```
+
+
+
+
+Sabritas
+--------------------------------------------------------------------------------------------------
+
+
+```r
+setwd("/Users/PandoraMac/Documents/David/pepsi2/Datos Norte 3 papitas/")
+nombres<-c("tipo_cliente","anio_semana","vta_din2","vta_uni2","dev_din2","dev_uni2")
+sss<-as.data.frame(read.table("papas3.dat", sep="|",header=FALSE,
+                 colClasses=c(rep("character",2),rep("numeric",4))))
+sss[,2]<-paste(substr(sss[,2],4,8),"-",substr(sss[,2],1,2),sep="")
+names(sss)<-nombres
+sss2<-sss[order(sss$anio_semana),]
+datos3<-subset(sss2,sss2$tipo_cliente!="")
+datos3$tipo_cliente[datos3$tipo_cliente=="CINE / TEATRO"]<-"CINE_TEATRO"
+datos3$tipo_cliente[datos3$tipo_cliente=="LONCHERIA / FOND"]<-"LONCHERIA_FONDA"
+length(table(datos3$tipo_cliente))
+[1] 90
+
+```
+
+
+
+
+Todo
+--------------------------------------------------------------------------------------------------
+
+```r
+papa <- c(rep("sab", nrow(datos3)), rep("fri", nrow(datos2)), rep("chur", nrow(datos1)))
+
+datos0 <- rbind(datos3, datos2, datos1)
+
+datos0$tipo_papa <- papa
+
+myfunction0 <- function(x) {
+    png(file = paste("/Users/PandoraMac/Documents/David/nadro_pepsi_git/pepsi/Exploratorio datos 2 norte/images/todo/vta_dev_inv_", 
+        paste(unlist(strsplit(x$tipo_cliente[1], " ")), collapse = ""), ".png", 
+        sep = ""), width = 6, height = 3, units = "in", res = 800, pointsize = 4)
+    par(mfrow = c(3, 1))
+    
+    aux <- subset(x, tipo_papa = "sab")
+    papas <- aux[order(aux$anio_semana), ]
+    
+    ventas <- papas[4:nrow(papas), 4]
+    devols <- papas[1:(nrow(papas) - 3), 6]
+    plot(ts(cbind(ventas + devols, ventas - devols, ventas)), plot.type = c("single"), 
+        col = c("blue", "red", "black"), xaxt = "n")
+    axis(1, at = 1:length(ventas), labels = papas$anio_semana[4:nrow(papas)], 
+        las = 2, cex = 0.2)
+    title(main = papas$tipo_cliente[1], sub = papas$tipo_papa[1])
+    
+    aux <- subset(x, tipo_papa = "fri")
+    fritos <- aux[order(aux$anio_semana), ]
+    
+    ventas <- fritos[4:nrow(fritos), 4]
+    devols <- fritos[1:(nrow(fritos) - 3), 6]
+    plot(ts(cbind(ventas + devols, ventas - devols, ventas)), plot.type = c("single"), 
+        col = c("blue", "red", "black"), xaxt = "n")
+    axis(1, at = 1:length(ventas), labels = fritos$anio_semana[4:nrow(fritos)], 
+        las = 2, cex = 0.2)
+    title(main = fritos$tipo_cliente[1], sub = fritos$tipo_papa[1])
+    
+    aux <- subset(x, tipo_papa = "chur")
+    churru <- aux[order(aux$anio_semana), ]
+    
+    ventas <- churru[4:nrow(churru), 4]
+    devols <- churru[1:(nrow(churru) - 3), 6]
+    plot(ts(cbind(ventas + devols, ventas - devols, ventas)), plot.type = c("single"), 
+        col = c("blue", "red", "black"), xaxt = "n")
+    axis(1, at = 1:length(ventas), labels = churru$anio_semana[4:nrow(churru)], 
+        las = 2, cex = 0.2)
+    title(main = churru$tipo_cliente[1], sub = churru$tipo_papa[1])
+    
+    par(mfrow = c(1, 1))
+    dev.off()
+}
+by(datos0, datos0$tipo_cliente, myfunction0)
+```
+

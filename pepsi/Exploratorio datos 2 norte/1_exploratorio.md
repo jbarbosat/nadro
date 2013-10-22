@@ -1,9 +1,12 @@
-% 16-oct-2013
+% 17-oct-2013
 % Exploración del conjunto de datos que tenemos de la zona norte de pepsi.
 % Makefile: pandoc -s -V geometry:margin=0.7in -V lang=spanish 1_exploratorio.md -o Exploratorio.pdf
 
-Sólo vamos a utilizar los datos de SalesDataYYYYXXX.txt porque vamos a intentar aproximar inventarios.
-Antes de hacer modelos para ver wtf, hay que ver si hay sobre o subdistribución. Pero antes, exploración de datos. David hizo una selección de tres productos: churrumais, fritos y papas normales.
+A partir de los datos en los archivos SalesDataYYYYXXX.txt, seleccionamos Fritos, Churrumais y las
+sabritas normales. Se tienen tres archivos con las transacciones que corresponden a esos 
+tres cositos pero hay sku's colados. En este documento se generan fritos2, churrumais2 y papas2,
+que son las versiones sin sku's colados. Además, se producen graficas de ventas en lana y devoluciones
+en unidades para los distintos sku's que forman un solo producto.
 
 
 Variables de los archivos SALESbloblo
@@ -22,7 +25,7 @@ Variables de los archivos SALESbloblo
 - 11: RUT.ID_RUTA
 
 **Hay que borrar el campo 2 de código de barras; nomás estorba.**
-**También el de moneda y medida, a menos que cambien**
+**También el de moneda y medida, a menos que cambien. No cambian. Lo verificamos con los tables más adelante**
 
 Churrumais
 --------------------------------------------------------------------------------------------------
@@ -103,6 +106,7 @@ Hay que matar los churrumais flamas: c(1344,4597,1343,4607,4622,4576)
 datos <- subset(s, id_prod %in% c("3245", "3246", "1679", "5545", "5546", "7389", 
     "7390", "7435", "1341", "1342", "3234", "2682", "7436", "4340", "4339", 
     "1004", "3233", "2134"))
+write.table(datos, "churrumais2.dat", sep = "|", row.names = FALSE, col.names = FALSE)
 rm(s)
 ```
 
@@ -265,10 +269,11 @@ subset(prod,V2%in%names(sort(table(s$id_prod),decreasing=TRUE)))
 ```
 
 
-Hay que matar los churrumais flamas: c(1344,4597,1343,4607,4622,4576)
+Hay que matar los doritos colados:
 
 ```r
 datos <- s[s$id_prod != "7434", ]
+write.table(datos, "fritos2.dat", sep = "|", row.names = FALSE, col.names = FALSE)
 rm(s)
 ```
 
@@ -560,6 +565,7 @@ Papitas buenas:c(7450,7452, 4253, 7398, 4378, 1300, 2954, 1928, 1702, 1446, 2630
 datos <- subset(s, s$id_prod %in% c(7450, 7452, 4253, 7398, 4378, 1300, 2954, 
     1928, 1702, 1446, 2630, 4300, 4185, 4195, 4203, 3486, 2910, 1493, 4304, 
     3288, 1737, 1739, 1301, 3276, 1892, 2684, 517801, 517800, 4631))
+write.table(datos, "papas2.dat", sep = "|", row.names = FALSE, col.names = FALSE)
 rm(s)
 ```
 

@@ -178,8 +178,11 @@ hljs.initHighlightingOnLoad();
 </head>
 
 <body>
-<p>Sólo vamos a utilizar los datos de SalesDataYYYYXXX.txt porque vamos a intentar aproximar inventarios.
-Antes de hacer modelos para ver wtf, hay que ver si hay sobre o subdistribución. Pero antes, exploración de datos. David hizo una selección de tres productos: churrumais, fritos y papas normales.</p>
+<p>A partir de los datos en los archivos SalesDataYYYYXXX.txt, seleccionamos Fritos, Churrumais y las
+sabritas normales. Se tienen tres archivos con las transacciones que corresponden a esos 
+tres cositos pero hay sku&#39;s colados. En este documento se generan fritos2, churrumais2 y papas2,
+que son las versiones sin sku&#39;s colados. Además, se producen graficas de ventas en lana y devoluciones
+en unidades para los distintos sku&#39;s que forman un solo producto.</p>
 
 <h2>Variables de los archivos SALESbloblo</h2>
 
@@ -198,7 +201,7 @@ Antes de hacer modelos para ver wtf, hay que ver si hay sobre o subdistribución
 </ul>
 
 <p><strong>Hay que borrar el campo 2 de código de barras; nomás estorba.</strong>
-<strong>También el de moneda y medida, a menos que cambien</strong></p>
+<strong>También el de moneda y medida, a menos que cambien. No cambian. Lo verificamos con los tables más adelante</strong></p>
 
 <h2>Churrumais</h2>
 
@@ -271,6 +274,7 @@ subset(prod,V2%in%names(sort(table(s$id_prod),decreasing=TRUE)))
 <pre><code class="r">datos &lt;- subset(s, id_prod %in% c(&quot;3245&quot;, &quot;3246&quot;, &quot;1679&quot;, &quot;5545&quot;, &quot;5546&quot;, &quot;7389&quot;, 
     &quot;7390&quot;, &quot;7435&quot;, &quot;1341&quot;, &quot;1342&quot;, &quot;3234&quot;, &quot;2682&quot;, &quot;7436&quot;, &quot;4340&quot;, &quot;4339&quot;, 
     &quot;1004&quot;, &quot;3233&quot;, &quot;2134&quot;))
+write.table(datos, &quot;churrumais2.dat&quot;, sep = &quot;|&quot;, row.names = FALSE, col.names = FALSE)
 rm(s)
 </code></pre>
 
@@ -408,9 +412,10 @@ subset(prod,V2%in%names(sort(table(s$id_prod),decreasing=TRUE)))
 2686 N/A 1315 SAVORY SNACKS  2 CHICO 93  FRITOS      FRITOS SAL
 </code></pre>
 
-<p>Hay que matar los churrumais flamas: c(1344,4597,1343,4607,4622,4576)</p>
+<p>Hay que matar los doritos colados:</p>
 
 <pre><code class="r">datos &lt;- s[s$id_prod != &quot;7434&quot;, ]
+write.table(datos, &quot;fritos2.dat&quot;, sep = &quot;|&quot;, row.names = FALSE, col.names = FALSE)
 rm(s)
 </code></pre>
 
@@ -669,6 +674,7 @@ subset(prod,V2%in%names(sort(table(s$id_prod),decreasing=TRUE)))
 <pre><code class="r">datos &lt;- subset(s, s$id_prod %in% c(7450, 7452, 4253, 7398, 4378, 1300, 2954, 
     1928, 1702, 1446, 2630, 4300, 4185, 4195, 4203, 3486, 2910, 1493, 4304, 
     3288, 1737, 1739, 1301, 3276, 1892, 2684, 517801, 517800, 4631))
+write.table(datos, &quot;papas2.dat&quot;, sep = &quot;|&quot;, row.names = FALSE, col.names = FALSE)
 rm(s)
 </code></pre>
 
