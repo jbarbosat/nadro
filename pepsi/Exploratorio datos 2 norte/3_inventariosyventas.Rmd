@@ -1,4 +1,4 @@
-% 17-oct-2013
+% 21-oct-2013
 % Cálculo de inventarios y ventas para clientes agrupados por tipo para la zona norte de pepsi y 3 productos
 % Makefile: pandoc -s -V geometry:margin=0.7in -V lang=spanish 3_inventariosyventas.md -o InventariosVentas.pdf
 
@@ -7,51 +7,63 @@ las agrupaciones por semana y tipo de cliente, en este archivo ahora se trata de
 un archivo con las ventas y devoluciones promedio de cada tipo de cliente y de cada fecha. 
 Después, con estos promedios, calcularemos inventarios y ventas a consumidores finales.
 
-**NOTA IMPORTANTE:** Para calcular los inventarios de los clientes (tienditas) y sus ventas a los
+**NOTA IMPORTANTE 1:** Para calcular los inventarios de los clientes (tienditas) y sus ventas a los
 consumidores (gente que compra papas en las tienditas), estamos tomando valor absoluto de ventas y 
 devoluciones porque hay valores negativos. Suponemos que tiene que ver con promociones en las que la
 gente llega al OXXO y canjea un cupón de "papitas gratis". No nos importa distinguir entre papas 
 consumidas y pagadas y papas consumidas y gratis porque al final es demanda de papas. Quizá tenga más
 sentido omitir los valores negativos, pero a mí me late que no.
 
+**NOTA IMPORTANTE 2:** Sumamos las cosas por semana y por cliente y luego promediamos por tipo y por
+semana.
+
+
 Churrumais
 --------------------------------------------------------------------------------------------------
 
 ```{r,eval=FALSE}
 setwd("/Users/PandoraMac/Documents/David/pepsi2/Datos Norte 3 papitas/")
-nombres<-c("tipo_cliente","semana_anio","vta_din2","vta_uni2","dev_din2","dev_uni2")
+nombres<-c("tipo_cliente","anio_semana","vta_din2","vta_uni2","dev_din2","dev_uni2")
 s<-as.data.frame(read.table("churrumais3.dat", sep="|",header=FALSE,
                  colClasses=c(rep("character",2),rep("numeric",4))))
+s[,2]<-paste(substr(s[,2],4,8),"-",substr(s[,2],1,2),sep="")
 names(s)<-nombres
-s2<-s[order(s$semana_anio),]
+s2<-s[order(s$anio_semana),]
 datos<-subset(s2,s2$tipo_cliente!="")
 datos$tipo_cliente[datos$tipo_cliente=="CINE / TEATRO"]<-"CINE_TEATRO"
 datos$tipo_cliente[datos$tipo_cliente=="LONCHERIA / FOND"]<-"LONCHERIA_FONDA"
 length(table(datos$tipo_cliente))
 [1] 89
 
+head(datos)
+          tipo_cliente anio_semana vta_din2 vta_uni2   dev_din2   dev_uni2
+7062                 1     2011-52  13.4800   4.0000 0.00000000 0.00000000
+7063         ABARROTES     2011-52  22.5336   6.6891 0.04035095 0.01197358
+7064               BAR     2011-52  25.2750   7.5000 0.00000000 0.00000000
+7065           BODEGAS     2011-52  23.2530   6.9000 0.00000000 0.00000000
+7066 CASETA TELEFONICA     2011-52   6.7400   2.0000 0.00000000 0.00000000
+7067   CENTRO DEPORTIV     2011-52  18.5350   5.5000 0.00000000 0.00000000
+
 myfunction<-function(x){
-  png(file = paste("/Users/PandoraMac/Documents/David/nadro_pepsi_git/pepsi/Exploratorio datos 2 norte/images/churrumais/ts",paste(unlist(strsplit(x$tipo_cliente[1]," ")),collapse=""),".png",sep=""))
-  plot(ts(x[,c(4,6)]),plot.type = c("single"),col=c("blue","red"),main=x$tipo_cliente[1])
-  #axis(1,at=1:nrow(x),labels=x$fecha,las=1)
+  png(file = paste("/Users/PandoraMac/Documents/David/nadro_pepsi_git/pepsi/Exploratorio datos 2 norte/images/churrumais/venta_dev_",paste(unlist(strsplit(x$tipo_cliente[1]," ")),collapse=""),".png",sep=""),
+  width = 6, units = "in", res = 1200, pointsize = 4)
+  ventas<-x[4:nrow(x),4]
+  devols<-x[1:(nrow(x)-3),6]
+  #plot(ts(ventas,devols),plot.type = c("single"),col=c("blue","red"),main=x$tipo_cliente[1])
+  #ts(1:10, frequency = 53, start = c(2011, 52)) # 2nd Quarter of 1959
+  #plot(ts(x[4:nrow(x),4],x[1:(nrow(x)-3),6],frequency=),plot.type = c("multiple"),col=c("blue","red"),main=x$tipo_cliente[1])
+        #,xlab=x$fecha[4:nrow(x)])
+  #axis(1,at=1:length(ventas),labels=x$fecha[4:nrow(x)],las=1)
+  plot(ts(cbind(ventas,devols)),plot.type = c("single"),col=c("blue","red"),,xaxt = "n")
+  axis(1,at=1:length(ventas),labels=x$anio_semana[4:nrow(x)],las=2,cex=.2)
+  title(main=x$tipo_cliente[1],sub="Devoluciones con un lag de 3 semanas")
   dev.off()
 }
 by(datos,datos$tipo_cliente,myfunction)
-```
 
-```{r,eval=FALSE}
-myfunction<-function(x){
-  png(file = paste("/Users/PandoraMac/Documents/David/nadro_pepsi_git/pepsi/Exploratorio datos 2 norte/images/churrumais/ts",paste(unlist(strsplit(x$tipo_cliente[1]," ")),collapse=""),".png",sep=""))
-  #suma<-sum(x[-nrow(x),4], x[-1,6])
-  ventas<-x[-nrow(x),4]
-  devols<-x[-1,6]
-#  plot(ts(cbind(ventas,ventas+devols)),plot.type = c("single"),col=c("blue","red"),main=x$tipo_cliente[1])
-  plot(ts(cbind(ventas,ventas+devols)),plot.type = c("single"),col=c("blue","red"),main=x$tipo_cliente[1])
-  dev.off()
-}
-by(datos,datos$tipo_cliente,myfunction)
+#plot(ts(x[,c(4,6)],frequency=),plot.type = c("single"),col=c("blue","red"),main=x$tipo_cliente[1])
+
 ```
 
 
-x <- as.POSIXlt("2013-10-18")
-strftime(x,format="%W")
+ 
