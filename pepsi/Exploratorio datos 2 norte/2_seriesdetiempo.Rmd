@@ -147,6 +147,7 @@ head(agregados_fecha_tipo)
 
 write.table(agregados_fecha_tipo,"churrumais_sum_fecha_cli.csv",sep=",",row.names = FALSE)
 #names(agregados_fecha_tipo)<-c("id_cliente","fecha","vta_din2","vta_uni2", "dev_din2", "dev_uni2","tipo_cli","semana","anio")
+
 sem_anio<-paste(agregados_fecha_tipo$semana,agregados_fecha_tipo$anio,sep="-")
 agregados_semana_tipo<-aggregate(agregados_fecha_tipo[,3:6],list(FactorA=agregados_fecha_tipo$tipo_cli,
                                                        FactorB=sem_anio),mean)
@@ -446,3 +447,121 @@ head(agregados_semana_tipo)
 write.table(agregados_semana_tipo,"papas3.dat",sep="|",row.names = FALSE,col.names =FALSE)
 #names(agregados_semana_tipo)<-c("tipo","semana_anio","vta_din2","vta_uni2","dev_din2","dev_uni2")
 ```
+
+
+Top de ventas y devoluciones en baro:
+```{r,eval=FALSE}
+agregados_fecha_tipo<-read.table("churrumais_sum_fecha_cli.csv",header=TRUE,sep=",")
+cosa<-aggregate(agregados_fecha_tipo[,3],list(FactorA=agregados_fecha_tipo$tipo_cli),sum)
+write.table(cosa,"churrus.csv",sep=",",row.names=FALSE)
+
+agregados_fecha_tipo<-read.table("fritos_sum_fecha_cli.csv",header=TRUE,sep=",")
+cosa<-aggregate(agregados_fecha_tipo[,3],list(FactorA=agregados_fecha_tipo$tipo_cli),sum)
+write.table(cosa,"frits.csv",sep=",",row.names=FALSE)
+
+agregados_fecha_tipo<-read.table("papas_sum_fecha_cli.csv",header=TRUE,sep=",")
+cosa<-aggregate(agregados_fecha_tipo[,3],list(FactorA=agregados_fecha_tipo$tipo_cli),sum)
+write.table(cosa,"paps.csv",sep=",",row.names=FALSE)
+
+#
+agregados_fecha_tipo<-read.table("churrumais_sum_fecha_cli.csv",header=TRUE,sep=",")
+cosa<-aggregate(agregados_fecha_tipo[,5],list(FactorA=agregados_fecha_tipo$tipo_cli),sum)
+write.table(cosa,"churrus2.csv",sep=",",row.names=FALSE)
+
+agregados_fecha_tipo<-read.table("fritos_sum_fecha_cli.csv",header=TRUE,sep=",")
+cosa<-aggregate(agregados_fecha_tipo[,5],list(FactorA=agregados_fecha_tipo$tipo_cli),sum)
+write.table(cosa,"frits2.csv",sep=",",row.names=FALSE)
+
+agregados_fecha_tipo<-read.table("papas_sum_fecha_cli.csv",header=TRUE,sep=",")
+cosa<-aggregate(agregados_fecha_tipo[,5],list(FactorA=agregados_fecha_tipo$tipo_cli),sum)
+write.table(cosa,"paps2.csv",sep=",",row.names=FALSE)
+
+```
+
+Y otro para abrrotes
+```{r,eval=FALSE}
+
+
+cosa<-read.table("churrumais_sum_fecha_cli.csv",header=TRUE,sep=",")
+datos<-subset(cosa,tipo_cli=="ABARROTES")
+
+> length(table(datos$id_cliente))
+[1] 124,764
+> 
+> summary(datos$vta_din)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+    0.00    16.85    20.22    24.36    26.96 37970.00 
+> 
+> summary(datos$vta_uni)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+    0.000     4.000     5.000     6.452     8.000 11270.000 
+> 
+> summary(datos$dev_din)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+  0.0000   0.0000   0.0000   0.0364   0.0000 240.0000 
+> 
+> summary(datos$dev_uni)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+ 0.00000  0.00000  0.00000  0.00955  0.00000 60.00000 
+
+
+
+cosa<-read.table("fritos_sum_fecha_cli.csv",header=TRUE,sep=",")
+datos<-subset(cosa,tipo_cli=="ABARROTES")
+
+> length(table(datos$id_cliente))
+[1] 120,153
+> 
+> summary(datos$vta_din)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+    0.00    15.18    25.30    26.10    25.30 13410.00 
+> 
+> summary(datos$vta_uni)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+   0.000    3.000    5.000    5.163    5.000 2650.000 
+> 
+> summary(datos$dev_din)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+  0.00000   0.00000   0.00000   0.09362   0.00000 190.00000 
+> 
+> summary(datos$dev_uni)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+ 0.00000  0.00000  0.00000  0.01856  0.00000 38.00000 
+
+
+
+cosa<-read.table("papas_sum_fecha_cli.csv",header=TRUE,sep=",")
+datos<-subset(cosa,tipo_cli=="ABARROTES")
+
+> length(table(datos$id_cliente))
+[1] 133,223
+> 
+> summary(datos$vta_din)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+    0.00    23.60    29.50    43.57    47.20 49560.00 
+> 
+> summary(datos$vta_uni)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+   0.000    4.000    5.000    7.151    8.000 8400.000 
+> 
+> summary(datos$dev_din)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+  0.0000   0.0000   0.0000   0.0139   0.0000 350.0000 
+> 
+> summary(datos$dev_uni)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+ 0.00000  0.00000  0.00000  0.00224  0.00000 56.00000 
+
+
+```
+
+
+length(table(datos$id_cliente))
+
+summary(datos$vta_din)
+
+summary(datos$vta_uni)
+
+summary(datos$dev_din)
+
+summary(datos$dev_uni)
