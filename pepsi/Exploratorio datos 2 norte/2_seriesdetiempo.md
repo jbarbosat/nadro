@@ -1,4 +1,4 @@
-% 17-oct-2013
+% 29-oct-2013
 % Cálculo de series de tiempo para clientes agrupados por tipo para la zona norte de pepsi y 3 productos
 % Makefile: pandoc -s -V geometry:margin=0.7in -V lang=spanish 2_seriesdetiempo.md -o Series.pdf
 
@@ -14,11 +14,10 @@ De este archivo se generan fritos3, papas3 y churrumais3, que son tablas con los
 y devoluciones en unidades y pesos para cada tipo de cliente y cada día.
 
 **NOTA IMPORTANTE:** Para calcular los inventarios de los clientes (tienditas) y sus ventas a los
-consumidores (gente que compra papas en las tienditas), estamos tomando valor absoluto de ventas y 
-devoluciones porque hay valores negativos. Suponemos que tiene que ver con promociones en las que la
-gente llega al OXXO y canjea un cupón de "papitas gratis". No nos importa distinguir entre papas 
-consumidas y pagadas y papas consumidas y gratis porque al final es demanda de papas. Quizá tenga más
-sentido omitir los valores negativos, pero a mí me late que no.
+consumidores (gente que compra papas en las tienditas), estábamos tomando valor absoluto de ventas y 
+devoluciones porque hay valores negativos. Pero volvimos a hacer esto porque resulta que ventas negativas = devoluciones que no llegaron hasta el centro de distribución, sino que se recolocaron en otra tienda. 
+No nos importa distinguir entre papas devueltas hasta el centro de distribución y las que sólo son vendidas
+en otra tienda porque al final son devoluciones.
 
 En el archivo de inventario ya se generan grafiquitas con las series de tiempo de cada tipo de cliente
 para cada producto.
@@ -103,8 +102,16 @@ Quedamos en tomar las ventas como positivas; tanto en unidades como en dineros y
 una solumna con la semana:
 
 ```r
-datos$vta_din2 <- abs(datos$vta_din)
-datos$vta_uni2 <- abs(datos$vta_uni)
+ind <- 1:nrow(datos)
+ind_vta_din <- ind[datos$vta_din < 0]
+datos$dev_din[ind_vta_din] <- datos$dev_din[ind_vta_din] + abs(datos$vta_din[ind_vta_din])
+datos$vta_din[ind_vta_din] <- 0
+ind_vta_uni <- ind[datos$vta_uni < 0]
+datos$dev_uni[ind_vta_uni] <- datos$dev_uni[ind_vta_uni] + abs(datos$vta_uni[ind_vta_uni])
+datos$vta_uni[ind_vta_uni] <- 0
+
+datos$vta_din2 <- datos$vta_din
+datos$vta_uni2 <- datos$vta_uni
 datos$dev_din2 <- abs(datos$dev_din)
 datos$dev_uni2 <- abs(datos$dev_uni)
 ```
@@ -156,6 +163,7 @@ head(agregados_fecha_tipo)
 
 write.table(agregados_fecha_tipo,"churrumais_sum_fecha_cli.csv",sep=",",row.names = FALSE)
 #names(agregados_fecha_tipo)<-c("id_cliente","fecha","vta_din2","vta_uni2", "dev_din2", "dev_uni2","tipo_cli","semana","anio")
+
 sem_anio<-paste(agregados_fecha_tipo$semana,agregados_fecha_tipo$anio,sep="-")
 agregados_semana_tipo<-aggregate(agregados_fecha_tipo[,3:6],list(FactorA=agregados_fecha_tipo$tipo_cli,
                                                        FactorB=sem_anio),mean)
@@ -163,7 +171,7 @@ head(agregados_semana_tipo)
     FactorA FactorB vta_din2 vta_uni2   dev_din2   dev_uni2
 1           00-2013 33.72964 7.992806 0.00000000 0.03597122
 2        19 00-2013 16.88000 4.000000 0.00000000 0.00000000
-3 ABARROTES 00-2013 27.83766 6.601336 0.04677287 0.01109969
+3 ABARROTES 00-2013 27.82882 6.599075 0.05561973 0.01336074
 4 BALNEARIO 00-2013 27.43000 6.500000 0.00000000 0.00000000
 5       BAR 00-2013 31.64400 8.700000 0.00000000 0.00000000
 6   BODEGAS 00-2013 26.17081 6.201613 0.00000000 0.00000000
@@ -254,8 +262,16 @@ Quedamos en tomar las ventas como positivas; tanto en unidades como en dineros y
 una solumna con la semana:
 
 ```r
-datos$vta_din2 <- abs(datos$vta_din)
-datos$vta_uni2 <- abs(datos$vta_uni)
+ind <- 1:nrow(datos)
+ind_vta_din <- ind[datos$vta_din < 0]
+datos$dev_din[ind_vta_din] <- datos$dev_din[ind_vta_din] + abs(datos$vta_din[ind_vta_din])
+datos$vta_din[ind_vta_din] <- 0
+ind_vta_uni <- ind[datos$vta_uni < 0]
+datos$dev_uni[ind_vta_uni] <- datos$dev_uni[ind_vta_uni] + abs(datos$vta_uni[ind_vta_uni])
+datos$vta_uni[ind_vta_uni] <- 0
+
+datos$vta_din2 <- datos$vta_din
+datos$vta_uni2 <- datos$vta_uni
 datos$dev_din2 <- abs(datos$dev_din)
 datos$dev_uni2 <- abs(datos$dev_uni)
 ```
@@ -314,7 +330,7 @@ head(agregados_semana_tipo)
     FactorA FactorB vta_din2 vta_uni2  dev_din2   dev_uni2
 1           00-2013 34.27742 6.774194 0.0816129 0.01612903
 2         1 00-2013 20.24000 4.000000 0.0000000 0.00000000
-3 ABARROTES 00-2013 26.87393 5.311054 0.1205700 0.02389776
+3 ABARROTES 00-2013 26.84807 5.305942 0.1464358 0.02900958
 4 BALNEARIO 00-2013 32.04667 6.333333 0.0000000 0.00000000
 5       BAR 00-2013 20.80222 4.111111 3.3733333 0.66666667
 6   BODEGAS 00-2013 28.56658 5.645570 0.0000000 0.00000000
@@ -407,8 +423,16 @@ Quedamos en tomar las ventas como positivas; tanto en unidades como en dineros y
 una solumna con la semana:
 
 ```r
-datos$vta_din2 <- abs(datos$vta_din)
-datos$vta_uni2 <- abs(datos$vta_uni)
+ind <- 1:nrow(datos)
+ind_vta_din <- ind[datos$vta_din < 0]
+datos$dev_din[ind_vta_din] <- datos$dev_din[ind_vta_din] + abs(datos$vta_din[ind_vta_din])
+datos$vta_din[ind_vta_din] <- 0
+ind_vta_uni <- ind[datos$vta_uni < 0]
+datos$dev_uni[ind_vta_uni] <- datos$dev_uni[ind_vta_uni] + abs(datos$vta_uni[ind_vta_uni])
+datos$vta_uni[ind_vta_uni] <- 0
+
+datos$vta_din2 <- datos$vta_din
+datos$vta_uni2 <- datos$vta_uni
 datos$dev_din2 <- abs(datos$dev_din)
 datos$dev_uni2 <- abs(datos$dev_uni)
 ```
@@ -467,7 +491,7 @@ head(agregados_semana_tipo)
     FactorA FactorB vta_din2  vta_uni2   dev_din2    dev_uni2
 1           00-2013 78.18643 13.251938 0.00000000 0.000000000
 2        21 00-2013  5.90000  1.000000 0.00000000 0.000000000
-3 ABARROTES 00-2013 46.22394  7.834565 0.01118545 0.001888523
+3 ABARROTES 00-2013 46.18446  7.827875 0.05066098 0.008579291
 4 BALNEARIO 00-2013 38.35000  6.500000 0.00000000 0.000000000
 5       BAR 00-2013 57.52500  9.750000 0.00000000 0.000000000
 6   BODEGAS 00-2013 45.12159  7.647727 0.00000000 0.000000000
@@ -476,3 +500,136 @@ write.table(agregados_semana_tipo,"papas3.dat",sep="|",row.names = FALSE,col.nam
 #names(agregados_semana_tipo)<-c("tipo","semana_anio","vta_din2","vta_uni2","dev_din2","dev_uni2")
 ```
 
+
+
+Top de ventas y devoluciones en baro:
+
+```r
+agregados_fecha_tipo <- read.table("churrumais_sum_fecha_cli.csv", header = TRUE, 
+    sep = ",")
+cosa <- aggregate(agregados_fecha_tipo[, 3], list(FactorA = agregados_fecha_tipo$tipo_cli), 
+    sum)
+write.table(cosa, "churrus.csv", sep = ",", row.names = FALSE)
+
+agregados_fecha_tipo <- read.table("fritos_sum_fecha_cli.csv", header = TRUE, 
+    sep = ",")
+cosa <- aggregate(agregados_fecha_tipo[, 3], list(FactorA = agregados_fecha_tipo$tipo_cli), 
+    sum)
+write.table(cosa, "frits.csv", sep = ",", row.names = FALSE)
+
+agregados_fecha_tipo <- read.table("papas_sum_fecha_cli.csv", header = TRUE, 
+    sep = ",")
+cosa <- aggregate(agregados_fecha_tipo[, 3], list(FactorA = agregados_fecha_tipo$tipo_cli), 
+    sum)
+write.table(cosa, "paps.csv", sep = ",", row.names = FALSE)
+
+#
+agregados_fecha_tipo <- read.table("churrumais_sum_fecha_cli.csv", header = TRUE, 
+    sep = ",")
+cosa <- aggregate(agregados_fecha_tipo[, 5], list(FactorA = agregados_fecha_tipo$tipo_cli), 
+    sum)
+write.table(cosa, "churrus2.csv", sep = ",", row.names = FALSE)
+
+agregados_fecha_tipo <- read.table("fritos_sum_fecha_cli.csv", header = TRUE, 
+    sep = ",")
+cosa <- aggregate(agregados_fecha_tipo[, 5], list(FactorA = agregados_fecha_tipo$tipo_cli), 
+    sum)
+write.table(cosa, "frits2.csv", sep = ",", row.names = FALSE)
+
+agregados_fecha_tipo <- read.table("papas_sum_fecha_cli.csv", header = TRUE, 
+    sep = ",")
+cosa <- aggregate(agregados_fecha_tipo[, 5], list(FactorA = agregados_fecha_tipo$tipo_cli), 
+    sum)
+write.table(cosa, "paps2.csv", sep = ",", row.names = FALSE)
+
+```
+
+
+Y otro para abrrotes
+
+```r
+
+
+cosa<-read.table("churrumais_sum_fecha_cli.csv",header=TRUE,sep=",")
+datos<-subset(cosa,tipo_cli=="ABARROTES")
+
+> length(table(datos$id_cliente))
+[1] 124,764
+> 
+> summary(datos$vta_din)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+    0.00    16.85    20.22    24.36    26.96 37970.00 
+> 
+> summary(datos$vta_uni)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+    0.000     4.000     5.000     6.452     8.000 11270.000 
+> 
+> summary(datos$dev_din)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+  0.0000   0.0000   0.0000   0.0364   0.0000 240.0000 
+> 
+> summary(datos$dev_uni)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+ 0.00000  0.00000  0.00000  0.00955  0.00000 60.00000 
+
+
+
+cosa<-read.table("fritos_sum_fecha_cli.csv",header=TRUE,sep=",")
+datos<-subset(cosa,tipo_cli=="ABARROTES")
+
+> length(table(datos$id_cliente))
+[1] 120,153
+> 
+> summary(datos$vta_din)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+    0.00    15.18    25.30    26.10    25.30 13410.00 
+> 
+> summary(datos$vta_uni)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+   0.000    3.000    5.000    5.163    5.000 2650.000 
+> 
+> summary(datos$dev_din)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+  0.00000   0.00000   0.00000   0.09362   0.00000 190.00000 
+> 
+> summary(datos$dev_uni)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+ 0.00000  0.00000  0.00000  0.01856  0.00000 38.00000 
+
+
+
+cosa<-read.table("papas_sum_fecha_cli.csv",header=TRUE,sep=",")
+datos<-subset(cosa,tipo_cli=="ABARROTES")
+
+> length(table(datos$id_cliente))
+[1] 133,223
+> 
+> summary(datos$vta_din)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+    0.00    23.60    29.50    43.57    47.20 49560.00 
+> 
+> summary(datos$vta_uni)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+   0.000    4.000    5.000    7.151    8.000 8400.000 
+> 
+> summary(datos$dev_din)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+  0.0000   0.0000   0.0000   0.0139   0.0000 350.0000 
+> 
+> summary(datos$dev_uni)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+ 0.00000  0.00000  0.00000  0.00224  0.00000 56.00000 
+
+```
+
+
+
+length(table(datos$id_cliente))
+
+summary(datos$vta_din)
+
+summary(datos$vta_uni)
+
+summary(datos$dev_din)
+
+summary(datos$dev_uni)

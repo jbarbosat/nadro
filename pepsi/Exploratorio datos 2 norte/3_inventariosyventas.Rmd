@@ -1,4 +1,4 @@
-% 21-oct-2013
+% 29-oct-2013
 % Cálculo de inventarios y ventas para clientes agrupados por tipo para la zona norte de pepsi y 3 productos
 % Makefile: pandoc -s -V geometry:margin=0.7in -V lang=spanish 3_inventariosyventas.md -o InventariosVentas.pdf
 
