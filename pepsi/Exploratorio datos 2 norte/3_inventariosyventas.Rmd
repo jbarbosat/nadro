@@ -78,13 +78,13 @@ length(table(datos$tipo_cliente))
 [1] 88
 
 head(datos)
-          tipo_cliente anio_semana vta_din2 vta_uni2   dev_din2   dev_uni2
-6943                 1     2011-52 20.24000 4.000000 0.00000000 0.00000000
-6944         ABARROTES     2011-52 28.82065 5.730893 0.04347686 0.00861141
-6945           BODEGAS     2011-52 27.32400 5.400000 0.00000000 0.00000000
-6946 CASETA TELEFONICA     2011-52 15.18000 3.000000 0.00000000 0.00000000
-6947   CENTRO DEPORTIV     2011-52 20.24000 4.000000 0.00000000 0.00000000
-6948   CENTRO RECREATI     2011-52 28.41385 5.615385 0.00000000 0.00000000
+          tipo_cliente anio_semana vta_din2 vta_uni2  dev_din2  dev_uni2
+6943                 1     2011-52 20.24000 4.000000 0.0000000 0.0000000
+6944         ABARROTES     2011-52 28.23240 5.614639 0.6317223 0.1248654
+6945           BODEGAS     2011-52 27.32400 5.400000 0.0000000 0.0000000
+6946 CASETA TELEFONICA     2011-52 15.18000 3.000000 0.0000000 0.0000000
+6947   CENTRO DEPORTIV     2011-52 20.24000 4.000000 0.0000000 0.0000000
+6948   CENTRO RECREATI     2011-52 28.41385 5.615385 0.0000000 0.0000000
 
 myfunction<-function(x){
   png(file = paste("/Users/PandoraMac/Documents/David/nadro_pepsi_git/pepsi/Exploratorio datos 2 norte/images/fritos/venta_dev_",paste(unlist(strsplit(x$tipo_cliente[1]," ")),collapse=""),".png",sep=""),
@@ -133,7 +133,7 @@ myfunction<-function(x){
   width = 5, height = 3, units = "in", res= 800, pointsize = 4)
   ventas<-x[4:nrow(x),4]
   devols<-x[1:(nrow(x)-3),6]
-  plot(ts(cbind(ventas+devols,ventas-devols,ventas)),plot.type = c("single"),col=c("blue","red","black"),,xaxt = "n")
+  plot(ts(cbind(ventas+devols,ventas-devols,ventas)),plot.type = c("single"),col=c("red","blue","black"),,xaxt = "n")
   axis(1,at=1:length(ventas),labels=x$anio_semana[4:nrow(x)],las=2,cex=.2)
   title(main=x$tipo_cliente[1],sub="Devoluciones con un lag de 3 semanas")
   dev.off()

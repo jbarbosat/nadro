@@ -1,3 +1,13 @@
+Lunes Octubre 28, 2013
+----------------------
+
+Se supone que el kickoff del proyecto es el miércoles. 
+Ojo: Ventas negativas cuentan como devoluciones. 
+Quedan pendientes qué sku's tomaremos y chance sólo sean clientes tipo A (más ventas) del valle de méxico.
+Tbn queda pendiente qué haremos con las series de tiempo. Ahorita que tengo algo de tiempo voy a rehacer el 
+exploratorio pero no sacando valor abs de ventas negativas, sino volviéndolas una devolución más para ver cómo 
+cambia la idea que tenemos sobre el número de devoluciones.
+
 Viernes Octubre 18, 2103
 -----------------------
 
