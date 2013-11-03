@@ -508,72 +508,72 @@ Y otro para abrrotes
 cosa<-read.table("churrumais_sum_fecha_cli.csv",header=TRUE,sep=",")
 datos<-subset(cosa,tipo_cli=="ABARROTES")
 
-> length(table(datos$id_cliente))
+length(table(datos$id_cliente))
 [1] 124,764
-> 
-> summary(datos$vta_din)
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-    0.00    16.85    20.22    24.36    26.96 37970.00 
-> 
-> summary(datos$vta_uni)
+ 
+summary(datos$vta_din)
+   Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+    0.00    16.85    20.22    24.34    26.96 37970.00 
+ 
+summary(datos$vta_uni)
      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-    0.000     4.000     5.000     6.452     8.000 11270.000 
-> 
-> summary(datos$dev_din)
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-  0.0000   0.0000   0.0000   0.0364   0.0000 240.0000 
-> 
-> summary(datos$dev_uni)
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
- 0.00000  0.00000  0.00000  0.00955  0.00000 60.00000 
+    0.000     4.000     5.000     6.448     8.000 11270.000 
+
+summary(datos$dev_din)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+   0.0000    0.0000    0.0000    0.0543    0.0000 1266.0000 
+
+summary(datos$dev_uni)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+  0.00000   0.00000   0.00000   0.01428   0.00000 300.00000 
 
 
 
 cosa<-read.table("fritos_sum_fecha_cli.csv",header=TRUE,sep=",")
 datos<-subset(cosa,tipo_cli=="ABARROTES")
 
-> length(table(datos$id_cliente))
+length(table(datos$id_cliente))
 [1] 120,153
-> 
-> summary(datos$vta_din)
+
+summary(datos$vta_din)
     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-    0.00    15.18    25.30    26.10    25.30 13410.00 
-> 
-> summary(datos$vta_uni)
+    0.00    15.18    25.30    26.06    25.30 13410.00 
+
+summary(datos$vta_uni)
     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-   0.000    3.000    5.000    5.163    5.000 2650.000 
-> 
-> summary(datos$dev_din)
+   0.000    3.000    5.000    5.156    5.000 2650.000 
+
+summary(datos$dev_din)
      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-  0.00000   0.00000   0.00000   0.09362   0.00000 190.00000 
-> 
-> summary(datos$dev_uni)
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
- 0.00000  0.00000  0.00000  0.01856  0.00000 38.00000 
+   0.0000    0.0000    0.0000    0.1264    0.0000 1356.0000 
+
+summary(datos$dev_uni)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+  0.00000   0.00000   0.00000   0.02508   0.00000 268.00000 
 
 
 
 cosa<-read.table("papas_sum_fecha_cli.csv",header=TRUE,sep=",")
 datos<-subset(cosa,tipo_cli=="ABARROTES")
 
-> length(table(datos$id_cliente))
+length(table(datos$id_cliente))
 [1] 133,223
-> 
-> summary(datos$vta_din)
+
+summary(datos$vta_din)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    0.0    23.6    29.5    43.5    47.2 49560.0 
+
+summary(datos$vta_uni)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    4.00    5.00    7.14    8.00 8400.00
+
+summary(datos$dev_din)
     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-    0.00    23.60    29.50    43.57    47.20 49560.00 
-> 
-> summary(datos$vta_uni)
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-   0.000    4.000    5.000    7.151    8.000 8400.000 
-> 
-> summary(datos$dev_din)
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-  0.0000   0.0000   0.0000   0.0139   0.0000 350.0000 
-> 
-> summary(datos$dev_uni)
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
- 0.00000  0.00000  0.00000  0.00224  0.00000 56.00000 
+   0.000    0.000    0.000    0.085    0.000 3516.000 
+
+summary(datos$dev_uni)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   0.000   0.000   0.014   0.000 596.000 
 
 
 ```

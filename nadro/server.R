@@ -6,7 +6,7 @@ library(arulesViz)
 library(sp)
 ##################################################################################################  
 #Leemos los datos
-s<-as.data.frame(read.csv("/Users/PandoraMac/Documents/Nadro/base_simulada2.csv",sep=','),header=TRUE,
+s<-as.data.frame(read.csv("/Users/PandoraMac/Documents/David/nadro2/Datos/base_simulada2.csv",sep=','),header=TRUE,
                            colClasses=c("character","character","character","character","character",
                                         "double","double","double","double","double","double"))
 #load("/Users/PandoraMac/Documents/Nadro/MarketBasket.RData")

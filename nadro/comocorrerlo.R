@@ -10,20 +10,20 @@
 # MarketBasket.RData tbn hay que agregarla al directorio
 
 
-setwd("/Users/PandoraMac/Documents/Nadro/nadro/")
+setwd("/Users/PandoraMac/Documents/David/nadro_pepsi_git/nadro")
 #install.packages("shiny")
 #install.packages("forecast")
 #install.packages("arules")
 #install.packages("arulesViz")
 library(shiny)
-runApp("/Users/PandoraMac/Documents/Nadro/nadro/")
+runApp("/Users/PandoraMac/Documents/David/nadro_pepsi_git/nadro")
 
 
 #Esto no hay que correrlo, pero lo dejo por si uno quiere correr cosas en R aparte de la App para verificar o 
 #probar formatos, antes de mandarlo a la App de Shiny
 
 library(ggplot2)
-s<-as.data.frame(read.csv("/Users/PandoraMac/Documents/Nadro/base_simulada2.csv",sep=','),header=TRUE,
+s<-as.data.frame(read.csv("/Users/PandoraMac/Documents/David/nadro2/Datos/base_simulada2.csv",sep=','),header=TRUE,
                  colClasses=c("character","character","character","character","character",
                               "double","double","double","double","double","double"))
 
