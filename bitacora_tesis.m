@@ -1,3 +1,9 @@
+Miércoles Noviembre 6, 2013
+---------------------------
+Parece que los datos van a estar disponibles hasta diciembre, así que mañana hablaré con Morales
+para decirle y preguntar si es posible que el proyecto de la cruz roja quede como tesis y
+estancia.
+
 Lunes Octubre 28, 2013
 ----------------------
 
