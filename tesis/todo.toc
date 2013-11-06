@@ -1,3 +1,0 @@
-\select@language {spanish}
-\contentsline {chapter}{Pr\'ologo}{\es@scroman {iii}}
-\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{1}
